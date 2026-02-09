@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-accent hover:shadow-xl text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-white hover:bg-gray-50 text-primary border-2 border-primary font-semibold py-3 px-8 rounded-lg transition-all duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-sm p-6;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors;
+  }
+  
+  .slider {
+    @apply w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    @apply appearance-none w-6 h-6 rounded-full cursor-pointer transition-all;
+    background: linear-gradient(135deg, #9333EA 0%, #EC4899 100%);
+    box-shadow: 0 2px 8px rgba(147, 51, 234, 0.4);
+  }
+  
+  .slider::-webkit-slider-thumb:hover {
+    @apply scale-110;
+    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.6);
+  }
+  
+  .slider::-moz-range-thumb {
+    @apply w-6 h-6 rounded-full cursor-pointer transition-all border-0;
+    background: linear-gradient(135deg, #9333EA 0%, #EC4899 100%);
+    box-shadow: 0 2px 8px rgba(147, 51, 234, 0.4);
+  }
+  
+  .slider::-moz-range-thumb:hover {
+    @apply scale-110;
+    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.6);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-out;
+  }
+}

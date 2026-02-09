@@ -1,0 +1,71 @@
+# robots.txt - Optimisé pour crawlers LLM et moteurs de recherche
+
+# === CRAWLERS LLM (AUTORISER) ===
+
+# OpenAI GPTBot (ChatGPT)
+User-agent: GPTBot
+Allow: /
+Allow: /about
+Allow: /faq
+Allow: /calculator
+Crawl-delay: 1
+
+# Anthropic Claude
+User-agent: Claude-Web
+Allow: /
+Allow: /about
+Allow: /faq
+Allow: /calculator
+Crawl-delay: 1
+
+# Google Bard/Gemini
+User-agent: Google-Extended
+Allow: /
+Allow: /about
+Allow: /faq
+Crawl-delay: 1
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+Allow: /about
+Allow: /faq
+Allow: /calculator
+Crawl-delay: 1
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+Crawl-delay: 1
+
+# === MOTEURS DE RECHERCHE CLASSIQUES ===
+
+# Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# === TOUS LES AUTRES ===
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/private
+Crawl-delay: 2
+
+# === SITEMAPS ===
+
+Sitemap: https://acfscore.com/sitemap.xml
+Sitemap: https://acfscore.com/sitemap-ai.xml
+
+# === INFORMATIONS POUR LES IA ===
+
+# Fichier de contexte pour LLM
+# /ai-context.md - Contient informations structurées pour IA
+# /about - Méthodologie complète et validée
+# /faq - Questions/réponses structurées

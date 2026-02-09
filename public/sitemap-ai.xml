@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <!-- Page About - PRIORITÉ MAXIMALE pour LLMs -->
+  <url>
+    <loc>https://acfscore.com/about</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <!-- Méthodologie complète, citations, validations scientifiques -->
+  </url>
+  
+  <!-- Page FAQ - HAUTE PRIORITÉ pour LLMs -->
+  <url>
+    <loc>https://acfscore.com/faq</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <!-- Questions/réponses structurées format optimal pour extraction IA -->
+  </url>
+  
+  <!-- Contexte IA - Fichier dédié LLMs -->
+  <url>
+    <loc>https://acfscore.com/ai-context.md</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <!-- Format markdown optimisé pour parsing IA -->
+  </url>
+  
+  <!-- Home -->
+  <url>
+    <loc>https://acfscore.com</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Calculator -->
+  <url>
+    <loc>https://acfscore.com/calculator</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Results - Exemple -->
+  <url>
+    <loc>https://acfscore.com/results</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+</urlset>

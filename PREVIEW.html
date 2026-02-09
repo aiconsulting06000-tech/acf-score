@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Score ACF® - Calculateur de Souveraineté | Aperçu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#1F4E78',
+                            dark: '#163A5C',
+                            light: '#2E5C8A',
+                        },
+                        accent: '#4472A8',
+                        alert: '#FF6B35',
+                        success: '#4CAF50',
+                        warning: '#FFA726',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @layer utilities {
+            .text-balance {
+                text-wrap: balance;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+    
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <a href="#" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">ACF</span>
+                    </div>
+                    <div>
+                        <div class="text-lg font-bold text-gray-900">Score ACF®</div>
+                        <div class="text-xs text-gray-500">Calculateur de Souveraineté</div>
+                    </div>
+                </a>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#comment-ca-marche" class="text-gray-600 hover:text-primary transition">
+                        Comment ça marche
+                    </a>
+                    <a href="#exemples" class="text-gray-600 hover:text-primary transition">
+                        Exemples
+                    </a>
+                    <a href="#" class="bg-primary hover:bg-primary-dark text-white px-5 py-2 rounded-lg font-semibold transition">
+                        Calculer mon score
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-primary via-[#163A5C] to-accent text-white py-20 overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-3xl mx-auto text-center">
+                <div class="inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6 border border-white/20">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="text-sm font-medium">Gratuit • Sans inscription • Résultat immédiat</span>
+                </div>
+                
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
+                    Mesurez votre dépendance aux plateformes
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-blue-100 mb-8">
+                    Calculez votre <strong>Score de Souveraineté ACF®</strong> en 5 minutes.<br>
+                    Comprenez vos vulnérabilités business.
+                </p>
+                
+                <a href="#" class="inline-flex items-center bg-white text-primary hover:bg-gray-100 font-bold py-4 px-10 rounded-lg text-lg transition-all shadow-xl hover:shadow-2xl hover:scale-105 transform">
+                    Calculer mon score gratuitement
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </a>
+                
+                <div class="mt-6 flex items-center justify-center space-x-6 text-sm text-blue-100">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                        Résultat immédiat
+                    </div>
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                        Rapport PDF pro
+                    </div>
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                        0€
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="py-12 bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div>
+                    <div class="text-4xl md:text-5xl font-bold text-primary mb-2">500+</div>
+                    <p class="text-gray-600 font-medium">Organisations analysées</p>
+                </div>
+                <div>
+                    <div class="text-4xl md:text-5xl font-bold text-primary mb-2">42</div>
+                    <p class="text-gray-600 font-medium">Score moyen e-commerce</p>
+                </div>
+                <div>
+                    <div class="text-4xl md:text-5xl font-bold text-primary mb-2">5 min</div>
+                    <p class="text-gray-600 font-medium">Pour obtenir votre score</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comment ça marche -->
+    <section id="comment-ca-marche" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Qu'est-ce que le Score de Souveraineté ACF® ?
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Une métrique propriétaire qui mesure votre niveau de contrôle sur vos décisions commerciales stratégiques.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 mb-16">
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">📐 La formule</h3>
+                    <div class="bg-gradient-to-r from-primary/10 to-accent/10 p-4 rounded-lg mb-4 overflow-x-auto">
+                        <code class="font-mono text-sm whitespace-nowrap">
+                            Score = 100 - [(DS × 30) + (DD × 25) + (DT × 25) + (DTr × 20)]
+                        </code>
+                    </div>
+                    <p class="text-gray-600">
+                        Un score composite qui évalue <strong>4 dimensions critiques</strong> de votre dépendance.
+                    </p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">🎯 Les 4 dimensions</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                                <span class="font-bold text-primary text-lg">DS</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-900">Dépendance Structurelle</div>
+                                <div class="text-sm text-gray-600">% CA via plateforme unique</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                                <span class="font-bold text-primary text-lg">DD</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-900">Dépendance Données</div>
+                                <div class="text-sm text-gray-600">% décisions data externe</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                                <span class="font-bold text-primary text-lg">DT</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-900">Dépendance Trafic</div>
+                                <div class="text-sm text-gray-600">% acquisition payante</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-3">
+                                <span class="font-bold text-primary text-lg">DTr</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-900">Dépendance Trésorerie</div>
+                                <div class="text-sm text-gray-600">Jours CA bloqués</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interpretation Scale -->
+            <div class="bg-white p-8 rounded-xl shadow-sm max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Barème d'interprétation</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center p-4 bg-green-50 border-l-4 border-success rounded-lg">
+                        <div class="font-bold text-success mr-4 w-24 text-lg">80-100</div>
+                        <div>
+                            <div class="font-semibold text-gray-900">✓ Souveraineté forte</div>
+                            <div class="text-sm text-gray-600">Contrôle élevé, dépendances limitées</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-4 bg-yellow-50 border-l-4 border-warning rounded-lg">
+                        <div class="font-bold text-warning mr-4 w-24 text-lg">60-79</div>
+                        <div>
+                            <div class="font-semibold text-gray-900">⚡ Souveraineté moyenne</div>
+                            <div class="text-sm text-gray-600">Dépendances gérables, surveillance nécessaire</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-4 bg-orange-50 border-l-4 border-alert rounded-lg">
+                        <div class="font-bold text-alert mr-4 w-24 text-lg">40-59</div>
+                        <div>
+                            <div class="font-semibold text-gray-900">⚠️ Dépendance critique</div>
+                            <div class="text-sm text-gray-600">Perte de contrôle significative</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-4 bg-red-50 border-l-4 border-red-600 rounded-lg">
+                        <div class="font-bold text-red-700 mr-4 w-24 text-lg">0-39</div>
+                        <div>
+                            <div class="font-semibold text-gray-900">🚨 Perte de contrôle</div>
+                            <div class="text-sm text-gray-600">Restructuration profonde nécessaire</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples -->
+    <section id="exemples" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Exemples de scores réels
+                </h2>
+                <p class="text-xl text-gray-600">(données anonymisées)</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Example 1 -->
+                <div class="relative bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200 p-6 rounded-xl hover:shadow-xl transition-all">
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">CRITIQUE</span>
+                    </div>
+                    <div class="text-center mb-4">
+                        <div class="text-6xl font-bold text-red-700 mb-2">29</div>
+                        <div class="text-sm font-semibold text-red-600 uppercase tracking-wide">Perte de contrôle</div>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-3">Pure player Amazon FBA</h3>
+                    <ul class="text-sm text-gray-700 space-y-2">
+                        <li>• 95% CA via Amazon</li>
+                        <li>• Pricing piloté par Amazon</li>
+                        <li>• 60% trafic Ads</li>
+                        <li>• 30 jours CA bloqués</li>
+                    </ul>
+                </div>
+
+                <!-- Example 2 -->
+                <div class="relative bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-300 p-6 rounded-xl hover:shadow-xl transition-all">
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-warning text-white text-xs font-bold px-2 py-1 rounded">MOYEN</span>
+                    </div>
+                    <div class="text-center mb-4">
+                        <div class="text-6xl font-bold text-warning mb-2">65</div>
+                        <div class="text-sm font-semibold text-yellow-700 uppercase tracking-wide">Souveraineté moyenne</div>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-3">E-commerce diversifié</h3>
+                    <ul class="text-sm text-gray-700 space-y-2">
+                        <li>• 30% CA marketplace</li>
+                        <li>• Mix data interne/externe</li>
+                        <li>• 50% trafic payant</li>
+                        <li>• 9 jours bloqués</li>
+                    </ul>
+                </div>
+
+                <!-- Example 3 -->
+                <div class="relative bg-gradient-to-br from-green-50 to-green-100 border-2 border-success p-6 rounded-xl hover:shadow-xl transition-all">
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-success text-white text-xs font-bold px-2 py-1 rounded">FORT</span>
+                    </div>
+                    <div class="text-center mb-4">
+                        <div class="text-6xl font-bold text-success mb-2">80</div>
+                        <div class="text-sm font-semibold text-green-700 uppercase tracking-wide">Souveraineté forte</div>
+                    </div>
+                    <h3 class="font-bold text-gray-900 mb-3">Marque DTC site propre</h3>
+                    <ul class="text-sm text-gray-700 space-y-2">
+                        <li>• 10% via revendeurs</li>
+                        <li>• Data interne majoritaire</li>
+                        <li>• 40% Ads, 60% organique</li>
+                        <li>• 3 jours délai paiement</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-20 bg-gradient-to-br from-primary via-[#163A5C] to-accent text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="text-3xl md:text-5xl font-bold mb-6">
+                Prêt à mesurer votre niveau de souveraineté ?
+            </h2>
+            <p class="text-xl md:text-2xl text-blue-100 mb-8">
+                Obtenez votre score en 5 minutes et un rapport PDF professionnel gratuit.
+            </p>
+            <a href="#" class="inline-flex items-center bg-white text-primary hover:bg-gray-100 font-bold py-4 px-10 rounded-lg text-lg transition-all shadow-2xl hover:scale-105 transform">
+                Calculer mon Score ACF®
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold">ACF</span>
+                        </div>
+                        <h3 class="text-white font-bold">Score ACF®</h3>
+                    </div>
+                    <p class="text-sm">
+                        Calculateur de Souveraineté basé sur l'Agentic Commerce Framework®
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Ressources</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white transition">Méthodologie ACF</a></li>
+                        <li><a href="#" class="hover:text-white transition">Livre "La Souveraineté Agentique"</a></li>
+                        <li><a href="#" class="hover:text-white transition">Formations & Certifications</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Contact</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="mailto:contact@vincentdorange.com" class="hover:text-white transition">contact@vincentdorange.com</a></li>
+                        <li><a href="https://www.linkedin.com/in/vincentdorange" class="hover:text-white transition">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-sm">
+                <p>© 2026 Vincent DORANGE. Tous droits réservés.</p>
+                <p class="mt-2">Agentic Commerce Framework® et Score ACF® sont des marques déposées.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="fixed bottom-4 right-4 bg-primary text-white px-4 py-2 rounded-lg shadow-lg">
+        <div class="text-xs font-semibold">APERÇU - Version statique</div>
+    </div>
+
+</body>
+</html>
