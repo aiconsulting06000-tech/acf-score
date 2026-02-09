@@ -303,11 +303,90 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Gouvernance et conformité */}
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">5. Gouvernance & Conformité</h2>
+
+          <h3 className="text-2xl font-semibold text-gray-800 mb-4">5.1 Gouvernance des décisions commerciales</h3>
+          <p className="text-gray-700 mb-4 leading-relaxed">
+            La <strong>gouvernance</strong> dans le contexte ACF® désigne le contrôle effectif sur les 
+            décisions commerciales stratégiques. Un Score ACF® faible (<40) indique une perte de gouvernance :
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-gray-700 mb-6">
+            <li><strong>Pricing automatique imposé</strong> par marketplace (vous ne fixez plus vos prix)</li>
+            <li><strong>Algorithmes de recommandation opaques</strong> (vous ne contrôlez plus votre merchandising)</li>
+            <li><strong>Budget publicitaire optimisé en boîte noire</strong> (pas de visibilité sur les règles)</li>
+            <li><strong>Délais de paiement unilatéraux</strong> (trésorerie otage des plateformes)</li>
+          </ul>
+          <p className="text-gray-700 mb-4">
+            <strong>Impact agents IA :</strong> Les agents autonomes (Amazon AI, Shopify Sidekick, Meta Advantage+) 
+            amplifient ce risque. Si votre score est faible, les agents propriétaires des plateformes prennent 
+            des décisions pour vous. Si votre score est élevé (70+), vous conservez la capacité d'entraîner 
+            VOS propres agents sur VOS données.
+          </p>
+
+          <h3 className="text-2xl font-semibold text-gray-800 mb-4 mt-8">5.2 Conformité AI Act européen</h3>
+          <p className="text-gray-700 mb-4 leading-relaxed">
+            Le <strong>Règlement UE 2024/1689 (AI Act)</strong>, entré en vigueur en août 2024, impose des 
+            obligations de transparence et de gouvernance pour les systèmes d'IA à haut risque, incluant 
+            les systèmes de scoring et de recommandation commerciale.
+          </p>
+          
+          <div className="bg-amber-50 border-l-4 border-amber-500 p-6 mb-6">
+            <h4 className="font-bold text-gray-900 mb-3">⚠️ Risques réglementaires liés au Score ACF® faible</h4>
+            <ul className="space-y-2 text-gray-700 text-sm">
+              <li className="flex items-start">
+                <span className="font-semibold mr-2">•</span>
+                <span><strong>DD élevée</strong> (utilisation intensive algorithmes externes) → Exposition AI Act, risque audit conformité</span>
+              </li>
+              <li className="flex items-start">
+                <span className="font-semibold mr-2">•</span>
+                <span><strong>DS élevée</strong> (clauses contractuelles plateformes) → Risque abus de position dominante (RGPD/concurrence)</span>
+              </li>
+              <li className="flex items-start">
+                <span className="font-semibold mr-2">•</span>
+                <span><strong>DT élevée</strong> (publicités ciblées massives) → Risque RGPD (consentement cookies, profilage)</span>
+              </li>
+            </ul>
+          </div>
+
+          <h4 className="text-xl font-semibold text-gray-800 mb-3">Sanctions AI Act (2024-2027)</h4>
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="text-2xl font-bold text-red-600 mb-2">Niveau 3</div>
+              <p className="text-sm text-gray-700">
+                <strong>IA interdites / Haut risque</strong><br/>
+                Jusqu'à <strong>35M€ ou 7% CA mondial</strong>
+              </p>
+            </div>
+            <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+              <div className="text-2xl font-bold text-orange-600 mb-2">Niveau 2</div>
+              <p className="text-sm text-gray-700">
+                <strong>Non-respect obligations</strong><br/>
+                Jusqu'à <strong>25M€ ou 5% CA</strong>
+              </p>
+            </div>
+            <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <div className="text-2xl font-bold text-yellow-600 mb-2">Niveau 1</div>
+              <p className="text-sm text-gray-700">
+                <strong>Infractions mineures</strong><br/>
+                Jusqu'à <strong>15M€ ou 3% CA</strong>
+              </p>
+            </div>
+          </div>
+
+          <p className="text-gray-700 mb-4">
+            <strong>Recommandation :</strong> Score ACF® < 50 avec forte dépendance algorithmes externes 
+            → Audit de conformité IA recommandé (15-40K€). Un score élevé (70+) réduit mécaniquement 
+            votre exposition réglementaire en diminuant votre dépendance aux systèmes IA opaques.
+          </p>
+        </section>
+
         {/* Limites et évolutions */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">5. Limites & Évolutions</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">6. Limites & Évolutions</h2>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4">5.1 Limites actuelles</h3>
+          <h3 className="text-2xl font-semibold text-gray-800 mb-4">6.1 Limites actuelles</h3>
           <ul className="list-disc list-inside space-y-2 text-gray-700 mb-6">
             <li>Le Score ACF est une <strong>photographie instantanée</strong>, pas une prédiction dynamique</li>
             <li>Les coefficients (30/25/25/20) sont <strong>moyennes sectorielles</strong>, peuvent varier selon contexte</li>
@@ -315,7 +394,7 @@ export default function AboutPage() {
             <li>Requiert des <strong>données déclaratives</strong>, potentiellement biaisées</li>
           </ul>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4">5.2 Roadmap v2.0 (2026)</h3>
+          <h3 className="text-2xl font-semibold text-gray-800 mb-4">6.2 Roadmap v2.0 (2026)</h3>
           <ul className="list-disc list-inside space-y-2 text-gray-700 mb-6">
             <li><strong>Monitoring temps réel :</strong> API intégrations pour calcul automatique</li>
             <li><strong>Coefficients adaptatifs :</strong> Machine learning pour ajuster poids selon secteur/taille</li>
@@ -326,7 +405,7 @@ export default function AboutPage() {
 
         {/* Citation et utilisation */}
         <section className="mb-12 p-6 bg-gray-50 rounded-lg">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Citation & Utilisation</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Citation & Utilisation</h2>
           <p className="text-gray-700 mb-4">
             Cette méthodologie est <strong>open-source</strong>. Vous pouvez l'utiliser, l'adapter, 
             la citer librement en mentionnant la source :

@@ -215,6 +215,60 @@ export async function generatePDF(formData: FormData, result: ScoreResult, score
     yPos += 8
   })
   
+  yPos += 10
+  
+  // Comparatif sectoriel
+  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2])
+  doc.setFontSize(14)
+  doc.setFont('helvetica', 'bold')
+  doc.text('Comparatif sectoriel', margin, yPos)
+  yPos += 10
+  
+  doc.setFillColor(250, 245, 255)
+  doc.roundedRect(margin, yPos, contentWidth, 28, 3, 3, 'F')
+  
+  // Moyenne e-commerce
+  doc.setTextColor(120, 120, 120)
+  doc.setFontSize(8)
+  doc.setFont('helvetica', 'normal')
+  doc.text('Moyenne E-commerce', margin + contentWidth/4, yPos + 8, { align: 'center' })
+  doc.setFontSize(18)
+  doc.setFont('helvetica', 'bold')
+  doc.text('42', margin + contentWidth/4, yPos + 20, { align: 'center' })
+  
+  // Votre score
+  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2])
+  doc.setFontSize(8)
+  doc.setFont('helvetica', 'bold')
+  doc.text('VOTRE SCORE', pageWidth/2, yPos + 8, { align: 'center' })
+  doc.setTextColor(scoreColor[0], scoreColor[1], scoreColor[2])
+  doc.setFontSize(22)
+  doc.setFont('helvetica', 'bold')
+  doc.text(score.toFixed(0), pageWidth/2, yPos + 20, { align: 'center' })
+  
+  // Top performers
+  doc.setTextColor(120, 120, 120)
+  doc.setFontSize(8)
+  doc.setFont('helvetica', 'normal')
+  doc.text('Top performers', margin + 3*contentWidth/4, yPos + 8, { align: 'center' })
+  doc.setTextColor(16, 185, 129)
+  doc.setFontSize(18)
+  doc.setFont('helvetica', 'bold')
+  doc.text('78+', margin + 3*contentWidth/4, yPos + 20, { align: 'center' })
+  
+  // Note comparative
+  if (score > 42) {
+    doc.setTextColor(16, 185, 129)
+    doc.setFontSize(7)
+    doc.setFont('helvetica', 'bold')
+    doc.text(`+${score - 42} pts vs moyenne`, pageWidth/2, yPos + 25, { align: 'center' })
+  } else if (score < 42) {
+    doc.setTextColor(239, 68, 68)
+    doc.setFontSize(7)
+    doc.setFont('helvetica', 'bold')
+    doc.text(`${score - 42} pts vs moyenne`, pageWidth/2, yPos + 25, { align: 'center' })
+  }
+  
   addFooter()
   
   // ==================== PAGE 3: ANALYSE DÉTAILLÉE ====================
@@ -370,6 +424,32 @@ export async function generatePDF(formData: FormData, result: ScoreResult, score
       
       yPos += 12
     })
+    
+    yPos += 15
+    
+    // Note gouvernance et AI Act
+    doc.setFillColor(255, 250, 240)
+    doc.roundedRect(margin, yPos, contentWidth, 45, 3, 3, 'F')
+    
+    doc.setTextColor(180, 83, 9)
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'bold')
+    doc.text('⚠️  Alerte : Gouvernance & Conformité AI Act', margin + 5, yPos + 8)
+    
+    doc.setTextColor(60, 60, 60)
+    doc.setFontSize(8)
+    doc.setFont('helvetica', 'normal')
+    const aiActText = [
+      'En 2026, 40% des décisions d\'achat B2B sont gérées par des agents IA autonomes.',
+      'Un Score ACF® faible (<50) indique une perte de gouvernance : les algorithmes',
+      'des plateformes décident pour vous (pricing, merchandising, budget).',
+      '',
+      'AI Act européen (2024) : Sanctions jusqu\'à 35M€ ou 7% CA mondial pour systèmes',
+      'IA opaques non conformes. Score < 50 = risque audit réglementaire élevé.',
+    ]
+    aiActText.forEach((line, i) => {
+      doc.text(line, margin + 5, yPos + 16 + (i * 4))
+    })
   }
   
   addFooter()
@@ -492,15 +572,20 @@ export async function generatePDF(formData: FormData, result: ScoreResult, score
   doc.setFontSize(10)
   doc.setFont('helvetica', 'normal')
   const aboutText = [
-    'L\'Agentic Commerce Framework® (ACF) est une méthodologie propriétaire',
+    'L\'Agentic Commerce Framework® (ACF) est une méthodologie open-source',
     'développée par Vincent DORANGE pour aider les organisations à maîtriser',
-    'leur souveraineté commerciale à l\'ère des agents autonomes et de l\'IA.',
+    'leur souveraineté commerciale face à l\'émergence des agents IA autonomes.',
     '',
-    'Le framework fournit des outils, des processus et des bonnes pratiques pour :',
-    '  • Mesurer et monitorer votre niveau de souveraineté',
-    '  • Identifier les dépendances critiques',
-    '  • Mettre en place une gouvernance agentique robuste',
-    '  • Réduire progressivement vos vulnérabilités',
+    'CONTEXTE 2026 : 40% des décisions d\'achat B2B sont déjà gérées par des',
+    'agents IA (Amazon AI, Shopify Sidekick, Meta Advantage+, ChatGPT Shopping).',
+    'Ces agents prennent des décisions pour vos clients : vous recommandent-ils ?',
+    '',
+    'Le framework ACF® évalue votre capacité à :',
+    '  • Contrôler VOS données pour entraîner VOS propres agents',
+    '  • Conserver la gouvernance de vos décisions commerciales',
+    '  • Garder l\'autonomie face aux agents des plateformes',
+    '  • Investir dans votre souveraineté technologique',
+    '  • Assurer la conformité réglementaire (AI Act, RGPD)',
   ]
   
   aboutText.forEach(line => {

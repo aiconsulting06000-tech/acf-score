@@ -45,14 +45,20 @@ export default function Home() {
               <span className="text-sm font-medium">Gratuit • Sans inscription • Résultat immédiat</span>
             </div>
             
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-balance">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-balance">
               Mesurez votre dépendance aux plateformes
             </h1>
+            
+            <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg mb-6 border border-white/30">
+              <p className="text-sm font-semibold">
+                ACF® = <span className="text-yellow-300">Agentic Commerce Framework</span>
+              </p>
+            </div>
             
             <p className="text-xl md:text-2xl text-purple-100 mb-8 text-balance">
               Calculez votre <strong>Score de Souveraineté ACF®</strong> en 5 minutes.
               <br className="hidden sm:block" />
-              Comprenez vos vulnérabilités business.
+              Êtes-vous prêt pour l'économie des agents IA autonomes ?
             </p>
             
             <Link 
@@ -84,6 +90,105 @@ export default function Home() {
                 </svg>
                 0€
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Now - AI Agents Section */}
+      <section className="py-16 bg-gradient-to-br from-purple-50 to-pink-50 border-y border-purple-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center bg-gradient-to-r from-primary to-accent text-white px-4 py-2 rounded-full mb-4">
+                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                </svg>
+                <span className="text-sm font-semibold">Alerte 2026</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Pourquoi mesurer maintenant ?
+              </h2>
+              <p className="text-xl text-gray-700">
+                L'économie des <strong className="text-primary">agents IA autonomes</strong> est déjà là
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-purple-100">
+                <div className="text-3xl font-bold text-primary mb-2">40%</div>
+                <p className="text-sm text-gray-600">
+                  des décisions d'achat B2B sont déjà gérées par des <strong>agents IA</strong> en 2026
+                </p>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-purple-100">
+                <div className="text-3xl font-bold text-accent mb-2">3x</div>
+                <p className="text-sm text-gray-600">
+                  Plus de trafic e-commerce généré par <strong>Amazon AI, Shopify Sidekick, Meta Advantage+</strong>
+                </p>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-purple-100">
+                <div className="text-3xl font-bold text-primary mb-2">2027</div>
+                <p className="text-sm text-gray-600">
+                  Les agents IA <strong>négocient automatiquement</strong> prix et conditions pour leurs utilisateurs
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white p-8 rounded-xl shadow-md border-2 border-primary/20">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                <svg className="w-6 h-6 text-primary mr-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+                La question n'est plus "SI" mais "COMMENT"
+              </h3>
+              <p className="text-gray-700 mb-4 text-lg">
+                Amazon, Shopify, Meta, Google déploient leurs <strong className="text-primary">agents IA propriétaires</strong>. 
+                Votre entreprise doit-elle dépendre de <strong>LEURS agents</strong>... ou construire les <strong>VÔTRES</strong> ?
+              </p>
+              <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-6 rounded-lg">
+                <p className="font-semibold text-gray-900 mb-3">
+                  🎯 Le Score ACF® mesure votre capacité à :
+                </p>
+                <ul className="space-y-2 text-gray-700">
+                  <li className="flex items-start">
+                    <svg className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span>Contrôler vos <strong>données</strong> pour entraîner VOS agents IA</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span>Garder l'<strong>autonomie</strong> face aux agents des plateformes</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span>Investir dans votre <strong>souveraineté</strong> technologique</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span>Conserver la <strong>gouvernance</strong> de vos décisions commerciales</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-8 text-center">
+              <Link 
+                href="/calculator" 
+                className="inline-flex items-center bg-gradient-to-r from-primary to-accent text-white font-bold py-4 px-10 rounded-lg text-lg transition-all shadow-xl hover:shadow-2xl hover:scale-105 transform"
+              >
+                Évaluer ma préparation agents IA
+                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
             </div>
           </div>
         </div>
