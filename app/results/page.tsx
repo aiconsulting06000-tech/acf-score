@@ -332,8 +332,8 @@ export default function ResultsPage() {
             <div className="text-sm text-gray-600">Modifier les paramètres</div>
           </Link>
 
-          <a
-            href="mailto:contact@acfscore.com?subject=Demande%20d%27audit%20ACF&body=Bonjour,%0D%0A%0D%0AMon%20score%20ACF%20:%20${score}%0D%0A%0D%0AJe%20souhaite%20en%20savoir%20plus%20sur%20vos%20offres%20d%27audit."
+          <Link
+            href="/contact"
             className="bg-gradient-to-br from-success to-success/80 text-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all group text-center"
           >
             <svg className="w-12 h-12 mx-auto mb-3 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -341,7 +341,7 @@ export default function ResultsPage() {
             </svg>
             <div className="font-bold text-lg mb-1">Parler à un expert</div>
             <div className="text-sm text-white/80">Audit personnalisé</div>
-          </a>
+          </Link>
         </div>
 
         {/* Footer info */}

@@ -25,6 +25,9 @@ export default function Home() {
               <Link href="/faq" className="text-gray-600 hover:text-primary transition">
                 FAQ
               </Link>
+              <Link href="/contact" className="text-gray-600 hover:text-primary transition">
+                Contact
+              </Link>
               <Link 
                 href="/calculator" 
                 className="bg-gradient-to-r from-primary to-accent hover:shadow-xl text-white px-5 py-2 rounded-lg font-semibold transition"
@@ -501,6 +504,11 @@ export default function Home() {
             <div>
               <h3 className="text-white font-bold mb-4">Contact</h3>
               <ul className="space-y-2 text-sm">
+                <li>
+                  <Link href="/contact" className="hover:text-white transition">
+                    Nous contacter
+                  </Link>
+                </li>
                 <li>
                   <a href="mailto:contact@vincentdorange.com" className="hover:text-white transition">
                     contact@vincentdorange.com
