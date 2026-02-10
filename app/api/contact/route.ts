@@ -80,17 +80,17 @@ Date : ${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}`
       })
 
       console.log('✅ Emails envoyés:', {
-        confirmation: confirmationEmail.id,
-        notification: notificationEmail.id,
-      })
+  confirmation: confirmationEmail.data?.id,
+  notification: notificationEmail.data?.id,
+})
 
       return NextResponse.json({
         success: true,
         message: 'Emails envoyés avec succès',
         emailIds: {
-          confirmation: confirmationEmail.id,
-          notification: notificationEmail.id,
-        },
+  confirmation: confirmationEmail.data?.id,
+  notification: notificationEmail.data?.id,
+}
       })
 
     } catch (emailError) {
