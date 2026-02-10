@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export const metadata = {
   title: 'FAQ - Questions fréquentes | Score ACF® - Calculateur de Souveraineté',
-  description: 'Réponses détaillées sur le Score ACF®, la méthodologie, l\'interprétation des résultats, et comment améliorer votre souveraineté commerciale. Framework open-source pour e-commerce.',
+  description: 'Réponses détaillées sur le Score ACF®, la méthodologie, l\'interprétation des résultats, et comment améliorer votre souveraineté. Framework propriétaire pour l\'économie des agents IA.',
 }
 
 export default function FAQPage() {
@@ -13,7 +13,7 @@ export default function FAQPage() {
       questions: [
         {
           q: "Que signifie ACF® ?",
-          a: "ACF® = Agentic Commerce Framework (Framework de Commerce Agentic). C'est un cadre méthodologique open-source conçu pour mesurer et améliorer votre capacité à opérer de manière autonome dans l'économie des agents IA. En 2026, 40% des décisions d'achat B2B sont déjà gérées par des agents IA autonomes (Amazon AI, Shopify Sidekick, Meta Advantage+, ChatGPT Shopping). Le framework ACF® évalue votre préparation à cette transformation : contrôlez-vous vos données pour entraîner VOS agents ? Ou dépendez-vous des agents propriétaires des plateformes ?"
+          a: "ACF® = Agentic Commerce Framework (Framework de Commerce Agentic). C'est un cadre méthodologique propriétaire conçu pour mesurer et améliorer votre capacité à opérer de manière autonome dans l'économie des agents IA. En 2026, 40% des décisions d'achat B2B sont déjà gérées par des agents IA autonomes (Amazon AI, Shopify Sidekick, Meta Advantage+, ChatGPT Shopping). Le framework ACF® évalue votre préparation à cette transformation : contrôlez-vous vos données pour entraîner VOS agents ? Ou dépendez-vous des agents propriétaires des plateformes ?"
         },
         {
           q: "Qu'est-ce que le Score de Souveraineté ACF® ?",

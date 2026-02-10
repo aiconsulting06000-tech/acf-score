@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export const metadata = {
   title: 'Méthodologie ACF® - Framework de Souveraineté Commerciale | Score ACF',
-  description: 'Méthodologie scientifique du Score de Souveraineté ACF®. Framework open-source développé par Vincent DORANGE (2024-2026). 4 dimensions validées, formule pondérée, benchmarks sectoriels.',
+  description: 'Méthodologie scientifique du Score de Souveraineté ACF®. Framework propriétaire développé par Vincent DORANGE (2024-2026). 4 dimensions validées, formule pondérée, benchmarks sectoriels.',
 }
 
 export default function AboutPage() {
@@ -30,13 +30,13 @@ export default function AboutPage() {
             Agentic Commerce Framework® (ACF)
           </h1>
           <p className="text-xl text-gray-600 mb-6">
-            Framework open-source pour mesurer et améliorer la souveraineté commerciale à l'ère des agents autonomes
+            Framework propriétaire pour mesurer et améliorer la souveraineté commerciale à l'ère des agents autonomes
           </p>
           <div className="flex flex-wrap gap-4 text-sm text-gray-500">
             <span>📅 Développé : 2024-2026</span>
             <span>👤 Auteur : Vincent DORANGE</span>
             <span>🔬 Version : 1.0.0</span>
-            <span>📖 Licence : Open Methodology</span>
+            <span>📖 Méthodologie : Concepts accessibles, outils certifiés</span>
           </div>
         </header>
 
@@ -407,8 +407,8 @@ export default function AboutPage() {
         <section className="mb-12 p-6 bg-gray-50 rounded-lg">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Citation & Utilisation</h2>
           <p className="text-gray-700 mb-4">
-            Cette méthodologie est <strong>open-source</strong>. Vous pouvez l'utiliser, l'adapter, 
-            la citer librement en mentionnant la source :
+            Ce framework est <strong>propriétaire</strong>. Les concepts de haut niveau sont accessibles publiquement. 
+            Vous pouvez citer la méthodologie en mentionnant la source :
           </p>
           <div className="p-4 bg-white border-2 border-gray-300 rounded font-mono text-sm">
             <p className="mb-2">

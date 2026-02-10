@@ -9,10 +9,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-3">
-              <Image src="/logo-acf.jpg" alt="ACF Logo" width={40} height={40} className="object-contain" />
+              <Image src="/logo-acf.jpg" alt="ACF Logo" width={80} height={80} className="object-contain" />
               <div>
-                <div className="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Score ACF®</div>
-                <div className="text-xs text-gray-500">Calculateur de Souveraineté</div>
+                <div className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Score ACF®</div>
+                <div className="text-sm text-gray-500">Agentic Commerce Framework</div>
               </div>
             </Link>
             <nav className="hidden md:flex items-center space-x-6">
@@ -22,6 +22,9 @@ export default function Home() {
               <a href="#exemples" className="text-gray-600 hover:text-primary transition">
                 Exemples
               </a>
+              <Link href="/faq" className="text-gray-600 hover:text-primary transition">
+                FAQ
+              </Link>
               <Link 
                 href="/calculator" 
                 className="bg-gradient-to-r from-primary to-accent hover:shadow-xl text-white px-5 py-2 rounded-lg font-semibold transition"
@@ -46,7 +49,7 @@ export default function Home() {
             </div>
             
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-balance">
-              Mesurez votre dépendance aux plateformes
+              Êtes-vous prêt pour l'économie des agents IA autonomes ?
             </h1>
             
             <div className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg mb-6 border border-white/30">
@@ -173,7 +176,7 @@ export default function Home() {
                     <svg className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span>Conserver la <strong>gouvernance</strong> de vos décisions commerciales</span>
+                    <span>Conserver la <strong>gouvernance</strong> de vos opérations (commercial, logistique, achats, SAV, service client)</span>
                   </li>
                 </ul>
               </div>
@@ -222,7 +225,7 @@ export default function Home() {
               Qu'est-ce que le Score de Souveraineté ACF® ?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Une métrique propriétaire qui mesure votre niveau de contrôle sur vos décisions commerciales stratégiques.
+              Une métrique propriétaire qui mesure votre niveau de contrôle sur vos opérations dans l'économie des agents IA autonomes.
             </p>
           </div>
 
@@ -235,7 +238,7 @@ export default function Home() {
                 </code>
               </div>
               <p className="text-gray-600">
-                Un score composite qui évalue <strong>4 dimensions critiques</strong> de votre dépendance aux plateformes et partenaires externes.
+                Un score composite qui évalue <strong>4 dimensions critiques</strong> de votre capacité à opérer de manière autonome face aux agents IA des plateformes.
               </p>
             </div>
 
@@ -248,7 +251,7 @@ export default function Home() {
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900">Dépendance Structurelle</div>
-                    <div className="text-sm text-gray-600">% CA via une plateforme unique</div>
+                    <div className="text-sm text-gray-600">% CA dépendant d'agents IA de plateformes</div>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -257,7 +260,7 @@ export default function Home() {
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900">Dépendance Données</div>
-                    <div className="text-sm text-gray-600">% décisions basées sur data externe</div>
+                    <div className="text-sm text-gray-600">Contrôle données pour entraîner VOS agents</div>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -266,7 +269,7 @@ export default function Home() {
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900">Dépendance Trafic</div>
-                    <div className="text-sm text-gray-600">% acquisition payante (Ads)</div>
+                    <div className="text-sm text-gray-600">% trafic géré par agents publicitaires (Meta, Google)</div>
                   </div>
                 </div>
                 <div className="flex items-start">

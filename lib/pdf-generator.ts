@@ -572,9 +572,9 @@ export async function generatePDF(formData: FormData, result: ScoreResult, score
   doc.setFontSize(10)
   doc.setFont('helvetica', 'normal')
   const aboutText = [
-    'L\'Agentic Commerce Framework® (ACF) est une méthodologie open-source',
+    'L\'Agentic Commerce Framework® (ACF) est une méthodologie propriétaire',
     'développée par Vincent DORANGE pour aider les organisations à maîtriser',
-    'leur souveraineté commerciale face à l\'émergence des agents IA autonomes.',
+    'leur souveraineté opérationnelle face à l\'émergence des agents IA autonomes.',
     '',
     'CONTEXTE 2026 : 40% des décisions d\'achat B2B sont déjà gérées par des',
     'agents IA (Amazon AI, Shopify Sidekick, Meta Advantage+, ChatGPT Shopping).',
@@ -582,7 +582,7 @@ export async function generatePDF(formData: FormData, result: ScoreResult, score
     '',
     'Le framework ACF® évalue votre capacité à :',
     '  • Contrôler VOS données pour entraîner VOS propres agents',
-    '  • Conserver la gouvernance de vos décisions commerciales',
+    '  • Conserver la gouvernance de vos opérations (commercial, logistique, SAV)',
     '  • Garder l\'autonomie face aux agents des plateformes',
     '  • Investir dans votre souveraineté technologique',
     '  • Assurer la conformité réglementaire (AI Act, RGPD)',
