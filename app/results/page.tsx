@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import { calculerResultatsACF, type ACFResults, type ACFFormData } from '@/lib/acf-calculations'
+import { downloadPDF } from '@/lib/pdf-generator'
 
 export default function ResultsPage() {
   const router = useRouter()
@@ -31,8 +32,10 @@ export default function ResultsPage() {
     }
   }, [router])
 
-  const handlePrint = () => {
-    window.print()
+  const handleDownloadPDF = () => {
+    if (results) {
+      downloadPDF(results)
+    }
   }
 
   const handleShare = (platform: string) => {
@@ -66,13 +69,6 @@ export default function ResultsPage() {
     )
   }
 
-  const getSouveraineteColor = (score: number) => {
-    if (score >= 80) return 'text-green-600'
-    if (score >= 60) return 'text-blue-600'
-    if (score >= 40) return 'text-orange-600'
-    return 'text-red-600'
-  }
-
   const getSouveraineteBg = (score: number) => {
     if (score >= 80) return 'from-green-500 to-green-600'
     if (score >= 60) return 'from-blue-500 to-blue-600'
@@ -87,10 +83,7 @@ export default function ResultsPage() {
     return 'text-purple-600'
   }
 
-  // Calcul du score moyen marché (basé sur données réelles)
   const scoreMoyenMarche = 42
-
-  // Alertes selon gravité
   const getAlertLevel = () => {
     if (results.scoreGlobal < 30) return 'critical'
     if (results.scoreGlobal < 50) return 'warning'
@@ -107,7 +100,7 @@ export default function ResultsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
         {/* Navigation Actions */}
-        <div className="flex justify-between items-center mb-6 print:hidden">
+        <div className="flex justify-between items-center mb-6">
           <Link 
             href="/" 
             className="text-gray-600 hover:text-primary font-medium flex items-center"
@@ -177,10 +170,22 @@ export default function ResultsPage() {
             </p>
           </div>
 
-          {/* Scores principaux */}
+          {/* Scores principaux - RÉORGANISÉS : Souveraineté | ACF Global | Maturité */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             
-            {/* Score Global */}
+            {/* Score Souveraineté */}
+            <div className={`bg-gradient-to-br ${getSouveraineteBg(results.scoreSouverainete)} rounded-xl p-6 text-center text-white shadow-lg`}>
+              <div className="text-sm font-semibold mb-2 opacity-90">SCORE DE SOUVERAINETÉ</div>
+              <div className="text-6xl font-bold mb-2">
+                {results.scoreSouverainete.toFixed(1)}
+                <span className="text-3xl opacity-75">/100</span>
+              </div>
+              <div className="text-sm font-medium opacity-90">
+                {results.interpretationSouverainete}
+              </div>
+            </div>
+
+            {/* Score Global ACF - AU MILIEU */}
             <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 text-center border-2 border-primary/20">
               <div className="text-sm font-semibold text-gray-600 mb-2">SCORE GLOBAL ACF®</div>
               <div className="text-6xl font-bold text-primary mb-2">
@@ -201,18 +206,6 @@ export default function ResultsPage() {
                     <span className="text-red-600 font-semibold text-sm">{results.scoreGlobal - scoreMoyenMarche} pts</span>
                   )}
                 </div>
-              </div>
-            </div>
-
-            {/* Score Souveraineté */}
-            <div className={`bg-gradient-to-br ${getSouveraineteBg(results.scoreSouverainete)} rounded-xl p-6 text-center text-white shadow-lg`}>
-              <div className="text-sm font-semibold mb-2 opacity-90">SCORE DE SOUVERAINETÉ</div>
-              <div className="text-6xl font-bold mb-2">
-                {results.scoreSouverainete.toFixed(1)}
-                <span className="text-3xl opacity-75">/100</span>
-              </div>
-              <div className="text-sm font-medium opacity-90">
-                {results.interpretationSouverainete}
               </div>
             </div>
 
@@ -253,15 +246,15 @@ export default function ResultsPage() {
           </div>
 
           {/* Boutons d'action */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center print:hidden">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={handlePrint}
-              className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-semibold transition flex items-center justify-center"
+              onClick={handleDownloadPDF}
+              className="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-lg font-semibold transition hover:shadow-xl flex items-center justify-center"
             >
               <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              Imprimer / PDF
+              Télécharger mon PDF
             </button>
             <button
               onClick={() => setShowShareModal(true)}
@@ -277,7 +270,7 @@ export default function ResultsPage() {
 
         {/* Modal Partage */}
         {showShareModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 print:hidden" onClick={() => setShowShareModal(false)}>
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowShareModal(false)}>
             <div className="bg-white rounded-xl p-8 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Partager mon score</h3>
               <div className="space-y-3">
@@ -529,15 +522,6 @@ export default function ResultsPage() {
           </p>
         </div>
       </div>
-
-      {/* Print styles */}
-      <style jsx global>{`
-        @media print {
-          body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-          .print\\:hidden { display: none !important; }
-          @page { margin: 1.5cm; }
-        }
-      `}</style>
     </main>
   )
 }
