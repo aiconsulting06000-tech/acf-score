@@ -1,9 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import Header from '@/components/Header'
 import { ACFFormData } from '@/lib/acf-calculations'
 
 export default function NewCalculatorPage() {
@@ -55,20 +54,7 @@ export default function NewCalculatorPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Link href="/" className="flex items-center space-x-3">
-            <Image src="/logo-acf.jpg" alt="ACF Logo" width={50} height={50} />
-            <div>
-              <div className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Score ACF®
-              </div>
-              <div className="text-xs text-gray-500">Calculateur de Souveraineté</div>
-            </div>
-          </Link>
-        </div>
-      </header>
+      <Header />
 
       {/* Progress Bar */}
       <div className="bg-white border-b border-gray-200">
