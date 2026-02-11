@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 
 export default function ContactPage() {
@@ -11,25 +11,43 @@ export default function ContactPage() {
     scoreAcf: '',
     message: ''
   })
+  const [pdfFile, setPdfFile] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+  // Pré-remplir le score si venant des résultats
+  useEffect(() => {
+    const prefillScore = localStorage.getItem('acf_prefill_score')
+    if (prefillScore) {
+      setFormData(prev => ({ ...prev, scoreAcf: `${prefillScore}/100` }))
+      localStorage.removeItem('acf_prefill_score')
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
     try {
+      const submitData = new FormData()
+      submitData.append('name', formData.name)
+      submitData.append('email', formData.email)
+      submitData.append('company', formData.company)
+      submitData.append('scoreAcf', formData.scoreAcf)
+      submitData.append('message', formData.message)
+      if (pdfFile) {
+        submitData.append('pdfScore', pdfFile)
+      }
+
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: submitData,
       })
 
       if (response.ok) {
         setSubmitStatus('success')
         setFormData({ name: '', email: '', company: '', scoreAcf: '', message: '' })
+        setPdfFile(null)
       } else {
         setSubmitStatus('error')
       }
@@ -46,6 +64,27 @@ export default function ContactPage() {
       ...prev,
       [e.target.name]: e.target.value
     }))
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      if (file.type === 'application/pdf' && file.size <= 10 * 1024 * 1024) {
+        setPdfFile(file)
+      } else if (file.size > 10 * 1024 * 1024) {
+        alert('Le fichier est trop volumineux (max 10 MB)')
+        e.target.value = ''
+      } else {
+        alert('Veuillez sélectionner un fichier PDF')
+        e.target.value = ''
+      }
+    }
+  }
+
+  const removeFile = () => {
+    setPdfFile(null)
+    const fileInput = document.getElementById('pdf-upload') as HTMLInputElement
+    if (fileInput) fileInput.value = ''
   }
 
   return (
@@ -158,8 +197,72 @@ export default function ContactPage() {
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                   placeholder="Ex: 42/100"
                 />
-                <p className="text-xs text-gray-500 mt-1">
-                  Si vous avez déjà fait le diagnostic, indiquez votre score pour un échange plus ciblé.
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+                  <svg className="w-5 h-5 mr-2 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                  Joindre votre rapport ACF® (optionnel)
+                </label>
+                
+                {!pdfFile ? (
+                  <div className="relative">
+                    <input
+                      id="pdf-upload"
+                      type="file"
+                      accept="application/pdf"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                    <label
+                      htmlFor="pdf-upload"
+                      className="w-full flex items-center justify-center px-4 py-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary hover:bg-primary/5 cursor-pointer transition"
+                    >
+                      <div className="text-center">
+                        <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <span className="text-sm font-medium text-gray-700">
+                          Cliquez pour sélectionner votre PDF
+                        </span>
+                        <p className="text-xs text-gray-500 mt-1">
+                          PDF uniquement • Max 10 MB
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between p-4 bg-green-50 border-2 border-green-200 rounded-lg">
+                    <div className="flex items-center flex-1 mr-4">
+                      <svg className="w-10 h-10 text-green-600 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+                      </svg>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-green-900 truncate">
+                          {pdfFile.name}
+                        </p>
+                        <p className="text-xs text-green-700">
+                          {(pdfFile.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={removeFile}
+                      className="flex-shrink-0 p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
+                      title="Supprimer"
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+                
+                <p className="text-xs text-gray-500 mt-2">
+                  💡 Téléchargez votre PDF depuis la page de résultats et joignez-le ici pour un échange encore plus ciblé.
                 </p>
               </div>
 
@@ -289,8 +392,8 @@ export default function ContactPage() {
             {/* Note importante */}
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
               <p className="text-sm text-blue-900">
-                💡 <strong>Astuce :</strong> Si vous avez déjà calculé votre Score ACF®, 
-                pensez à l'indiquer dans le formulaire pour un échange plus ciblé.
+                💡 <strong>Astuce :</strong> Téléchargez votre PDF de résultats depuis la page de diagnostic et 
+                joignez-le au formulaire. Cela nous permettra de préparer un échange encore plus ciblé et efficace.
               </p>
             </div>
           </div>

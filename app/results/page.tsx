@@ -5,11 +5,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import { calculerResultatsACF, type ACFResults, type ACFFormData } from '@/lib/acf-calculations'
-import { downloadPDF } from '@/lib/pdf-generator'
+import { downloadPDF } from '@/lib/pdf-generator-v2'
+import { getMarketStats, getMarketPosition } from '@/lib/market-stats'
 
 export default function ResultsPage() {
   const router = useRouter()
   const [results, setResults] = useState<ACFResults | null>(null)
+  const [formData, setFormData] = useState<ACFFormData | null>(null)
   const [loading, setLoading] = useState(true)
   const [showShareModal, setShowShareModal] = useState(false)
 
@@ -22,9 +24,10 @@ export default function ResultsPage() {
     }
 
     try {
-      const formData: ACFFormData = JSON.parse(decodeURIComponent(encodedData))
-      const calculatedResults = calculerResultatsACF(formData)
+      const savedFormData: ACFFormData = JSON.parse(decodeURIComponent(encodedData))
+      const calculatedResults = calculerResultatsACF(savedFormData)
       setResults(calculatedResults)
+      setFormData(savedFormData)
       setLoading(false)
     } catch (error) {
       console.error('Erreur calcul résultats:', error)
@@ -33,8 +36,15 @@ export default function ResultsPage() {
   }, [router])
 
   const handleDownloadPDF = () => {
+    if (results && formData) {
+      downloadPDF(results, formData)
+    }
+  }
+
+  const handleContactWithScore = () => {
     if (results) {
-      downloadPDF(results)
+      localStorage.setItem('acf_prefill_score', results.scoreGlobal.toString())
+      router.push('/contact')
     }
   }
 
@@ -69,11 +79,11 @@ export default function ResultsPage() {
     )
   }
 
-  const getSouveraineteBg = (score: number) => {
-    if (score >= 80) return 'from-green-500 to-green-600'
-    if (score >= 60) return 'from-blue-500 to-blue-600'
-    if (score >= 40) return 'from-orange-500 to-orange-600'
-    return 'from-red-500 to-red-600'
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return { bg: 'from-green-500 to-green-600', text: 'text-green-600' }
+    if (score >= 60) return { bg: 'from-blue-500 to-blue-600', text: 'text-blue-600' }
+    if (score >= 40) return { bg: 'from-orange-500 to-orange-600', text: 'text-orange-600' }
+    return { bg: 'from-red-500 to-red-600', text: 'text-red-600' }
   }
 
   const getMaturiteColor = (niveau: number) => {
@@ -83,7 +93,9 @@ export default function ResultsPage() {
     return 'text-purple-600'
   }
 
-  const scoreMoyenMarche = 42
+  const marketStats = getMarketStats()
+  const marketPosition = getMarketPosition(results.scoreGlobal)
+  
   const getAlertLevel = () => {
     if (results.scoreGlobal < 30) return 'critical'
     if (results.scoreGlobal < 50) return 'warning'
@@ -92,6 +104,8 @@ export default function ResultsPage() {
   }
 
   const alertLevel = getAlertLevel()
+  const souvColor = getScoreColor(results.scoreSouverainete)
+  const globalColor = getScoreColor(results.scoreGlobal)
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -166,15 +180,15 @@ export default function ResultsPage() {
               Votre Diagnostic ACF®
             </h1>
             <p className="text-xl text-gray-600">
-              Analyse complète de votre souveraineté opérationnelle
+              Évaluation de votre souveraineté opérationnelle
             </p>
           </div>
 
-          {/* Scores principaux - RÉORGANISÉS : Souveraineté | ACF Global | Maturité */}
+          {/* Scores principaux - Souveraineté | ACF Global | Maturité */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             
-            {/* Score Souveraineté */}
-            <div className={`bg-gradient-to-br ${getSouveraineteBg(results.scoreSouverainete)} rounded-xl p-6 text-center text-white shadow-lg`}>
+            {/* Score Souveraineté - COULEUR SELON BARÈME */}
+            <div className={`bg-gradient-to-br ${souvColor.bg} rounded-xl p-6 text-center text-white shadow-lg`}>
               <div className="text-sm font-semibold mb-2 opacity-90">SCORE DE SOUVERAINETÉ</div>
               <div className="text-6xl font-bold mb-2">
                 {results.scoreSouverainete.toFixed(1)}
@@ -185,25 +199,25 @@ export default function ResultsPage() {
               </div>
             </div>
 
-            {/* Score Global ACF - AU MILIEU */}
-            <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 text-center border-2 border-primary/20">
-              <div className="text-sm font-semibold text-gray-600 mb-2">SCORE GLOBAL ACF®</div>
-              <div className="text-6xl font-bold text-primary mb-2">
+            {/* Score Global ACF - AU MILIEU - COULEUR SELON BARÈME */}
+            <div className={`bg-gradient-to-br ${globalColor.bg} rounded-xl p-6 text-center text-white shadow-lg border-4 border-white`}>
+              <div className="text-sm font-semibold mb-2 opacity-90">SCORE GLOBAL ACF®</div>
+              <div className="text-6xl font-bold mb-2">
                 {results.scoreGlobal}
-                <span className="text-3xl text-gray-500">/100</span>
+                <span className="text-3xl opacity-75">/100</span>
               </div>
-              <div className="text-sm font-medium text-gray-700 mb-3">
+              <div className="text-sm font-medium mb-3 opacity-90">
                 {results.interpretationGlobale}
               </div>
               {/* Comparaison marché */}
-              <div className="pt-3 border-t border-gray-200">
-                <div className="text-xs text-gray-500 mb-1">Moyenne marché</div>
+              <div className="pt-3 border-t border-white/30">
+                <div className="text-xs mb-1 opacity-75">vs Moyenne marché</div>
                 <div className="flex items-center justify-center space-x-2">
-                  <div className="text-2xl font-bold text-gray-400">{scoreMoyenMarche}</div>
-                  {results.scoreGlobal > scoreMoyenMarche ? (
-                    <span className="text-green-600 font-semibold text-sm">+{results.scoreGlobal - scoreMoyenMarche} pts</span>
+                  <div className="text-xl font-bold opacity-90">{marketStats.fourchetteMoyenne}</div>
+                  {results.scoreGlobal > marketStats.fourchetteMoyenne ? (
+                    <span className="text-sm font-semibold bg-white/20 px-2 py-1 rounded">+{results.scoreGlobal - marketStats.fourchetteMoyenne} pts</span>
                   ) : (
-                    <span className="text-red-600 font-semibold text-sm">{results.scoreGlobal - scoreMoyenMarche} pts</span>
+                    <span className="text-sm font-semibold bg-black/20 px-2 py-1 rounded">{results.scoreGlobal - marketStats.fourchetteMoyenne} pts</span>
                   )}
                 </div>
               </div>
@@ -220,6 +234,47 @@ export default function ResultsPage() {
                 {results.interpretationMaturite}
               </div>
             </div>
+          </div>
+
+          {/* Statistiques marché détaillées */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-6 border-2 border-blue-200">
+            <h3 className="font-bold text-gray-900 mb-3 text-center">📊 Positionnement marché</h3>
+            <div className="grid grid-cols-3 gap-4 mb-3">
+              <div className="text-center">
+                <div className="text-xs text-gray-600 mb-1">Fourchette basse</div>
+                <div className={`text-2xl font-bold ${results.scoreGlobal >= marketStats.fourchetteBasse ? 'text-green-600' : 'text-red-600'}`}>
+                  {marketStats.fourchetteBasse}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-xs text-gray-600 mb-1">Moyenne</div>
+                <div className={`text-2xl font-bold ${results.scoreGlobal >= marketStats.fourchetteMoyenne ? 'text-green-600' : 'text-orange-600'}`}>
+                  {marketStats.fourchetteMoyenne}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-xs text-gray-600 mb-1">Fourchette haute</div>
+                <div className={`text-2xl font-bold ${results.scoreGlobal >= marketStats.fourchetteHaute ? 'text-green-600' : 'text-gray-400'}`}>
+                  {marketStats.fourchetteHaute}
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-center text-gray-600">{marketStats.source}</p>
+            {marketPosition === 'faible' && (
+              <p className="text-sm text-center text-red-700 font-medium mt-2">
+                ⚠️ Vous êtes en-dessous de la fourchette basse. Vos concurrents ont une meilleure gouvernance.
+              </p>
+            )}
+            {marketPosition === 'haute' && (
+              <p className="text-sm text-center text-green-700 font-medium mt-2">
+                ✅ Excellent ! Vous êtes dans la fourchette haute, au-dessus de la majorité du marché.
+              </p>
+            )}
+            {marketPosition === 'excellence' && (
+              <p className="text-sm text-center text-green-700 font-medium mt-2">
+                🏆 Exceptionnel ! Vous êtes dans le top 5% des organisations évaluées.
+              </p>
+            )}
           </div>
 
           {/* Barème interprétation */}
@@ -322,139 +377,30 @@ export default function ResultsPage() {
           </p>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="border-2 border-gray-200 rounded-xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-gray-900">
-                  Couche 1 : Gouvernance & Souveraineté
-                </h3>
-                <span className={`text-3xl font-bold ${results.scoreCouche1 >= 20 ? 'text-green-600' : results.scoreCouche1 >= 12 ? 'text-orange-600' : 'text-red-600'}`}>
-                  {results.scoreCouche1}/25
-                </span>
+            {[
+              { nom: 'Couche 1 : Gouvernance & Souveraineté', score: results.scoreCouche1, desc: 'Comité de gouvernance, charte de souveraineté' },
+              { nom: 'Couche 2 : Politique de Décision', score: results.scoreCouche2, desc: 'Objectifs hiérarchisés, seuils de sécurité' },
+              { nom: 'Couche 3 : Système d\'Agents', score: results.scoreCouche3, desc: 'Mandat explicite par agent, responsable humain' },
+              { nom: 'Couche 4 : Exécution & Supervision', score: results.scoreCouche4, desc: 'Traçabilité complète, mécanisme d\'arrêt d\'urgence' }
+            ].map((couche, index) => (
+              <div key={index} className="border-2 border-gray-200 rounded-xl p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-gray-900">{couche.nom}</h3>
+                  <span className={`text-3xl font-bold ${couche.score >= 20 ? 'text-green-600' : couche.score >= 12 ? 'text-orange-600' : 'text-red-600'}`}>
+                    {couche.score}/25
+                  </span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
+                  <div
+                    className={`h-3 rounded-full ${couche.score >= 20 ? 'bg-green-500' : couche.score >= 12 ? 'bg-orange-500' : 'bg-red-500'}`}
+                    style={{ width: `${(couche.score / 25) * 100}%` }}
+                  />
+                </div>
+                <p className="text-sm text-gray-600">{couche.desc}</p>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
-                <div
-                  className={`h-3 rounded-full ${results.scoreCouche1 >= 20 ? 'bg-green-500' : results.scoreCouche1 >= 12 ? 'bg-orange-500' : 'bg-red-500'}`}
-                  style={{ width: `${(results.scoreCouche1 / 25) * 100}%` }}
-                />
-              </div>
-              <p className="text-sm text-gray-600">
-                Comité de gouvernance, charte de souveraineté, matrice des responsabilités
-              </p>
-            </div>
-
-            <div className="border-2 border-gray-200 rounded-xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-gray-900">
-                  Couche 2 : Politique de Décision
-                </h3>
-                <span className={`text-3xl font-bold ${results.scoreCouche2 >= 20 ? 'text-green-600' : results.scoreCouche2 >= 12 ? 'text-orange-600' : 'text-red-600'}`}>
-                  {results.scoreCouche2}/25
-                </span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
-                <div
-                  className={`h-3 rounded-full ${results.scoreCouche2 >= 20 ? 'bg-green-500' : results.scoreCouche2 >= 12 ? 'bg-orange-500' : 'bg-red-500'}`}
-                  style={{ width: `${(results.scoreCouche2 / 25) * 100}%` }}
-                />
-              </div>
-              <p className="text-sm text-gray-600">
-                Objectifs hiérarchisés, seuils de sécurité, règles d'arbitrage
-              </p>
-            </div>
-
-            <div className="border-2 border-gray-200 rounded-xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-gray-900">
-                  Couche 3 : Système d'Agents
-                </h3>
-                <span className={`text-3xl font-bold ${results.scoreCouche3 >= 20 ? 'text-green-600' : results.scoreCouche3 >= 12 ? 'text-orange-600' : 'text-red-600'}`}>
-                  {results.scoreCouche3}/25
-                </span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
-                <div
-                  className={`h-3 rounded-full ${results.scoreCouche3 >= 20 ? 'bg-green-500' : results.scoreCouche3 >= 12 ? 'bg-orange-500' : 'bg-red-500'}`}
-                  style={{ width: `${(results.scoreCouche3 / 25) * 100}%` }}
-                />
-              </div>
-              <p className="text-sm text-gray-600">
-                Mandat explicite par agent, responsable humain identifié
-              </p>
-            </div>
-
-            <div className="border-2 border-gray-200 rounded-xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-gray-900">
-                  Couche 4 : Exécution & Supervision
-                </h3>
-                <span className={`text-3xl font-bold ${results.scoreCouche4 >= 20 ? 'text-green-600' : results.scoreCouche4 >= 12 ? 'text-orange-600' : 'text-red-600'}`}>
-                  {results.scoreCouche4}/25
-                </span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
-                <div
-                  className={`h-3 rounded-full ${results.scoreCouche4 >= 20 ? 'bg-green-500' : results.scoreCouche4 >= 12 ? 'bg-orange-500' : 'bg-red-500'}`}
-                  style={{ width: `${(results.scoreCouche4 / 25) * 100}%` }}
-                />
-              </div>
-              <p className="text-sm text-gray-600">
-                Traçabilité complète, mécanisme d'arrêt d'urgence, monitoring
-              </p>
-            </div>
+            ))}
           </div>
         </div>
-
-        {/* Agents déployés */}
-        {(results.agentsDeployes.prescripteurs || results.agentsDeployes.transactionnels || 
-          results.agentsDeployes.operationnels || results.agentsDeployes.conformite || 
-          results.agentsDeployes.analytiques) && (
-          <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">
-              Taxonomie de vos Agents
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Classification de vos agents selon les 5 catégories du framework ACF®.
-            </p>
-            
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              {results.agentsDeployes.prescripteurs && (
-                <div className="text-center p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
-                  <div className="text-3xl mb-2">🎯</div>
-                  <div className="font-semibold text-blue-900 text-sm">Prescripteurs</div>
-                  <div className="text-xs text-blue-600 mt-1">Recommandations</div>
-                </div>
-              )}
-              {results.agentsDeployes.transactionnels && (
-                <div className="text-center p-4 bg-green-50 rounded-lg border-2 border-green-200">
-                  <div className="text-3xl mb-2">💰</div>
-                  <div className="font-semibold text-green-900 text-sm">Transactionnels</div>
-                  <div className="text-xs text-green-600 mt-1">Pricing, Promos</div>
-                </div>
-              )}
-              {results.agentsDeployes.operationnels && (
-                <div className="text-center p-4 bg-orange-50 rounded-lg border-2 border-orange-200">
-                  <div className="text-3xl mb-2">📦</div>
-                  <div className="font-semibold text-orange-900 text-sm">Opérationnels</div>
-                  <div className="text-xs text-orange-600 mt-1">Supply, Stocks</div>
-                </div>
-              )}
-              {results.agentsDeployes.conformite && (
-                <div className="text-center p-4 bg-red-50 rounded-lg border-2 border-red-200">
-                  <div className="text-3xl mb-2">🛡️</div>
-                  <div className="font-semibold text-red-900 text-sm">Conformité</div>
-                  <div className="text-xs text-red-600 mt-1">Fraude, RGPD</div>
-                </div>
-              )}
-              {results.agentsDeployes.analytiques && (
-                <div className="text-center p-4 bg-purple-50 rounded-lg border-2 border-purple-200">
-                  <div className="text-3xl mb-2">📊</div>
-                  <div className="font-semibold text-purple-900 text-sm">Analytiques</div>
-                  <div className="text-xs text-purple-600 mt-1">BI, Prévisions</div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* Recommandations RÉDUITES */}
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-8">
@@ -493,12 +439,12 @@ export default function ResultsPage() {
             Obtenez un audit complet et une roadmap personnalisée.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/contact"
+            <button
+              onClick={handleContactWithScore}
               className="px-8 py-4 bg-white text-primary rounded-lg font-bold text-lg hover:shadow-2xl transition"
             >
               📞 Parler à un expert ACF®
-            </Link>
+            </button>
             <Link
               href="/pourquoi"
               className="px-8 py-4 bg-white/10 backdrop-blur border-2 border-white rounded-lg font-semibold text-lg hover:bg-white/20 transition"

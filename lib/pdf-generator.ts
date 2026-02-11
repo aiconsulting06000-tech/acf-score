@@ -1,7 +1,8 @@
 import { jsPDF } from 'jspdf'
-import { ACFResults } from './acf-calculations'
+import { ACFResults, ACFFormData } from './acf-calculations'
+import { getMarketStats } from './market-stats'
 
-export function generatePDF(results: ACFResults): Blob {
+export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -11,7 +12,7 @@ export function generatePDF(results: ACFResults): Blob {
   let yPos = 20
 
   // Header
-  doc.setFillColor(139, 92, 246) // primary color
+  doc.setFillColor(139, 92, 246)
   doc.rect(0, 0, 210, 40, 'F')
   
   doc.setTextColor(255, 255, 255)
@@ -21,7 +22,7 @@ export function generatePDF(results: ACFResults): Blob {
   
   doc.setFontSize(12)
   doc.setFont('helvetica', 'normal')
-  doc.text('Analyse complète de votre souveraineté opérationnelle', 105, 30, { align: 'center' })
+  doc.text('Évaluation de votre gouvernance agentique', 105, 30, { align: 'center' })
 
   yPos = 50
 
@@ -35,8 +36,16 @@ export function generatePDF(results: ACFResults): Blob {
   const colWidth = 60
   const startX = 15
 
-  // Score Souveraineté
-  doc.setFillColor(59, 130, 246) // blue
+  // Score Souveraineté - COULEUR SELON SCORE
+  const getSouvColor = (score: number): [number, number, number] => {
+    if (score >= 80) return [34, 197, 94] // vert
+    if (score >= 60) return [59, 130, 246] // bleu
+    if (score >= 40) return [249, 115, 22] // orange
+    return [239, 68, 68] // rouge
+  }
+  
+  const souvColor = getSouvColor(results.scoreSouverainete)
+  doc.setFillColor(souvColor[0], souvColor[1], souvColor[2])
   doc.roundedRect(startX, yPos, colWidth, 40, 3, 3, 'F')
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(10)
@@ -48,10 +57,11 @@ export function generatePDF(results: ACFResults): Blob {
   doc.text('/100', startX + colWidth/2 + 15, yPos + 25)
   doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
-  doc.text(results.interpretationSouverainete, startX + colWidth/2, yPos + 35, { align: 'center' })
+  const souvText = results.interpretationSouverainete.substring(0, 20)
+  doc.text(souvText, startX + colWidth/2, yPos + 35, { align: 'center' })
 
   // Score Global ACF (au milieu)
-  doc.setFillColor(139, 92, 246) // primary
+  doc.setFillColor(139, 92, 246)
   doc.roundedRect(startX + colWidth + 5, yPos, colWidth, 40, 3, 3, 'F')
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(10)
@@ -63,10 +73,19 @@ export function generatePDF(results: ACFResults): Blob {
   doc.text('/100', startX + colWidth + 5 + colWidth/2 + 12, yPos + 25)
   doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
-  doc.text(results.interpretationGlobale, startX + colWidth + 5 + colWidth/2, yPos + 35, { align: 'center' })
+  const globalText = results.interpretationGlobale.substring(0, 20)
+  doc.text(globalText, startX + colWidth + 5 + colWidth/2, yPos + 35, { align: 'center' })
 
   // Niveau Maturité
-  doc.setFillColor(34, 197, 94) // green
+  const getMaturiteColor = (niveau: number): [number, number, number] => {
+    if (niveau === 0) return [100, 100, 100]
+    if (niveau === 1) return [59, 130, 246]
+    if (niveau === 2) return [34, 197, 94]
+    return [139, 92, 246]
+  }
+  
+  const matColor = getMaturiteColor(results.niveauMaturite)
+  doc.setFillColor(matColor[0], matColor[1], matColor[2])
   doc.roundedRect(startX + (colWidth + 5) * 2, yPos, colWidth, 40, 3, 3, 'F')
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(10)
@@ -78,18 +97,37 @@ export function generatePDF(results: ACFResults): Blob {
   doc.text('/3', startX + (colWidth + 5) * 2 + colWidth/2 + 8, yPos + 25)
   doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
-  const maturiteText = results.interpretationMaturite.substring(0, 35)
+  const maturiteText = results.interpretationMaturite.substring(0, 25)
   doc.text(maturiteText, startX + (colWidth + 5) * 2 + colWidth/2, yPos + 35, { align: 'center' })
 
   yPos += 50
 
-  // Score moyen marché
-  doc.setTextColor(100, 100, 100)
+  // Fourchettes marché
+  const stats = getMarketStats()
+  doc.setTextColor(60, 60, 60)
   doc.setFontSize(10)
+  doc.setFont('helvetica', 'bold')
+  doc.text('Comparaison marché :', 20, yPos)
+  yPos += 6
   doc.setFont('helvetica', 'normal')
-  const scoreMoyen = 42
-  const ecart = results.scoreGlobal - scoreMoyen
-  doc.text(`Moyenne marché : ${scoreMoyen}/100 | Votre écart : ${ecart > 0 ? '+' : ''}${ecart} points`, 105, yPos, { align: 'center' })
+  doc.setFontSize(9)
+  doc.text(`Fourchette basse: ${stats.fourchetteBasse} | Moyenne: ${stats.fourchetteMoyenne} | Haute: ${stats.fourchetteHaute}`, 20, yPos)
+  yPos += 4
+  doc.setTextColor(100, 100, 100)
+  doc.setFontSize(8)
+  doc.text(stats.source, 20, yPos)
+  yPos += 3
+  
+  const ecart = results.scoreGlobal - stats.fourchetteMoyenne
+  doc.setFontSize(10)
+  doc.setFont('helvetica', 'bold')
+  if (ecart > 0) {
+    doc.setTextColor(34, 197, 94)
+    doc.text(`✓ Vous êtes à +${ecart} pts au-dessus de la moyenne`, 20, yPos)
+  } else {
+    doc.setTextColor(239, 68, 68)
+    doc.text(`⚠ Vous êtes à ${ecart} pts en-dessous de la moyenne`, 20, yPos)
+  }
   yPos += 15
 
   // Barème d'interprétation
@@ -128,11 +166,11 @@ export function generatePDF(results: ACFResults): Blob {
 
   yPos += 25
 
-  // Analyse des 4 Couches
-  doc.setDrawColor(200, 200, 200)
-  doc.line(20, yPos, 190, yPos)
-  yPos += 8
+  // Nouvelle page pour le reste
+  doc.addPage()
+  yPos = 20
 
+  // Analyse des 4 Couches
   doc.setTextColor(0, 0, 0)
   doc.setFontSize(14)
   doc.setFont('helvetica', 'bold')
@@ -177,16 +215,11 @@ export function generatePDF(results: ACFResults): Blob {
     yPos += 8
   })
 
-  // Nouvelle page pour recommandations si nécessaire
-  if (yPos > 240) {
-    doc.addPage()
-    yPos = 20
-  } else {
-    yPos += 10
-  }
+  yPos += 5
 
-  // Recommandations
+  // Priorités d'action
   doc.setDrawColor(200, 200, 200)
+  doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
   yPos += 8
 
@@ -197,12 +230,14 @@ export function generatePDF(results: ACFResults): Blob {
   yPos += 10
 
   results.priorites.slice(0, 3).forEach((priorite, index) => {
+    // Rond violet avec numéro CENTRÉ
     doc.setFillColor(139, 92, 246)
-    doc.circle(23, yPos - 2, 3, 'F')
+    doc.circle(23, yPos - 1, 3, 'F')
     doc.setTextColor(255, 255, 255)
     doc.setFontSize(9)
     doc.setFont('helvetica', 'bold')
-    doc.text(`${index + 1}`, 23, yPos + 1, { align: 'center' })
+    // CORRECTION : centrage vertical précis
+    doc.text(`${index + 1}`, 23, yPos + 0.8, { align: 'center' })
     
     doc.setTextColor(0, 0, 0)
     doc.setFontSize(10)
@@ -214,12 +249,90 @@ export function generatePDF(results: ACFResults): Blob {
 
   yPos += 10
 
+  // Contexte du diagnostic
+  doc.setDrawColor(200, 200, 200)
+  doc.line(20, yPos, 190, yPos)
+  yPos += 8
+
+  doc.setTextColor(0, 0, 0)
+  doc.setFontSize(14)
+  doc.setFont('helvetica', 'bold')
+  doc.text('Informations du diagnostic', 20, yPos)
+  yPos += 10
+
+  doc.setFontSize(10)
+  doc.setFont('helvetica', 'normal')
+  doc.setTextColor(60, 60, 60)
+  
+  // Secteur
+  const secteurLabels: Record<string, string> = {
+    'ecommerce': 'E-commerce',
+    'services': 'Services',
+    'industrie': 'Industrie',
+    'tech': 'Tech',
+    'finance': 'Finance',
+    'autre': 'Autre'
+  }
+  doc.text(`Secteur : ${secteurLabels[formData.secteur] || formData.secteur}`, 20, yPos)
+  yPos += 6
+
+  // Taille entreprise
+  const tailleLabels: Record<string, string> = {
+    'tpe': 'TPE (< 10 salariés)',
+    'pme': 'PME (10-250 salariés)',
+    'eti': 'ETI (250-5000 salariés)',
+    'ge': 'Grande Entreprise (> 5000 salariés)'
+  }
+  doc.text(`Taille : ${tailleLabels[formData.tailleEntreprise] || formData.tailleEntreprise}`, 20, yPos)
+  yPos += 6
+
+  // Présence agents
+  const presenceLabels: Record<string, string> = {
+    'non': 'Aucun agent IA',
+    'quelques': 'Quelques agents IA',
+    'nombreux': 'Nombreux agents IA'
+  }
+  doc.text(`Agents IA : ${presenceLabels[formData.presenceAgentsIA] || formData.presenceAgentsIA}`, 20, yPos)
+  yPos += 6
+
+  // Niveau maturité
+  const maturiteLabels: Record<string, string> = {
+    'regles-fixes': 'Règles fixes (Niveau 0)',
+    'proposent-humains-valident': 'Agents assistés (Niveau 1)',
+    'decident-cadre-strict': 'Agents gouvernés (Niveau 2)',
+    'autonomes-apprennent': 'Agents autonomes (Niveau 3)'
+  }
+  doc.text(`Fonctionnement : ${maturiteLabels[formData.fonctionnementAgents] || formData.fonctionnementAgents}`, 20, yPos)
+  yPos += 6
+
+  // Types agents déployés
+  if (formData.typesAgents && formData.typesAgents.length > 0) {
+    const typesLabels: Record<string, string> = {
+      'prescripteurs': 'Prescripteurs',
+      'transactionnels': 'Transactionnels',
+      'operationnels': 'Opérationnels',
+      'conformite': 'Conformité',
+      'analytiques': 'Analytiques'
+    }
+    const typesTexte = formData.typesAgents.map(t => typesLabels[t] || t).join(', ')
+    const typesLines = doc.splitTextToSize(`Types agents : ${typesTexte}`, 170)
+    doc.text(typesLines, 20, yPos)
+    yPos += typesLines.length * 6 + 4
+  }
+
+  yPos += 5
+
   // Footer
+  if (yPos > 250) {
+    doc.addPage()
+    yPos = 20
+  }
+
   doc.setFontSize(9)
   doc.setTextColor(100, 100, 100)
   doc.setFont('helvetica', 'italic')
-  doc.text('Ce diagnostic est une évaluation indicative. Pour un audit complet conforme au framework ACF®,', 105, yPos, { align: 'center' })
-  doc.text('contactez un expert certifié.', 105, yPos + 5, { align: 'center' })
+  doc.text('Ce diagnostic est une évaluation indicative basée sur vos réponses.', 105, yPos, { align: 'center' })
+  doc.text('Pour un audit complet et certifié ACF®, contactez un expert certifié.', 105, yPos + 5, { align: 'center' })
   yPos += 12
   doc.setFont('helvetica', 'normal')
   doc.text('Agentic Commerce Framework® - Méthodologie propriétaire développée par Vincent DORANGE', 105, yPos, { align: 'center' })
@@ -227,8 +340,8 @@ export function generatePDF(results: ACFResults): Blob {
   return doc.output('blob')
 }
 
-export function downloadPDF(results: ACFResults) {
-  const blob = generatePDF(results)
+export function downloadPDF(results: ACFResults, formData: ACFFormData) {
+  const blob = generatePDF(results, formData)
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
