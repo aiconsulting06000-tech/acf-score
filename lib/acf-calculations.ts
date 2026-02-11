@@ -14,9 +14,7 @@ export interface ACFFormData {
   
   // PARTIE 3 : Gouvernance (Couche 1)
   comiteGouvernance: string
-  charteS
-
-ouverainete: string
+  charteSouverainete: string
   
   // PARTIE 4 : Politique de Décision (Couche 2)
   objectifsHierarchises: string
