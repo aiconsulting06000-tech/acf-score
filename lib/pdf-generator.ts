@@ -299,9 +299,9 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     'decident-cadre-strict': 'Agents décident dans cadre strict (Niveau 2)',
     'autonomes-apprennent': 'Agents autonomes qui apprennent (Niveau 3)'
   }
-  const matLines = doc.splitTextToSize(`• Fonctionnement : ${maturiteLabels[formData.fonctionnementAgents] || formData.fonctionnementAgents}`, 170)
-  doc.text(matLines, 20, yPos)
-  yPos += matLines.length * 6 + 2
+  const fonctLines = doc.splitTextToSize(`• Fonctionnement : ${maturiteLabels[formData.fonctionnementAgents] || formData.fonctionnementAgents}`, 170)
+  doc.text(fonctLines, 20, yPos)
+  yPos += fonctLines.length * 6 + 2
 
   if (formData.typesAgents && formData.typesAgents.length > 0) {
     const typesLabels: Record<string, string> = {
