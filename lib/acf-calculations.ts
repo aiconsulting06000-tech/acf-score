@@ -35,6 +35,12 @@ export interface ACFFormData {
   joursBloquesCA: number
 }
 
+export interface Priorite {
+  titre: string
+  description: string
+  couche: number
+}
+
 export interface ACFResults {
   // Scores principaux
   scoreSouverainete: number
@@ -63,7 +69,7 @@ export interface ACFResults {
   
   // Recommandations
   recommandations: string[]
-  priorites: string[]
+  priorites: Priorite[]
 }
 
 // Calcul du Score de Souveraineté (formule originale du framework)
@@ -247,26 +253,43 @@ function genererRecommandations(data: ACFFormData, results: Partial<ACFResults>)
 }
 
 // Génération des priorités d'action
-function genererPriorites(results: ACFResults): string[] {
-  const priorites: string[] = []
+function genererPriorites(results: ACFResults): Priorite[] {
+  const priorites: Priorite[] = []
   
-  // Identifier la couche la plus faible
-  const scores = [
-    { nom: "Gouvernance & Souveraineté", score: results.scoreCouche1 },
-    { nom: "Politique de Décision", score: results.scoreCouche2 },
-    { nom: "Système d'Agents", score: results.scoreCouche3 },
-    { nom: "Exécution & Supervision", score: results.scoreCouche4 }
+  // Identifier les couches par score
+  const couches = [
+    { nom: "Gouvernance & Souveraineté", score: results.scoreCouche1, numero: 1, description: "Comité de gouvernance et charte de souveraineté" },
+    { nom: "Politique de Décision", score: results.scoreCouche2, numero: 2, description: "Objectifs hiérarchisés et seuils de sécurité" },
+    { nom: "Système d'Agents", score: results.scoreCouche3, numero: 3, description: "Mandats explicites et responsables humains" },
+    { nom: "Exécution & Supervision", score: results.scoreCouche4, numero: 4, description: "Logs traçables et mécanisme d'arrêt" }
   ]
   
-  scores.sort((a, b) => a.score - b.score)
+  couches.sort((a, b) => a.score - b.score)
   
-  priorites.push(`1. Renforcer la couche "${scores[0].nom}" (score actuel : ${scores[0].score}/25)`)
-  priorites.push(`2. Améliorer la couche "${scores[1].nom}" (score actuel : ${scores[1].score}/25)`)
+  priorites.push({
+    titre: `Renforcer ${couches[0].nom}`,
+    description: `Score actuel : ${couches[0].score}/25. ${couches[0].description}`,
+    couche: couches[0].numero
+  })
+  
+  priorites.push({
+    titre: `Améliorer ${couches[1].nom}`,
+    description: `Score actuel : ${couches[1].score}/25. ${couches[1].description}`,
+    couche: couches[1].numero
+  })
   
   if (results.niveauMaturite === 0) {
-    priorites.push("3. Initier un projet pilote avec un premier agent assisté (Niveau 1)")
+    priorites.push({
+      titre: "Initier un projet pilote",
+      description: "Démarrez avec un premier agent assisté (Niveau 1)",
+      couche: 0
+    })
   } else if (results.niveauMaturite >= 2 && results.scoreGlobal < 60) {
-    priorites.push("3. Gouvernance insuffisante pour le niveau d'autonomie actuel - risque élevé")
+    priorites.push({
+      titre: "Alerte : Gouvernance insuffisante",
+      description: "Votre niveau d'autonomie nécessite une gouvernance plus forte",
+      couche: 1
+    })
   }
   
   return priorites
