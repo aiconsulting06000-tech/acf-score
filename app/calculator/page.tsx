@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer'
 'use client'
 
 import { useState } from 'react'
@@ -882,6 +883,7 @@ export default function NewCalculatorPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </main>
   )
 }

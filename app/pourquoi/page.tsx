@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer'
 import Link from 'next/link'
 import Header from '@/components/Header'
 
@@ -46,9 +47,9 @@ export default function PourquoiPage() {
 
           <div className="space-y-8">
             {/* Risque 1 */}
-            <div className="bg-white rounded-xl p-8 shadow-lg border-l-4 border-red-600">
+            <div className="bg-white rounded-xl p-8 shadow-lg border-l-4 border-red-400">
               <div className="flex items-start">
-                <div className="flex-shrink-0 w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                <div className="flex-shrink-0 w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
                   1
                 </div>
                 <div className="ml-6">
@@ -354,6 +355,7 @@ export default function PourquoiPage() {
           </div>
         </div>
       </section>
+      <Footer />
     </main>
   )
 }
