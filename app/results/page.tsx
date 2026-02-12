@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import { calculerResultatsACF, type ACFResults, type ACFFormData } from '@/lib/acf-calculations'
-import { downloadPDF } from '@/lib/pdf-generator-v2'
+import { downloadPDF } from '@/lib/pdf-generator'
 import { getMarketStats, getMarketPosition } from '@/lib/market-stats'
 
 export default function ResultsPage() {
