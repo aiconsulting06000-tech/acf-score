@@ -109,7 +109,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   yPos += 6
   doc.setFont('helvetica', 'normal')
   doc.setFontSize(9)
-  const compLines = doc.splitTextToSize(`Fourchette basse: ${stats.fourchetteBasse} | Moyenne: ${stats.fourchetteMoyenne} | Haute: ${stats.fourchetteHaute}`, 170)
+  const compLines = doc.splitTextToSize(`Fourchette basse: ${stats.lower} | Moyenne: ${stats.average} | Haute: ${stats.upper}`, 170)
   doc.text(compLines, 20, yPos)
   yPos += compLines.length * 4 + 2
   doc.setTextColor(100, 100, 100)
@@ -117,7 +117,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.text(stats.source, 20, yPos)
   yPos += 4
   
-  const ecart = results.scoreGlobal - stats.fourchetteMoyenne
+  const ecart = results.scoreGlobal - stats.average
   doc.setFontSize(10)
   doc.setFont('helvetica', 'bold')
   if (ecart > 0) {
@@ -243,7 +243,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     doc.setTextColor(0, 0, 0)
     doc.setFontSize(10)
     doc.setFont('helvetica', 'normal')
-    const lines = doc.splitTextToSize(priorite, 160)
+    const lines = doc.splitTextToSize(`${priorite.titre} - ${priorite.description}`, 160)
     doc.text(lines, 30, yPos)
     yPos += lines.length * 5 + 5
   })
