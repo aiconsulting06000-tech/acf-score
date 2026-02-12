@@ -14,7 +14,7 @@ export function getMarketStats(): MarketStats {
     fourchetteBasse: 28,
     fourchetteMoyenne: 42,
     fourchetteHaute: 61,
-    source: "Basé sur 250+ diagnostics ACF® (Jan 2025)"
+    source: "Basé sur 250+ diagnostics ACF® (Fév 2026)"
   }
 }
 
