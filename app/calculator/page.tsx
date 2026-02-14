@@ -1,9 +1,9 @@
-import Footer from '@/components/Footer'
 'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 import { ACFFormData } from '@/lib/acf-calculations'
 
 export default function NewCalculatorPage() {
