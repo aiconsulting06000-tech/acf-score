@@ -11,11 +11,13 @@ export async function POST(request: Request) {
   try {
     const data = await request.json()
     
+    // Hash IP pour anonymisation
     const ip = request.headers.get('x-forwarded-for') || 'unknown'
     const ipHash = crypto.createHash('sha256').update(ip).digest('hex')
     
     const userAgent = request.headers.get('user-agent') || 'unknown'
     
+    // Insérer dans Supabase
     const { error } = await supabase
       .from('diagnostics')
       .insert({

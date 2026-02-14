@@ -1,81 +1,68 @@
+'use client'
+
 import Link from 'next/link'
-import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import { useState, useEffect } from 'react'
 
 export default function Header() {
+  const pathname = usePathname()
+  const [hasResults, setHasResults] = useState(false)
+
+  useEffect(() => {
+    // Vérifier si des résultats existent dans localStorage
+    const savedResults = localStorage.getItem('acf_results')
+    setHasResults(!!savedResults)
+  }, [])
+
+  const navItems = [
+    { href: '/pourquoi', label: 'Pourquoi ACF' },
+    { href: '/calculator', label: 'Calculateur' },
+    { href: '/contact', label: 'Contact' },
+  ]
+
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-4">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
-            <Image 
-              src="/logo-acf-blanc.png" 
-              alt="ACF Logo" 
-              width={100} 
-              height={100}
-              className="object-contain"
-            />
+        <div className="flex items-center justify-between h-20">
+          
+          {/* Logo + Slogan */}
+          <Link href="/" className="flex items-center space-x-4">
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">ACF</span>
+              </div>
+            </div>
+            <div className="hidden md:block">
+              <div className="text-sm font-semibold text-gray-900">ACF Score</div>
+              <div className="text-xs text-gray-600">Gouvernance Agentique de Nouvelle Génération</div>
+            </div>
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link 
-              href="/pourquoi" 
-              className="text-gray-700 hover:text-primary font-medium transition"
-            >
-              Pourquoi ACF®
-            </Link>
-            <Link 
-              href="/faq" 
-              className="text-gray-700 hover:text-primary font-medium transition"
-            >
-              FAQ
-            </Link>
-            <Link 
-              href="/contact" 
-              className="text-gray-700 hover:text-primary font-medium transition"
-            >
-              Contact
-            </Link>
-            <Link 
-              href="/calculator" 
-              className="px-6 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg font-semibold hover:shadow-lg transition"
-            >
-              Calculer mon score
-            </Link>
+          <nav className="flex items-center space-x-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                  pathname === item.href
+                    ? 'bg-primary text-white'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+            
+            {hasResults && (
+              <Link
+                href="/results"
+                className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-accent text-white hover:bg-accent/90 transition"
+              >
+                Mes résultats
+              </Link>
+            )}
           </nav>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <Link 
-              href="/calculator" 
-              className="px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg font-semibold text-sm"
-            >
-              Calculer
-            </Link>
-          </div>
-        </div>
-
-        {/* Mobile navigation */}
-        <div className="md:hidden pb-4 space-y-2">
-          <Link 
-            href="/pourquoi" 
-            className="block text-gray-700 hover:text-primary font-medium"
-          >
-            Pourquoi ACF®
-          </Link>
-          <Link 
-            href="/faq" 
-            className="block text-gray-700 hover:text-primary font-medium"
-          >
-            FAQ
-          </Link>
-          <Link 
-            href="/contact" 
-            className="block text-gray-700 hover:text-primary font-medium"
-          >
-            Contact
-          </Link>
         </div>
       </div>
     </header>
