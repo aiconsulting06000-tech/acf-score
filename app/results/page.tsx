@@ -14,7 +14,6 @@ export default function ResultsPage() {
   const [results, setResults] = useState<ACFResults | null>(null)
   const [formData, setFormData] = useState<ACFFormData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [showShareModal, setShowShareModal] = useState(false)
 
   useEffect(() => {
     const encodedData = localStorage.getItem('acf_results')
@@ -28,7 +27,6 @@ export default function ResultsPage() {
       const savedFormData: ACFFormData = JSON.parse(decodeURIComponent(encodedData))
       const calculatedResults = calculerResultatsACF(savedFormData)
       
-      // Fix NaN → 0
       const fixedResults = {
         ...calculatedResults,
         scoreGlobal: isNaN(calculatedResults.scoreGlobal) ? 0 : calculatedResults.scoreGlobal,
@@ -44,7 +42,6 @@ export default function ResultsPage() {
       setFormData(savedFormData)
       setLoading(false)
       
-      // Sauvegarder dans DB
       fetch('/api/save-diagnostic', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -62,33 +59,6 @@ export default function ResultsPage() {
     }
   }
 
-  const handleContactWithScore = () => {
-    if (results) {
-      localStorage.setItem('acf_prefill_score', results.scoreGlobal.toString())
-      router.push('/contact')
-    }
-  }
-
-  const handleShare = (platform: string) => {
-    const baseUrl = 'https://acf-score-app.vercel.app'
-    const text = `J'ai obtenu un Score ACF® de ${results?.scoreGlobal}/100 ! Découvrez votre niveau de souveraineté opérationnelle`
-    
-    const urls: Record<string, string> = {
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(baseUrl)}`,
-      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(baseUrl)}`,
-    }
-    
-    if (urls[platform]) {
-      window.open(urls[platform], '_blank', 'width=600,height=400')
-    }
-  }
-
-  const copyLink = () => {
-    const baseUrl = 'https://acf-score-app.vercel.app'
-    navigator.clipboard.writeText(baseUrl)
-    alert('Lien copié !')
-  }
-
   if (loading || !results) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -101,8 +71,6 @@ export default function ResultsPage() {
   }
 
   const marketStats = getMarketStats()
-  const marketPosition = getMarketPosition(results.scoreGlobal)
-
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600'
     if (score >= 60) return 'text-blue-600'
@@ -117,6 +85,34 @@ export default function ResultsPage() {
     return 'bg-red-50 border-red-200'
   }
 
+  const getCoucheExplanation = (coucheNum: number, score: number) => {
+    const explanations = {
+      1: {
+        good: "Excellente structure de gouvernance avec comité actif et charte validée. Vous avez posé les fondations solides pour contrôler vos agents IA.",
+        medium: "Gouvernance en construction. Formalisez rapidement votre comité et votre charte pour sécuriser vos décisions avant que les agents ne prennent trop d'autonomie.",
+        bad: "Gouvernance absente ou critique. Créez d'urgence un comité avec rôles définis et une charte de souveraineté. Sans cela, vous pilotez à l'aveugle."
+      },
+      2: {
+        good: "Politique de décision claire et documentée. Vos agents connaissent vos priorités business et vos limites de sécurité, ils peuvent optimiser dans le bon cadre.",
+        medium: "Politique partiellement définie. Complétez la hiérarchie de vos objectifs et vos seuils critiques pour éviter que les agents n'optimisent les mauvaises métriques.",
+        bad: "Pas de politique formalisée. Vos agents décident sans cadre, risque élevé de décisions contraires à vos intérêts stratégiques et financiers."
+      },
+      3: {
+        good: "Système d'agents bien structuré avec mandats clairs et responsables identifiés pour chaque agent. Vous savez qui fait quoi et qui répond de quoi.",
+        medium: "Structure partielle. Formalisez les mandats manquants et assignez des responsables à tous les agents pour éviter les zones grises dangereuses.",
+        bad: "Agents non documentés. Impossible de savoir qui fait quoi et qui est responsable en cas de problème. Risque juridique et opérationnel majeur."
+      },
+      4: {
+        good: "Supervision exemplaire avec traçabilité complète et mécanisme d'arrêt testé. Vous gardez le contrôle et pouvez auditer ou stopper à tout moment.",
+        medium: "Supervision partielle. Complétez vos logs (minimum 3 ans) et testez votre kill switch pour être prêt en cas de crise ou d'audit réglementaire.",
+        bad: "Pas de supervision. Vous ne pouvez ni auditer ni arrêter vos agents. Risque juridique majeur (RGPD, AI Act) et impossibilité de corriger les erreurs."
+      }
+    }
+
+    const level = score >= 20 ? 'good' : score >= 12 ? 'medium' : 'bad'
+    return explanations[coucheNum as keyof typeof explanations][level]
+  }
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Header />
@@ -129,264 +125,169 @@ export default function ResultsPage() {
               <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
             <div>
-              <h2 className="text-2xl font-bold text-red-900 mb-2">
-                Situation critique détectée
-              </h2>
+              <h2 className="text-2xl font-bold text-red-900 mb-2">Situation critique détectée</h2>
               <p className="text-red-800 leading-relaxed">
-                Votre score indique une <strong>vulnérabilité majeure</strong>. Sans gouvernance agentique,
-                vous risquez une perte de contrôle opérationnel et des sanctions réglementaires.
-                <strong> Un audit ACF® complet est fortement recommandé.</strong>
+                Votre score indique une <strong>vulnérabilité majeure</strong>. Sans gouvernance agentique robuste, vous risquez une perte de contrôle opérationnel et des sanctions réglementaires. <strong>Un audit ACF® complet est fortement recommandé.</strong>
               </p>
             </div>
           </div>
         )}
 
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Vos résultats ACF®
-          </h1>
-          <p className="text-xl text-gray-600">
-            Diagnostic complet de votre souveraineté opérationnelle
-          </p>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Vos résultats ACF®</h1>
+          <p className="text-xl text-gray-600">Diagnostic complet de votre gouvernance agentique</p>
         </div>
 
+        {/* SCORES RECENTRÉS : Souveraineté - ACF GLOBAL AU MILIEU - Maturité */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <div className={`rounded-xl shadow-lg p-8 border-2 ${getScoreBg(results.scoreGlobal)} relative`}>
-            <div className="relative group/tooltip">
-              <svg className="w-5 h-5 text-gray-400 cursor-help absolute top-0 right-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-              </svg>
-              <div className="invisible group-hover/tooltip:visible absolute top-8 right-0 w-64 bg-gray-900 text-white text-sm rounded-lg p-3 z-10 shadow-xl">
-                Mesure globale de votre maturité sur les 4 couches ACF® (/100)
-              </div>
-            </div>
-            <div className="text-sm font-semibold text-gray-600 mb-2">Score Global ACF®</div>
-            <div className={`text-6xl font-bold ${getScoreColor(results.scoreGlobal)} mb-2`}>
-              {results.scoreGlobal}<span className="text-3xl">/100</span>
-            </div>
-            <div className="text-sm font-medium text-gray-700">{results.interpretationGlobale}</div>
-          </div>
-
-          <div className={`rounded-xl shadow-lg p-8 border-2 ${getScoreBg(results.scoreSouverainete)} relative`}>
-            <div className="relative group/tooltip">
-              <svg className="w-5 h-5 text-gray-400 cursor-help absolute top-0 right-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-              </svg>
-              <div className="invisible group-hover/tooltip:visible absolute top-8 right-0 w-64 bg-gray-900 text-white text-sm rounded-lg p-3 z-10 shadow-xl">
-                Mesure votre capacité à garder le contrôle stratégique sur vos agents IA
-              </div>
-            </div>
-            <div className="text-sm font-semibold text-gray-600 mb-2">Score de Souveraineté</div>
+          {/* Souveraineté */}
+          <div className={`rounded-xl shadow-lg p-8 border-2 ${getScoreBg(results.scoreSouverainete)}`}>
+            <div className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">Score de Souveraineté</div>
             <div className={`text-6xl font-bold ${getScoreColor(results.scoreSouverainete)} mb-2`}>
               {results.scoreSouverainete.toFixed(1)}<span className="text-3xl">/100</span>
             </div>
-            <div className="text-sm font-medium text-gray-700">{results.interpretationSouverainete}</div>
+            <div className="text-sm font-medium text-gray-700 mb-3">{results.interpretationSouverainete}</div>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Mesure votre indépendance vis-à-vis des plateformes tierces. Un score élevé signifie que vous contrôlez votre destin commercial.
+            </p>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg p-8 border-2 border-purple-200 relative">
-            <div className="relative group/tooltip">
-              <svg className="w-5 h-5 text-gray-400 cursor-help absolute top-0 right-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-              </svg>
-              <div className="invisible group-hover/tooltip:visible absolute top-8 right-0 w-64 bg-gray-900 text-white text-sm rounded-lg p-3 z-10 shadow-xl">
-                Niveau d'autonomie actuel de vos agents IA (0-4)
-              </div>
+          {/* ACF GLOBAL AU MILIEU */}
+          <div className={`rounded-xl shadow-xl p-8 border-4 border-primary bg-gradient-to-br from-purple-50 to-pink-50`}>
+            <div className="text-sm font-bold text-primary mb-2 uppercase tracking-wide">⭐ Score Global ACF®</div>
+            <div className="text-7xl font-bold text-primary mb-2">
+              {results.scoreGlobal}<span className="text-4xl">/100</span>
             </div>
-            <div className="text-sm font-semibold text-gray-600 mb-2">Niveau de Maturité</div>
+            <div className="text-sm font-bold text-gray-800 mb-3">{results.interpretationGlobale}</div>
+            <p className="text-xs text-gray-700 leading-relaxed">
+              Évalue la robustesse de votre gouvernance sur 4 couches. Un score élevé garantit que vos agents IA travaillent dans vos intérêts.
+            </p>
+          </div>
+
+          {/* Maturité */}
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg p-8 border-2 border-purple-200">
+            <div className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">Niveau de Maturité</div>
             <div className="text-6xl font-bold text-purple-600 mb-2">
-              {results.niveauMaturite}<span className="text-3xl">/4</span>
+              {results.niveauMaturite}<span className="text-3xl">/3</span>
             </div>
-            <div className="text-sm font-medium text-gray-700">{results.interpretationMaturite}</div>
+            <div className="text-sm font-medium text-gray-700 mb-3">{results.interpretationMaturite}</div>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Degré d'autonomie de vos agents : 0 = règles fixes, 1 = proposition, 2 = décision cadrée (cible), 3 = autonomie apprenante.
+            </p>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 mb-12 text-white">
-          <h2 className="text-2xl font-bold mb-6">📊 Positionnement marché</h2>
+        {/* BANNIÈRE MARCHÉ - VIOLET/ROSE */}
+        <div className="bg-gradient-to-r from-purple-100 via-pink-100 to-purple-100 rounded-2xl shadow-xl p-8 mb-12 border-2 border-purple-300">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">📊 Positionnement marché</h2>
+          <div className="grid md:grid-cols-3 gap-6 mb-6">
+            <div className="text-center p-4 bg-white/70 rounded-lg">
+              <div className="text-sm text-gray-600 mb-1">Fourchette basse</div>
+              <div className="text-3xl font-bold text-purple-600">{marketStats.lower}</div>
+            </div>
+            <div className="text-center p-4 bg-white/90 rounded-lg shadow-md">
+              <div className="text-sm text-gray-600 mb-1">Moyenne marché</div>
+              <div className="text-4xl font-bold text-pink-600">{marketStats.average}</div>
+            </div>
+            <div className="text-center p-4 bg-white/70 rounded-lg">
+              <div className="text-sm text-gray-600 mb-1">Fourchette haute</div>
+              <div className="text-3xl font-bold text-purple-600">{marketStats.upper}</div>
+            </div>
+          </div>
           
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="text-center p-4 bg-slate-700/50 rounded-lg">
-              <div className="text-sm text-gray-300 mb-1">Fourchette basse</div>
-              <div className="text-2xl font-bold">{marketStats.lower}</div>
-            </div>
-            <div className="text-center p-4 bg-slate-700/50 rounded-lg">
-              <div className="text-sm text-gray-300 mb-1">Moyenne marché</div>
-              <div className="text-2xl font-bold text-blue-400">{marketStats.average}</div>
-            </div>
-            <div className="text-center p-4 bg-slate-700/50 rounded-lg">
-              <div className="text-sm text-gray-300 mb-1">Fourchette haute</div>
-              <div className="text-2xl font-bold">{marketStats.upper}</div>
-            </div>
-          </div>
-
           <div className="text-center">
-            {marketPosition === 'faible' && (
-              <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-4">
-                <p className="font-semibold">⚠️ Votre score est en-dessous de la fourchette basse du marché</p>
-                <p className="text-sm text-gray-300 mt-2">Action urgente recommandée</p>
-              </div>
+            {results.scoreGlobal >= marketStats.average ? (
+              <p className="text-lg font-semibold text-green-700">
+                ✓ Vous êtes à <strong>+{results.scoreGlobal - marketStats.average} points</strong> au-dessus de la moyenne
+              </p>
+            ) : (
+              <p className="text-lg font-semibold text-red-700">
+                ⚠ Vous êtes à <strong>{results.scoreGlobal - marketStats.average} points</strong> en-dessous de la moyenne
+              </p>
             )}
-            {marketPosition === 'bas' && (
-              <div className="bg-orange-500/20 border border-orange-500/50 rounded-lg p-4">
-                <p className="font-semibold">📊 Vous êtes dans la fourchette basse</p>
-                <p className="text-sm text-gray-300 mt-2">Des améliorations significatives sont possibles</p>
-              </div>
-            )}
-            {marketPosition === 'moyen' && (
-              <div className="bg-blue-500/20 border border-blue-500/50 rounded-lg p-4">
-                <p className="font-semibold">✅ Score dans la moyenne marché</p>
-                <p className="text-sm text-gray-300 mt-2">Continuez à progresser vers l'excellence</p>
-              </div>
-            )}
-            {marketPosition === 'haut' && (
-              <div className="bg-green-500/20 border border-green-500/50 rounded-lg p-4">
-                <p className="font-semibold">🎯 Excellent score, au-dessus de la moyenne</p>
-                <p className="text-sm text-gray-300 mt-2">Vous faites partie des entreprises bien préparées</p>
-              </div>
-            )}
-            {marketPosition === 'excellence' && (
-              <div className="bg-purple-500/20 border border-purple-500/50 rounded-lg p-4">
-                <p className="font-semibold">🏆 Score d'excellence - Top 5%</p>
-                <p className="text-sm text-gray-300 mt-2">Gouvernance agentique exemplaire</p>
-              </div>
-            )}
-          </div>
-
-          <p className="text-xs text-gray-400 mt-4 text-center">{marketStats.source}</p>
-        </div>
-
-        <div className="grid md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-200">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Couche 1: Gouvernance</h3>
-            <div className={`text-4xl font-bold ${getScoreColor(results.scoreCouche1)} mb-2`}>
-              {results.scoreCouche1}<span className="text-xl">/25</span>
-            </div>
-            <p className="text-sm text-gray-600">Stratégie, objectifs, garde-fous</p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-200">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Couche 2: Politique</h3>
-            <div className={`text-4xl font-bold ${getScoreColor(results.scoreCouche2)} mb-2`}>
-              {results.scoreCouche2}<span className="text-xl">/25</span>
-            </div>
-            <p className="text-sm text-gray-600">Règles métier, conformité</p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-200">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Couche 3: Système</h3>
-            <div className={`text-4xl font-bold ${getScoreColor(results.scoreCouche3)} mb-2`}>
-              {results.scoreCouche3}<span className="text-xl">/25</span>
-            </div>
-            <p className="text-sm text-gray-600">Architecture, sécurité</p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gray-200">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Couche 4: Supervision</h3>
-            <div className={`text-4xl font-bold ${getScoreColor(results.scoreCouche4)} mb-2`}>
-              {results.scoreCouche4}<span className="text-xl">/25</span>
-            </div>
-            <p className="text-sm text-gray-600">Monitoring, alertes</p>
+            <p className="text-sm text-gray-600 mt-2">{marketStats.source}</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">🚀 Vos 5 priorités d'action</h2>
-          <div className="space-y-4">
-            {results.priorites.slice(0, 5).map((priorite, index) => (
-              <div key={index} className="flex items-start space-x-4 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg border-l-4 border-primary">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">
+        {/* ANALYSE 4 COUCHES - AVEC EXPLICATIONS PERSONNALISÉES */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">Analyse des 4 Couches Opérationnelles</h2>
+          
+          <div className="space-y-8">
+            {[
+              { num: 1, nom: 'Couche 1 : Gouvernance & Souveraineté', score: results.scoreCouche1, desc: 'Comité, charte, matrice responsabilités' },
+              { num: 2, nom: 'Couche 2 : Politique de Décision', score: results.scoreCouche2, desc: 'Objectifs hiérarchisés, seuils sécurité' },
+              { num: 3, nom: 'Couche 3 : Système d\'Agents', score: results.scoreCouche3, desc: 'Mandats explicites, responsables identifiés' },
+              { num: 4, nom: 'Couche 4 : Exécution & Supervision', score: results.scoreCouche4, desc: 'Logs 3 ans, kill switch, monitoring' }
+            ].map((couche) => {
+              const scoreColor = couche.score >= 20 ? 'text-green-600' : couche.score >= 12 ? 'text-orange-600' : 'text-red-600'
+              const progressColor = couche.score >= 20 ? 'bg-green-500' : couche.score >= 12 ? 'bg-orange-500' : 'bg-red-500'
+              
+              return (
+                <div key={couche.num} className="border-b border-gray-200 pb-6 last:border-b-0">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">{couche.nom}</h3>
+                      <p className="text-sm text-gray-600">{couche.desc}</p>
+                    </div>
+                    <div className={`text-4xl font-bold ${scoreColor}`}>{couche.score}/25</div>
+                  </div>
+                  
+                  <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
+                    <div className={`${progressColor} h-3 rounded-full transition-all`} style={{ width: `${(couche.score / 25) * 100}%` }}></div>
+                  </div>
+                  
+                  <p className="text-gray-700 leading-relaxed">
+                    {getCoucheExplanation(couche.num, couche.score)}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* PRIORITÉS D'ACTION */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">Vos 3 Priorités d'Action</h2>
+          <div className="space-y-6">
+            {results.priorites.slice(0, 3).map((priorite, index) => (
+              <div key={index} className="flex items-start space-x-4 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border-2 border-purple-200">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg">
                   {index + 1}
                 </div>
                 <div className="flex-1">
                   <h3 className="font-bold text-gray-900 mb-1">{priorite.titre}</h3>
                   <p className="text-sm text-gray-600">{priorite.description}</p>
-                  <div className="mt-2 inline-block bg-accent/20 text-accent px-3 py-1 rounded-full text-xs font-semibold">
+                  <span className="inline-block mt-2 text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-semibold">
                     Couche {priorite.couche}
-                  </div>
+                  </span>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        {/* ACTIONS */}
+        <div className="grid md:grid-cols-3 gap-6">
           <button
             onClick={handleDownloadPDF}
-            className="bg-gradient-to-r from-primary to-accent text-white py-4 rounded-lg font-semibold hover:shadow-xl transition flex items-center justify-center space-x-2"
+            className="bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-lg font-bold hover:shadow-xl transition text-center"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span>Télécharger PDF</span>
+            📄 Télécharger le rapport PDF
           </button>
-
-          <button
-            onClick={() => setShowShareModal(true)}
-            className="bg-white border-2 border-primary text-primary py-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition flex items-center justify-center space-x-2"
+          
+          <Link
+            href="/contact"
+            className="bg-white text-primary border-2 border-primary px-8 py-4 rounded-lg font-bold hover:bg-primary hover:text-white transition text-center"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-            </svg>
-            <span>Partager</span>
-          </button>
-
-          <button
-            onClick={handleContactWithScore}
-            className="bg-green-600 hover:bg-green-700 text-white py-4 rounded-lg font-semibold transition flex items-center justify-center space-x-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            <span>Audit complet</span>
-          </button>
-        </div>
-
-        {showShareModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl p-8 max-w-md w-full">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-900">Partager votre score</h3>
-                <button onClick={() => setShowShareModal(false)} className="text-gray-400 hover:text-gray-600">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              
-              <div className="space-y-3">
-                <button
-                  onClick={() => handleShare('linkedin')}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition flex items-center justify-center space-x-2"
-                >
-                  <span>Partager sur LinkedIn</span>
-                </button>
-                
-                <button
-                  onClick={() => handleShare('twitter')}
-                  className="w-full bg-sky-500 hover:bg-sky-600 text-white py-3 rounded-lg font-semibold transition flex items-center justify-center space-x-2"
-                >
-                  <span>Partager sur X (Twitter)</span>
-                </button>
-                
-                <button
-                  onClick={copyLink}
-                  className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 py-3 rounded-lg font-semibold transition flex items-center justify-center space-x-2"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                  <span>Copier le lien</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="text-center">
+            📞 Planifier un audit complet
+          </Link>
+          
           <Link
             href="/calculator"
-            className="inline-block text-primary hover:text-accent font-semibold transition"
+            className="bg-gray-100 text-gray-700 px-8 py-4 rounded-lg font-semibold hover:bg-gray-200 transition text-center"
           >
-            ← Refaire le diagnostic
+            🔄 Refaire le diagnostic
           </Link>
         </div>
       </div>

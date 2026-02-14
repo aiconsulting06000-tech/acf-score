@@ -9,7 +9,6 @@ export default function Header() {
   const [hasResults, setHasResults] = useState(false)
 
   useEffect(() => {
-    // Vérifier si des résultats existent dans localStorage
     const savedResults = localStorage.getItem('acf_results')
     setHasResults(!!savedResults)
   }, [])
@@ -25,16 +24,14 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
-          {/* Logo + Slogan */}
+          {/* Logo GROS + Slogan à droite */}
           <Link href="/" className="flex items-center space-x-4">
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">ACF</span>
-              </div>
+            <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center shadow-lg">
+              <span className="text-white font-bold text-2xl">ACF</span>
             </div>
-            <div className="hidden md:block">
-              <div className="text-sm font-semibold text-gray-900">ACF Score</div>
-              <div className="text-xs text-gray-600">Gouvernance Agentique de Nouvelle Génération</div>
+            <div>
+              <div className="text-lg font-bold text-gray-900">ACF Score</div>
+              <div className="text-sm text-gray-600">Gouvernance Agentique de Nouvelle Génération</div>
             </div>
           </Link>
 
@@ -59,7 +56,7 @@ export default function Header() {
                 href="/results"
                 className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-accent text-white hover:bg-accent/90 transition"
               >
-                Mes résultats
+                📊 Mes résultats
               </Link>
             )}
           </nav>

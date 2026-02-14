@@ -1,5 +1,5 @@
-'use client'
 import Footer from '@/components/Footer'
+'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -91,9 +91,9 @@ export default function NewCalculatorPage() {
                 </p>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-8 mb-8">
                 {/* Secteur */}
-                <div>
+                <div className="bg-gray-50 p-6 rounded-xl mb-8">
                   <label className="block text-sm font-semibold text-gray-900 mb-3">
                     Dans quel secteur opérez-vous ?
                   </label>

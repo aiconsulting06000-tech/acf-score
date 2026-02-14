@@ -33,8 +33,10 @@ export default function QuiSommesNous() {
               du framework <strong>Agentic Commerce Framework® (ACF®)</strong>.
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Fort de plus de 15 ans d'expérience dans le e-commerce et la transformation digitale, 
-              Vincent a développé l'ACF® pour répondre aux défis inédits posés par l'émergence 
+              Vincent a 25 ans d'expérience dans le digital et e-commerce. Diplômé de <strong>MIT Sloan School of Management</strong> et <strong>Columbia Business School</strong> en Digital Business, Vincent a suivi de nombreuses formations en Intelligence Artificielle auprès des plus grandes institutions et sociétés internationales : Stratégie IA, Agents IA, Risques et Cybersécurité, Agentic Commerce, Gouvernance, Éthique, Stratégie produit...
+            </p>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Il a développé l'ACF® pour répondre aux défis inédits posés par l'émergence 
               des agents IA autonomes dans les opérations business.
             </p>
             <p className="text-gray-700 leading-relaxed">
