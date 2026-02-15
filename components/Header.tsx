@@ -15,6 +15,7 @@ export default function Header() {
 
   const navItems = [
     { href: '/pourquoi', label: 'Pourquoi ACF' },
+    { href: '/faq', label: 'FAQ' },
     { href: '/calculator', label: 'Calculateur' },
     { href: '/contact', label: 'Contact' },
   ]
