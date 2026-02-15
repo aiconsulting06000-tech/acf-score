@@ -136,8 +136,11 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <h2 className="text-3xl font-bold text-gray-900 mb-3">Message envoyé avec succès !</h2>
+                  <p className="text-gray-600 text-lg mb-2">
+                    Merci pour votre message.
+                  </p>
                   <p className="text-gray-600 text-lg mb-8">
-                    Merci pour votre message. Notre équipe vous recontactera dans les plus brefs délais.
+                    Vous allez recevoir un email de confirmation avec un lien Calendly pour réserver votre créneau de consultation gratuite (30 min).
                   </p>
                   <button
                     onClick={() => setStatus('idle')}
@@ -304,9 +307,6 @@ export default function ContactPage() {
                         <div>
                           <p className="text-red-800 text-sm font-semibold">Erreur d'envoi</p>
                           <p className="text-red-700 text-sm mt-1">{errorMessage}</p>
-                          <p className="text-red-600 text-xs mt-2">
-                            Si le problème persiste, contactez-nous directement à : <strong>contact@acf-score.com</strong>
-                          </p>
                         </div>
                       </div>
                     </div>
@@ -336,86 +336,105 @@ export default function ContactPage() {
                   </button>
 
                   <p className="text-xs text-center text-gray-500">
-                    🔒 Formulaire protégé contre le spam • Vos données sont sécurisées et confidentielles
+                    🔒 Formulaire protégé contre le spam (validation automatique + vérification humaine)
                   </p>
                 </form>
               )}
             </div>
-          </div>
 
-          {/* Informations - 1/3 de la largeur */}
-          <div className="space-y-6">
-            {/* Coordonnées */}
-            <div className="bg-white rounded-2xl shadow-xl p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Coordonnées</h3>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm font-semibold text-gray-900">Email</p>
-                    <p className="text-sm text-gray-600">contact@acf-score.com</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm font-semibold text-gray-900">Délai de réponse</p>
-                    <p className="text-sm text-gray-600">24-48 heures ouvrées</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm font-semibold text-gray-900">Confidentialité</p>
-                    <p className="text-sm text-gray-600">100% sécurisé</p>
-                  </div>
+            {/* Astuce en bas du formulaire */}
+            <div className="mt-6 bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
+              <div className="flex items-start">
+                <svg className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+                <div>
+                  <p className="text-sm font-semibold text-blue-900">💡 Astuce</p>
+                  <p className="text-sm text-blue-800 mt-1">
+                    Téléchargez votre PDF de résultats depuis la page de diagnostic et joignez-le au formulaire. Cela nous permettra de préparer un échange encore plus ciblé et efficace.
+                  </p>
                 </div>
               </div>
             </div>
+          </div>
 
+          {/* Sidebar - 1/3 de la largeur */}
+          <div className="space-y-6">
             {/* Pourquoi nous contacter */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
+            <div className="bg-white rounded-2xl shadow-xl p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Pourquoi nous contacter ?</h3>
-              <ul className="space-y-3 text-sm text-gray-700">
+              <ul className="space-y-4 text-sm text-gray-700">
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-purple-600 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-purple-600 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  Audit ACF® personnalisé
+                  <div>
+                    <strong className="block text-gray-900">Interpréter votre Score ACF® en détail</strong>
+                    <span className="text-gray-600">Comprendre vos forces et faiblesses</span>
+                  </div>
                 </li>
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-purple-600 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-purple-600 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  Certification de gouvernance
+                  <div>
+                    <strong className="block text-gray-900">Élaborer un plan d'action sur mesure</strong>
+                    <span className="text-gray-600">Roadmap adaptée à votre contexte</span>
+                  </div>
                 </li>
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-purple-600 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-purple-600 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  Formation en équipe
+                  <div>
+                    <strong className="block text-gray-900">Découvrir les modules ACF®</strong>
+                    <span className="text-gray-600">Diagnostic complet, constitution agentique</span>
+                  </div>
                 </li>
                 <li className="flex items-start">
-                  <svg className="w-5 h-5 text-purple-600 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-purple-600 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  Accompagnement stratégique
+                  <div>
+                    <strong className="block text-gray-900">Préparer votre entreprise à l'économie des agents IA</strong>
+                    <span className="text-gray-600">Anticiper les risques et opportunités</span>
+                  </div>
                 </li>
               </ul>
+            </div>
+
+            {/* Ce qui se passe ensuite */}
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">📋 Ce qui se passe ensuite</h3>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <div className="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">
+                    1
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-semibold text-gray-900">Vous recevez un email de confirmation</p>
+                    <p className="text-xs text-gray-600">Avec un lien Calendly pour réserver votre créneau</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">
+                    2
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-semibold text-gray-900">Vous choisissez votre créneau</p>
+                    <p className="text-xs text-gray-600">Consultation de 30 minutes par visio</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">
+                    3
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-semibold text-gray-900">Échange avec un expert ACF®</p>
+                    <p className="text-xs text-gray-600">Gratuit, sans engagement, confidentiel</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* CTA diagnostic */}

@@ -59,11 +59,11 @@ export default function FAQPage() {
     },
     {
       question: "Combien coûte la mise en conformité ACF® ?",
-      answer: "Le coût varie selon votre maturité initiale et le nombre d'agents. Pour une PME (score 30-50) : 15K-40K€ pour structurer gouvernance + documentation (3-6 mois). Pour une ETI (score 50-70) : 50K-150K€ pour renforcement + certification (6-12 mois). Pour un Groupe (score > 70 ou déploiement multi-BU) : 200K-500K€ pour gouvernance enterprise + accompagnement continu. Le ROI se mesure en risques évités : 1 incident majeur coûte en moyenne 2,4M€."
+      answer: "Le coût est établi sur devis après examen approfondi de votre contexte (nombre d'agents, maturité actuelle, périmètre). Ce qu'il faut retenir : l'investissement se rentabilise très rapidement au regard des amendes possibles (jusqu'à 35M€ ou 7% du CA selon l'AI Act) et des risques évités. Un incident majeur coûte en moyenne 2,4M€, sans compter l'impact sur votre image de marque, la confiance client et votre réputation. Toute intervention de qualité a un prix, mais ne pas agir en a un bien plus élevé. L'ACF® n'est pas une dépense, c'est un investissement dans la pérennité et la souveraineté de votre organisation."
     },
     {
       question: "Puis-je implémenter ACF® seul ?",
-      answer: "Oui pour les quick-wins (documentation basique, kill switch simple, logs). Non pour une certification complète ou un score > 70/100. Raisons : l'ACF® requiert une expertise en gouvernance IA (matrice RACI, politiques de décision, audit technique), les zones critiques (kill switch, conformité AI Act) nécessitent une validation externe, et la certification ACF® impose un audit par un expert agréé. Notre recommandation : démarrez seul sur les fondations, puis faites-vous accompagner pour la certification."
+      answer: "Oui pour les quick-wins (documentation basique, kill switch simple, logs). Non pour une certification complète ou un score < 70/100 nécessitant un renforcement structurel. Raisons : l'ACF® requiert une expertise en gouvernance IA (matrice RACI, politiques de décision, audit technique), les zones critiques (kill switch, conformité AI Act) nécessitent une validation externe, et la certification ACF® impose un audit par un expert agréé. Notre recommandation : démarrez seul sur les fondations, puis faites-vous accompagner pour la certification."
     },
     {
       question: "ACF® fonctionne-t-il pour mon secteur ?",
@@ -127,7 +127,7 @@ export default function FAQPage() {
     },
     {
       question: "Comment se positionne mon score par rapport au marché ?",
-      answer: "Le diagnostic compare votre Score ACF® à la moyenne du marché (basée sur 1 200+ diagnostics réalisés). La fourchette basse représente le percentile 25, la moyenne le percentile 50, et la fourchette haute le percentile 75. Vous voyez immédiatement si vous êtes en avance, dans la moyenne, ou en retard par rapport à vos pairs sectoriels."
+      answer: "Le diagnostic compare votre Score ACF® à la moyenne du marché (basée sur 250+ diagnostics réalisés depuis février 2026). La fourchette basse représente le percentile 25, la moyenne le percentile 50, et la fourchette haute le percentile 75. Vous voyez immédiatement si vous êtes en avance, dans la moyenne, ou en retard par rapport à vos pairs sectoriels."
     },
     {
       question: "Qu'est-ce qu'une action prioritaire ACF® ?",
