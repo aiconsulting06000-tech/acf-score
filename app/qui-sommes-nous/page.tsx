@@ -49,8 +49,7 @@ export default function QuiSommesNous() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Notre mission</h2>
             <p className="text-gray-700 leading-relaxed">
-              Accompagner les entreprises dans la mise en place d'une <strong>gouvernance agentique</strong> 
-              robuste, garantissant :
+              Accompagner les entreprises dans la mise en place d'une <strong>gouvernance agentique robuste</strong>, garantissant :
             </p>
             <ul className="list-disc list-inside text-gray-700 space-y-2 mt-4">
               <li>Le contrôle stratégique sur les décisions opérationnelles</li>

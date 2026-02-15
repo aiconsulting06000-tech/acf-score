@@ -7,8 +7,8 @@ export default function LandingPage() {
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Header />
       
-      {/* Hero avec gradient violet → rose */}
-      <div className="bg-gradient-to-r from-purple-600 via-pink-500 to-pink-600">
+      {/* Hero avec gradient violet majoritaire → rose bas droite */}
+      <div className="bg-gradient-to-br from-purple-600 via-purple-500 to-pink-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
             <div className="inline-block bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
