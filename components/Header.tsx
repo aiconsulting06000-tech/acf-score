@@ -24,11 +24,13 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
-          {/* Logo GROS + Slogan à droite */}
+          {/* Logo ACF + Slogan à droite */}
           <Link href="/" className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-2xl">ACF</span>
-            </div>
+            <img 
+              src="/logo-acf.png" 
+              alt="ACF Logo" 
+              className="h-16 w-auto object-contain"
+            />
             <div>
               <div className="text-lg font-bold text-gray-900">ACF Score</div>
               <div className="text-sm text-gray-600">Gouvernance Agentique de Nouvelle Génération</div>
