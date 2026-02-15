@@ -302,27 +302,27 @@ export default function NewCalculatorPage() {
                       {[
                         {
                           value: 'prescripteurs',
-                          label: 'Agents prescripteurs',
+                          label: 'Agents prescripteurs (Buyer agent) : Rufus, Shop AI, Klarna AI, AVA, SAP Joule',
                           desc: 'Recommandations produits, discovery client, up-sell'
                         },
                         {
                           value: 'transactionnels',
-                          label: 'Agents transactionnels',
+                          label: 'Agents transactionnels (Pricing) : Pricefx, PROS, Competera, Revionics',
                           desc: 'Pricing dynamique, promotions, négociation B2B'
                         },
                         {
                           value: 'operationnels',
-                          label: 'Agents opérationnels',
+                          label: 'Agents opérationnels (Supply Chain) : Blue Yonder, Kinaxis, o9 Solutions',
                           desc: 'Supply chain, gestion stocks, logistique'
                         },
                         {
                           value: 'conformite',
-                          label: 'Agents conformité & risque',
+                          label: 'Agents conformité : OneTrust, TrustArc, Securiti AI, Sift',
                           desc: 'Détection fraude, RGPD, risk management'
                         },
                         {
                           value: 'analytiques',
-                          label: 'Agents analytiques',
+                          label: 'Agents analytiques (BI) : Tableau AI, ThoughtSpot, Qlik, Domo AI',
                           desc: 'BI, prévisions, insights, A/B testing'
                         }
                       ].map((option) => {

@@ -29,10 +29,10 @@ export default function Header() {
             <img 
               src="/logo-acf.png" 
               alt="ACF Logo" 
-              className="h-24 w-auto object-contain"
+              className="h-20 w-auto object-contain"
             />
             <div>
-              <div className="text-lg font-bold text-gray-900">ACF Score</div>
+              <div className="text-lg font-bold text-gray-900">ACF Score®</div>
               <div className="text-sm text-gray-600">Gouvernance Agentique de Nouvelle Génération</div>
             </div>
           </Link>

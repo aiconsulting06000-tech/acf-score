@@ -7,8 +7,8 @@ export default function LandingPage() {
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Header />
       
-      {/* Hero avec même couleur que CTA finale */}
-      <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-pink-600">
+      {/* Hero avec gradient violet → rose */}
+      <div className="bg-gradient-to-r from-purple-600 via-pink-500 to-pink-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
             <div className="inline-block bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
@@ -22,7 +22,7 @@ export default function LandingPage() {
             </h1>
             
             <p className="text-xl text-white mb-8 max-w-3xl mx-auto">
-              Évaluez la robustesse de votre gouvernance agentique en 10 minutes
+              Évaluez la robustesse de votre gouvernance agentique en 10 minutes. Obtenez votre Score ACF® en 7 étapes et vos recommandations personnalisées.
             </p>
             
             <Link
@@ -32,8 +32,19 @@ export default function LandingPage() {
               Calculer mon score gratuitement →
             </Link>
             
-            <p className="text-sm text-white/90 mt-4">
-              ⏱️ 10 minutes • 7 parties simples
+            <p className="text-sm text-white/90 mt-4 flex items-center justify-center gap-4">
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
+                7 étapes guidées
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
+                Rapport PDF complet
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
+                100% Gratuit
+              </span>
             </p>
           </div>
         </div>
@@ -41,7 +52,37 @@ export default function LandingPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
-        {/* Comment ça marche */}
+        {/* 1) Qu'est-ce que l'ACF® */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Qu'est-ce que l'Agentic Commerce Framework® ?
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Le premier cadre méthodologique de gouvernance pour organisations utilisant des agents IA autonomes.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-8 border-2 border-purple-200">
+            <div className="text-5xl mb-4">🛡️</div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3">Souveraineté Opérationnelle</h3>
+            <p className="text-gray-600">Gardez le contrôle de vos décisions stratégiques même lorsque des agents IA opèrent de manière autonome.</p>
+          </div>
+
+          <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl p-8 border-2 border-pink-200">
+            <div className="text-5xl mb-4">⚖️</div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3">Conformité Réglementaire</h3>
+            <p className="text-gray-600">Respect du RGPD, AI Act et réglementations sectorielles avec une gouvernance structurée.</p>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-8 border-2 border-purple-300">
+            <div className="text-5xl mb-4">📈</div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3">Performance & Résilience</h3>
+            <p className="text-gray-600">Bénéficiez de l'autonomie agentique tout en maintenant votre résilience économique.</p>
+          </div>
+        </div>
+
+        {/* 2) Comment ça marche */}
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             Comment ça marche ?
@@ -82,7 +123,16 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Ce que vous obtenez - 3 ACTIONS */}
+        {/* 3) Ce que vous obtenez */}
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Ce que vous obtenez
+          </h2>
+          <p className="text-xl text-gray-600">
+            Un diagnostic complet et actionnable
+          </p>
+        </div>
+
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border-2 border-purple-200">
             <div className="text-4xl mb-4">📊</div>
@@ -103,7 +153,7 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Chiffres qui font peur */}
+        {/* 4) Chiffres qui font peur */}
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             Les chiffres qui font peur
@@ -127,7 +177,7 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Risques - COULEUR MOINS AGRESSIVE */}
+        {/* 5) Risques */}
         <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl shadow-xl p-8 md:p-12 border-2 border-red-300 mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
             Sans gouvernance agentique robuste, vous risquez :
@@ -201,8 +251,8 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* CTA Final - MEME COULEUR QUE HERO */}
-        <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-pink-600 rounded-2xl shadow-2xl p-8 md:p-12 text-center text-white">
+        {/* 6) CTA Final */}
+        <div className="bg-gradient-to-r from-purple-600 via-pink-500 to-pink-600 rounded-2xl shadow-2xl p-8 md:p-12 text-center text-white">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Calculez votre score ACF® maintenant
           </h2>

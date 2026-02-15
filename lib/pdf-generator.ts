@@ -38,44 +38,47 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.text(`Date : ${new Date().toLocaleDateString('fr-FR')}`, 20, yPos)
   yPos += 15
 
-  const colWidth = 60
-  const startX = 15
+  const colWidth = 58
+  const startX = 17
 
   // SCORES RECENTRÉS : Souveraineté - ACF au milieu - Maturité
   
   // Souveraineté
   const souvColor = getScoreColor(results.scoreSouverainete)
   doc.setFillColor(souvColor[0], souvColor[1], souvColor[2])
-  doc.roundedRect(startX, yPos, colWidth, 40, 3, 3, 'F')
+  doc.roundedRect(startX, yPos, colWidth, 38, 3, 3, 'F')
   doc.setTextColor(255, 255, 255)
-  doc.setFontSize(9)
-  doc.text('SCORE DE SOUVERAINETÉ', startX + colWidth/2, yPos + 7, { align: 'center' })
-  doc.setFontSize(32)
-  doc.setFont('helvetica', 'bold')
-  doc.text(`${results.scoreSouverainete.toFixed(1)}`, startX + colWidth/2, yPos + 22, { align: 'center' })
-  doc.setFontSize(10)
-  doc.text('/100', startX + colWidth/2 + 15, yPos + 22)
   doc.setFontSize(8)
   doc.setFont('helvetica', 'normal')
-  const souvLines = doc.splitTextToSize(results.interpretationSouverainete, colWidth - 6)
-  doc.text(souvLines[0] || '', startX + colWidth/2, yPos + 32, { align: 'center' })
+  doc.text('SCORE DE SOUVERAINETÉ', startX + colWidth/2, yPos + 6, { align: 'center' })
+  doc.setFontSize(28)
+  doc.setFont('helvetica', 'bold')
+  doc.text(`${results.scoreSouverainete.toFixed(1)}`, startX + colWidth/2, yPos + 18, { align: 'center' })
+  doc.setFontSize(9)
+  doc.text('/100', startX + colWidth/2 + 13, yPos + 18)
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'normal')
+  const souvLines = doc.splitTextToSize(results.interpretationSouverainete, colWidth - 4)
+  doc.text(souvLines[0] || '', startX + colWidth/2, yPos + 28, { align: 'center' })
+  if (souvLines[1]) doc.text(souvLines[1], startX + colWidth/2, yPos + 32, { align: 'center' })
 
-  // ACF GLOBAL AU MILIEU
+  // ACF GLOBAL AU MILIEU - PLUS LARGE POUR ÉVITER TRONCATURE
   const globalColor = getScoreColor(results.scoreGlobal)
   doc.setFillColor(globalColor[0], globalColor[1], globalColor[2])
-  doc.roundedRect(startX + colWidth + 5, yPos, colWidth, 40, 3, 3, 'F')
+  doc.roundedRect(startX + colWidth + 3, yPos, colWidth, 38, 3, 3, 'F')
   doc.setTextColor(255, 255, 255)
-  doc.setFontSize(9)
-  doc.setFont('helvetica', 'bold')
-  doc.text('⭐ SCORE GLOBAL ACF®', startX + colWidth + 5 + colWidth/2, yPos + 7, { align: 'center' })
-  doc.setFontSize(36)
-  doc.text(`${results.scoreGlobal}`, startX + colWidth + 5 + colWidth/2, yPos + 23, { align: 'center' })
-  doc.setFontSize(12)
-  doc.text('/100', startX + colWidth + 5 + colWidth/2 + 12, yPos + 23)
   doc.setFontSize(8)
+  doc.setFont('helvetica', 'bold')
+  doc.text('SCORE GLOBAL ACF®', startX + colWidth + 3 + colWidth/2, yPos + 6, { align: 'center' })
+  doc.setFontSize(32)
+  doc.text(`${results.scoreGlobal}`, startX + colWidth + 3 + colWidth/2, yPos + 19, { align: 'center' })
+  doc.setFontSize(10)
+  doc.text('/100', startX + colWidth + 3 + colWidth/2 + 11, yPos + 19)
+  doc.setFontSize(7)
   doc.setFont('helvetica', 'normal')
-  const globalLines = doc.splitTextToSize(results.interpretationGlobale, colWidth - 6)
-  doc.text(globalLines[0] || '', startX + colWidth + 5 + colWidth/2, yPos + 33, { align: 'center' })
+  const globalLines = doc.splitTextToSize(results.interpretationGlobale, colWidth - 4)
+  doc.text(globalLines[0] || '', startX + colWidth + 3 + colWidth/2, yPos + 28, { align: 'center' })
+  if (globalLines[1]) doc.text(globalLines[1], startX + colWidth + 3 + colWidth/2, yPos + 32, { align: 'center' })
 
   // Maturité
   const getMaturiteColor = (niveau: number): [number, number, number] => {
@@ -87,66 +90,53 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   
   const matColor = getMaturiteColor(results.niveauMaturite)
   doc.setFillColor(matColor[0], matColor[1], matColor[2])
-  doc.roundedRect(startX + (colWidth + 5) * 2, yPos, colWidth, 40, 3, 3, 'F')
+  doc.roundedRect(startX + (colWidth + 3) * 2, yPos, colWidth, 38, 3, 3, 'F')
   doc.setTextColor(255, 255, 255)
-  doc.setFontSize(9)
-  doc.text('NIVEAU DE MATURITÉ', startX + (colWidth + 5) * 2 + colWidth/2, yPos + 7, { align: 'center' })
-  doc.setFontSize(32)
-  doc.setFont('helvetica', 'bold')
-  doc.text(`${results.niveauMaturite}`, startX + (colWidth + 5) * 2 + colWidth/2, yPos + 22, { align: 'center' })
-  doc.setFontSize(10)
-  doc.text('/3', startX + (colWidth + 5) * 2 + colWidth/2 + 8, yPos + 22)
   doc.setFontSize(8)
   doc.setFont('helvetica', 'normal')
-  const matLines = doc.splitTextToSize(results.interpretationMaturite, colWidth - 6)
-  doc.text(matLines[0] || '', startX + (colWidth + 5) * 2 + colWidth/2, yPos + 32, { align: 'center' })
+  doc.text('NIVEAU DE MATURITÉ', startX + (colWidth + 3) * 2 + colWidth/2, yPos + 6, { align: 'center' })
+  doc.setFontSize(28)
+  doc.setFont('helvetica', 'bold')
+  doc.text(`${results.niveauMaturite}`, startX + (colWidth + 3) * 2 + colWidth/2, yPos + 18, { align: 'center' })
+  doc.setFontSize(9)
+  doc.text('/3', startX + (colWidth + 3) * 2 + colWidth/2 + 7, yPos + 18)
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'normal')
+  const matLines = doc.splitTextToSize(results.interpretationMaturite, colWidth - 4)
+  doc.text(matLines[0] || '', startX + (colWidth + 3) * 2 + colWidth/2, yPos + 28, { align: 'center' })
+  if (matLines[1]) doc.text(matLines[1], startX + (colWidth + 3) * 2 + colWidth/2, yPos + 32, { align: 'center' })
 
-  yPos += 48
+  yPos += 45
 
-  // EXPLICATIONS DES 3 SCORES
+  // INTERPRÉTATION GLOBALE (comme dans app)
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
   yPos += 8
 
-  doc.setTextColor(0, 0, 0)
   doc.setFontSize(12)
   doc.setFont('helvetica', 'bold')
-  doc.text('Comprendre vos scores', 20, yPos)
+  const interpColor = results.scoreGlobal >= 70 ? [34, 197, 94] : results.scoreGlobal >= 50 ? [59, 130, 246] : results.scoreGlobal >= 30 ? [249, 115, 22] : [239, 68, 68]
+  doc.setTextColor(interpColor[0], interpColor[1], interpColor[2])
+  const interpTitle = results.scoreGlobal >= 70 ? '✅ Excellente gouvernance agentique' :
+                      results.scoreGlobal >= 50 ? '👍 Gouvernance solide, à renforcer' :
+                      results.scoreGlobal >= 30 ? '⚠️ Gouvernance fragile, action requise' :
+                      '🚨 Situation critique, agir d\'urgence'
+  doc.text(interpTitle, 105, yPos, { align: 'center' })
   yPos += 8
 
   doc.setFontSize(9)
-  doc.setFont('helvetica', 'bold')
-  doc.setTextColor(60, 60, 60)
-  doc.text('Score de Souveraineté :', 20, yPos)
-  yPos += 5
   doc.setFont('helvetica', 'normal')
-  doc.setTextColor(80, 80, 80)
-  const souvExpl = doc.splitTextToSize('Mesure votre indépendance vis-à-vis des plateformes tierces (Amazon, Google, Meta). Évalue 4 dimensions : dépendance structurelle (CA), données clients, trafic, et résilience. Un score élevé signifie que vous contrôlez votre destin commercial.', 170)
-  doc.text(souvExpl, 20, yPos)
-  yPos += souvExpl.length * 4 + 4
-
-  doc.setFont('helvetica', 'bold')
   doc.setTextColor(60, 60, 60)
-  doc.text('Score Global ACF® :', 20, yPos)
-  yPos += 5
-  doc.setFont('helvetica', 'normal')
-  doc.setTextColor(80, 80, 80)
-  const globalExpl = doc.splitTextToSize('Évalue la robustesse de votre gouvernance agentique sur 4 couches : Gouvernance & Souveraineté, Politique de Décision, Système d\'Agents, Supervision. Un score élevé garantit que vos agents IA travaillent dans vos intérêts stratégiques.', 170)
-  doc.text(globalExpl, 20, yPos)
-  yPos += globalExpl.length * 4 + 4
+  const interpMsg = results.scoreGlobal >= 70 ? 'Votre gouvernance agentique est robuste. Vous avez posé les fondations nécessaires pour contrôler vos agents IA.' :
+                    results.scoreGlobal >= 50 ? 'Vous avez une base correcte mais des zones de fragilité persistent. Sans renforcement rapide, vous risquez une perte de contrôle à mesure que vos agents gagnent en autonomie. Les 3 actions prioritaires ci-dessous sont essentielles.' :
+                    results.scoreGlobal >= 30 ? 'Votre gouvernance présente des failles critiques. Vous êtes exposé à des décisions IA contraires à vos intérêts business. Action immédiate nécessaire.' :
+                    'ALERTE : Votre organisation est en danger. Sans gouvernance, vos agents IA peuvent prendre des décisions catastrophiques. Audit d\'urgence requis.'
+  const interpLines = doc.splitTextToSize(interpMsg, 170)
+  doc.text(interpLines, 20, yPos)
+  yPos += interpLines.length * 4 + 8
 
-  doc.setFont('helvetica', 'bold')
-  doc.setTextColor(60, 60, 60)
-  doc.text('Niveau de Maturité :', 20, yPos)
-  yPos += 5
-  doc.setFont('helvetica', 'normal')
-  doc.setTextColor(80, 80, 80)
-  const matExpl = doc.splitTextToSize('Indique le degré d\'autonomie de vos agents IA : 0 = règles fixes, 1 = proposition validée, 2 = décision cadrée (cible recommandée), 3 = autonomie apprenante. Plus le niveau est élevé, plus la gouvernance doit être robuste.', 170)
-  doc.text(matExpl, 20, yPos)
-  yPos += matExpl.length * 4 + 8
-
-  // POSITIONNEMENT MARCHÉ AVEC GRAPHIQUE
+  // POSITIONNEMENT MARCHÉ - DESIGN APP (encadrés comme app)
   const stats = getMarketStats()
   doc.setDrawColor(200, 200, 200)
   doc.line(20, yPos, 190, yPos)
@@ -155,59 +145,77 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.setTextColor(0, 0, 0)
   doc.setFontSize(12)
   doc.setFont('helvetica', 'bold')
-  doc.text('Positionnement marché', 20, yPos)
-  yPos += 8
+  doc.text('📊 Positionnement marché', 105, yPos, { align: 'center' })
+  yPos += 10
 
-  // Graphique avec barres visuelles
-  doc.setFillColor(245, 245, 245)
-  doc.roundedRect(20, yPos, 170, 35, 3, 3, 'F')
+  // Design avec 3 encadrés comme dans l'app
+  const boxWidth = 50
+  const boxStartX = 30
 
-  // Barre fourchette basse
-  doc.setFillColor(200, 200, 220)
-  doc.roundedRect(25, yPos + 8, 40, 10, 2, 2, 'F')
-  doc.setFontSize(9)
-  doc.setFont('helvetica', 'normal')
-  doc.setTextColor(60, 60, 60)
-  doc.text(`Basse: ${stats.lower}`, 27, yPos + 14.5)
-
-  // Barre moyenne (plus large et visible)
-  doc.setFillColor(139, 92, 246)
-  doc.roundedRect(70, yPos + 8, 50, 10, 2, 2, 'F')
-  doc.setFontSize(10)
+  // Fourchette basse
+  doc.setFillColor(245, 243, 255)
+  doc.roundedRect(boxStartX, yPos, boxWidth, 20, 2, 2, 'F')
+  doc.setDrawColor(200, 200, 220)
+  doc.roundedRect(boxStartX, yPos, boxWidth, 20, 2, 2, 'S')
+  doc.setFontSize(8)
+  doc.setTextColor(100, 100, 100)
+  doc.text('Fourchette basse', boxStartX + boxWidth/2, yPos + 6, { align: 'center' })
+  doc.setFontSize(16)
   doc.setFont('helvetica', 'bold')
-  doc.setTextColor(255, 255, 255)
-  doc.text(`Moyenne: ${stats.average}`, 72, yPos + 14.5)
+  doc.setTextColor(139, 92, 246)
+  doc.text(`${stats.lower}`, boxStartX + boxWidth/2, yPos + 15, { align: 'center' })
 
-  // Barre fourchette haute
-  doc.setFillColor(200, 200, 220)
-  doc.roundedRect(125, yPos + 8, 40, 10, 2, 2, 'F')
-  doc.setFontSize(9)
+  // Moyenne marché (au milieu, plus visible)
+  doc.setFillColor(255, 255, 255)
+  doc.roundedRect(boxStartX + boxWidth + 5, yPos, boxWidth, 20, 2, 2, 'F')
+  doc.setDrawColor(139, 92, 246)
+  doc.setLineWidth(1.5)
+  doc.roundedRect(boxStartX + boxWidth + 5, yPos, boxWidth, 20, 2, 2, 'S')
+  doc.setFontSize(8)
+  doc.setTextColor(100, 100, 100)
   doc.setFont('helvetica', 'normal')
-  doc.setTextColor(60, 60, 60)
-  doc.text(`Haute: ${stats.upper}`, 127, yPos + 14.5)
+  doc.text('Moyenne marché', boxStartX + boxWidth + 5 + boxWidth/2, yPos + 6, { align: 'center' })
+  doc.setFontSize(18)
+  doc.setFont('helvetica', 'bold')
+  doc.setTextColor(236, 72, 153)
+  doc.text(`${stats.average}`, boxStartX + boxWidth + 5 + boxWidth/2, yPos + 15, { align: 'center' })
 
-  // INTERPRÉTATION sous le graphique
-  yPos += 23
+  // Fourchette haute
+  doc.setFillColor(245, 243, 255)
+  doc.roundedRect(boxStartX + (boxWidth + 5) * 2, yPos, boxWidth, 20, 2, 2, 'F')
+  doc.setDrawColor(200, 200, 220)
+  doc.setLineWidth(0.5)
+  doc.roundedRect(boxStartX + (boxWidth + 5) * 2, yPos, boxWidth, 20, 2, 2, 'S')
+  doc.setFontSize(8)
+  doc.setTextColor(100, 100, 100)
+  doc.setFont('helvetica', 'normal')
+  doc.text('Fourchette haute', boxStartX + (boxWidth + 5) * 2 + boxWidth/2, yPos + 6, { align: 'center' })
+  doc.setFontSize(16)
+  doc.setFont('helvetica', 'bold')
+  doc.setTextColor(139, 92, 246)
+  doc.text(`${stats.upper}`, boxStartX + (boxWidth + 5) * 2 + boxWidth/2, yPos + 15, { align: 'center' })
+
+  yPos += 26
+
+  // INTERPRÉTATION POSITIONNEMENT - CENTRÉ
   doc.setFontSize(10)
   doc.setFont('helvetica', 'bold')
   const ecart = results.scoreGlobal - stats.average
   if (ecart > 0) {
     doc.setTextColor(34, 197, 94)
-    doc.text(`✓ Vous êtes à +${ecart} pts au-dessus de la moyenne`, 25, yPos)
+    doc.text(`✓ Vous êtes à +${ecart} points au-dessus de la moyenne`, 105, yPos, { align: 'center' })
   } else {
     doc.setTextColor(239, 68, 68)
-    doc.text(`⚠ Vous êtes à ${ecart} pts en-dessous de la moyenne`, 25, yPos)
+    doc.text(`⚠ Vous êtes à ${ecart} points en-dessous de la moyenne`, 105, yPos, { align: 'center' })
   }
-
   yPos += 6
   doc.setFontSize(8)
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(100, 100, 100)
-  doc.text(stats.source, 25, yPos)
+  doc.text(stats.source, 105, yPos, { align: 'center' })
+  yPos += 12
 
-  yPos += 15
-
-  // CHIFFRES COMPACTS (sur une seule ligne)
+  // CHIFFRES QUI FONT PEUR - CENTRÉS
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
@@ -216,38 +224,104 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.setTextColor(0, 0, 0)
   doc.setFontSize(12)
   doc.setFont('helvetica', 'bold')
-  doc.text('Les chiffres qui font peur', 20, yPos)
-  yPos += 8
+  doc.text('Les chiffres qui font peur', 105, yPos, { align: 'center' })
+  yPos += 10
 
-  // Une seule boîte compacte
+  // Design compact centré
+  const chiffreWidth = 50
+  const chiffreStartX = 30
+
+  // 73%
   doc.setFillColor(254, 226, 226)
-  doc.roundedRect(20, yPos, 170, 18, 2, 2, 'F')
-
+  doc.roundedRect(chiffreStartX, yPos, chiffreWidth, 16, 2, 2, 'F')
   doc.setFontSize(14)
   doc.setFont('helvetica', 'bold')
   doc.setTextColor(220, 38, 38)
-  doc.text('73%', 25, yPos + 8)
-  doc.text('€2,4M', 68, yPos + 8)
-  doc.text('89%', 125, yPos + 8)
-
+  doc.text('73%', chiffreStartX + chiffreWidth/2, yPos + 6, { align: 'center' })
   doc.setFontSize(7)
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(60, 60, 60)
-  const ch1 = doc.splitTextToSize('sans gouvernance', 35)
-  const ch2 = doc.splitTextToSize('pertes moyennes', 35)
-  const ch3 = doc.splitTextToSize('craignent perte', 35)
-  doc.text(ch1, 25, yPos + 12)
-  doc.text(ch2, 68, yPos + 12)
-  doc.text(ch3, 125, yPos + 12)
+  const ch1 = doc.splitTextToSize('sans gouvernance', chiffreWidth - 4)
+  doc.text(ch1, chiffreStartX + chiffreWidth/2, yPos + 10, { align: 'center' })
 
-  yPos += 25
+  // €2,4M
+  doc.setFillColor(254, 226, 226)
+  doc.roundedRect(chiffreStartX + chiffreWidth + 5, yPos, chiffreWidth, 16, 2, 2, 'F')
+  doc.setFontSize(14)
+  doc.setFont('helvetica', 'bold')
+  doc.setTextColor(220, 38, 38)
+  doc.text('€2,4M', chiffreStartX + chiffreWidth + 5 + chiffreWidth/2, yPos + 6, { align: 'center' })
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'normal')
+  doc.setTextColor(60, 60, 60)
+  const ch2 = doc.splitTextToSize('pertes moyennes', chiffreWidth - 4)
+  doc.text(ch2, chiffreStartX + chiffreWidth + 5 + chiffreWidth/2, yPos + 10, { align: 'center' })
 
-  // Couches AVEC EXPLICATIONS PERSONNALISÉES
+  // 89%
+  doc.setFillColor(254, 226, 226)
+  doc.roundedRect(chiffreStartX + (chiffreWidth + 5) * 2, yPos, chiffreWidth, 16, 2, 2, 'F')
+  doc.setFontSize(14)
+  doc.setFont('helvetica', 'bold')
+  doc.setTextColor(220, 38, 38)
+  doc.text('89%', chiffreStartX + (chiffreWidth + 5) * 2 + chiffreWidth/2, yPos + 6, { align: 'center' })
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'normal')
+  doc.setTextColor(60, 60, 60)
+  const ch3 = doc.splitTextToSize('craignent perte', chiffreWidth - 4)
+  doc.text(ch3, chiffreStartX + (chiffreWidth + 5) * 2 + chiffreWidth/2, yPos + 10, { align: 'center' })
+
+  yPos += 22
+
+  // LES 3 ACTIONS PRIORITAIRES
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
   yPos += 8
 
+  doc.setTextColor(0, 0, 0)
+  doc.setFontSize(12)
+  doc.setFont('helvetica', 'bold')
+  doc.text('Vos 3 Priorités d\'Action', 105, yPos, { align: 'center' })
+  yPos += 10
+
+  results.priorites.slice(0, 3).forEach((priorite, index) => {
+    // Cercle violet avec numéro CENTRÉ
+    doc.setFillColor(139, 92, 246)
+    doc.circle(25, yPos + 2, 4, 'F')
+    doc.setTextColor(255, 255, 255)
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'bold')
+    doc.text(`${index + 1}`, 25, yPos + 3.5, { align: 'center' })
+    
+    // Titre et description
+    doc.setTextColor(0, 0, 0)
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'bold')
+    doc.text(priorite.titre, 32, yPos + 3)
+    yPos += 6
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(9)
+    doc.setTextColor(60, 60, 60)
+    const prioLines = doc.splitTextToSize(priorite.description, 155)
+    doc.text(prioLines, 32, yPos)
+    yPos += prioLines.length * 4 + 2
+    
+    // Badge couche
+    doc.setFontSize(7)
+    doc.setFillColor(236, 72, 153)
+    doc.roundedRect(32, yPos, 20, 5, 1, 1, 'F')
+    doc.setTextColor(255, 255, 255)
+    doc.text(`Couche ${priorite.couche}`, 42, yPos + 3.5, { align: 'center' })
+    
+    yPos += 10
+  })
+
+  yPos += 5
+
+  doc.addPage()
+  yPos = 20
+
+  // Couches AVEC EXPLICATIONS PERSONNALISÉES
   doc.setTextColor(0, 0, 0)
   doc.setFontSize(14)
   doc.setFont('helvetica', 'bold')
@@ -308,7 +382,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     doc.text(descLines, 20, yPos)
     yPos += descLines.length * 3 + 2
     
-    // EXPLICATION PERSONNALISÉE SELON SCORE
+    // EXPLICATION PERSONNALISÉE
     doc.setFontSize(9)
     doc.setTextColor(60, 60, 60)
     const expl = couche.score >= 20 ? couche.explGood : couche.score >= 12 ? couche.explMed : couche.explBad
@@ -330,44 +404,12 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
 
   yPos += 5
 
-  // Priorités - NUMÉROS CENTRÉS
+  // 7 RISQUES MAJEURS
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
   yPos += 8
 
-  doc.setTextColor(0, 0, 0)
-  doc.setFontSize(14)
-  doc.setFont('helvetica', 'bold')
-  doc.text('Vos 3 Priorités d\'action', 20, yPos)
-  yPos += 10
-
-  results.priorites.slice(0, 3).forEach((priorite, index) => {
-    doc.setFillColor(139, 92, 246)
-    doc.circle(23, yPos, 3, 'F')
-    doc.setTextColor(255, 255, 255)
-    doc.setFontSize(9)
-    doc.setFont('helvetica', 'bold')
-    // NUMÉRO CENTRÉ
-    doc.text(`${index + 1}`, 23, yPos + 1, { align: 'center' })
-    
-    doc.setTextColor(0, 0, 0)
-    doc.setFontSize(10)
-    doc.setFont('helvetica', 'bold')
-    doc.text(priorite.titre, 30, yPos + 1)
-    yPos += 5
-    doc.setFont('helvetica', 'normal')
-    doc.setFontSize(9)
-    doc.setTextColor(60, 60, 60)
-    const prioLines = doc.splitTextToSize(priorite.description, 155)
-    doc.text(prioLines, 30, yPos)
-    yPos += prioLines.length * 4 + 8
-  })
-
-  doc.addPage()
-  yPos = 20
-
-  // 7 RISQUES EN DÉBUT DE PAGE 2
   doc.setTextColor(0, 0, 0)
   doc.setFontSize(14)
   doc.setFont('helvetica', 'bold')
@@ -401,7 +443,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
 
   yPos += 10
 
-  // CONTEXTE QUESTION PAR QUESTION (APRÈS LES RISQUES)
+  // CONTEXTE DÉTAILLÉ (APRÈS LES 7 RISQUES)
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
@@ -478,7 +520,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.text(`Jours pour retrouver CA si blocage : ${formData.joursBloquesCA} jours`, 20, yPos)
   yPos += 15
 
-  // LIEN ACTIF vers /contact
+  // LIEN ACTIF CLIQUABLE vers /contact
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
