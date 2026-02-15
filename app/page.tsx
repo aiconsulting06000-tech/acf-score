@@ -7,32 +7,32 @@ export default function LandingPage() {
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Header />
       
-      {/* Hero avec fond VIOLET/ROSE */}
-      <div className="bg-gradient-to-br from-purple-100 via-pink-100 to-purple-200">
+      {/* Hero avec même couleur que CTA finale */}
+      <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-pink-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
-            <div className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <div className="inline-block bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
               Gratuit • Sans inscription • Résultat immédiat
             </div>
             
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
               Êtes-vous prêt pour<br />
               l'ère des agents<br />
               IA autonomes ?
             </h1>
             
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-white mb-8 max-w-3xl mx-auto">
               Évaluez la robustesse de votre gouvernance agentique en 10 minutes
             </p>
             
             <Link
               href="/calculator"
-              className="inline-block bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-lg text-lg font-bold hover:shadow-xl transition"
+              className="inline-block bg-white text-primary px-8 py-4 rounded-lg text-lg font-bold hover:shadow-xl transition"
             >
               Calculer mon score gratuitement →
             </Link>
             
-            <p className="text-sm text-gray-500 mt-4">
+            <p className="text-sm text-white/90 mt-4">
               ⏱️ 10 minutes • 7 parties simples
             </p>
           </div>

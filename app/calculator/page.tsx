@@ -94,7 +94,7 @@ export default function NewCalculatorPage() {
               <div className="space-y-8 mb-8">
                 {/* Secteur */}
                 <div className="bg-gray-50 p-6 rounded-xl mb-8">
-                  <label className="block text-sm font-semibold text-gray-900 mb-3">
+                  <label className="block text-base font-bold text-gray-900 mb-3">
                     Dans quel secteur opérez-vous ?
                   </label>
                   <select
@@ -113,8 +113,8 @@ export default function NewCalculatorPage() {
                 </div>
 
                 {/* Taille */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-3">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-4">
                     Taille de votre organisation
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -141,8 +141,8 @@ export default function NewCalculatorPage() {
                 </div>
 
                 {/* Présence agents IA */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                     Avez-vous des agents IA déployés dans votre organisation ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -189,8 +189,8 @@ export default function NewCalculatorPage() {
               <div className="space-y-6">
                 {/* Fonctionnement agents */}
                 {formData.presenceAgentsIA !== 'non' && (
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                       Comment fonctionnent vos agents IA actuellement ?
                     </label>
                     <p className="text-sm text-gray-500 mb-3">
@@ -242,8 +242,8 @@ export default function NewCalculatorPage() {
                 )}
 
                 {/* Zones interdites */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                     Existe-t-il des décisions interdites aux agents ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -291,8 +291,8 @@ export default function NewCalculatorPage() {
 
                 {/* Types d'agents */}
                 {formData.presenceAgentsIA !== 'non' && (
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                       Quels types d'agents avez-vous ? (plusieurs choix possibles)
                     </label>
                     <p className="text-sm text-gray-500 mb-3">
@@ -378,8 +378,8 @@ export default function NewCalculatorPage() {
 
               <div className="space-y-6">
                 {/* Comité de gouvernance */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                     Avez-vous un comité de gouvernance pour piloter vos agents IA ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -414,8 +414,8 @@ export default function NewCalculatorPage() {
                 </div>
 
                 {/* Charte de souveraineté */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                     Existe-t-il une charte ou politique écrite de souveraineté décisionnelle ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -467,8 +467,8 @@ export default function NewCalculatorPage() {
 
               <div className="space-y-6">
                 {/* Objectifs hiérarchisés */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                     Vos objectifs business sont-ils hiérarchisés et pondérés ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -503,8 +503,8 @@ export default function NewCalculatorPage() {
                 </div>
 
                 {/* Seuils de sécurité */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                     Avez-vous défini des seuils de sécurité non franchissables ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -556,8 +556,8 @@ export default function NewCalculatorPage() {
 
               <div className="space-y-6">
                 {/* Mandat explicite */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                     Chaque agent a-t-il un mandat explicite documenté ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -592,8 +592,8 @@ export default function NewCalculatorPage() {
                 </div>
 
                 {/* Responsable humain */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                     Les agents ont-ils un responsable humain identifié ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -645,8 +645,8 @@ export default function NewCalculatorPage() {
 
               <div className="space-y-6">
                 {/* Système de logs */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                     Avez-vous un système d'enregistrement complet des décisions ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -681,8 +681,8 @@ export default function NewCalculatorPage() {
                 </div>
 
                 {/* Mécanisme d'arrêt */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-2">
                     Existe-t-il un mécanisme d'arrêt d'urgence pour vos agents ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -734,8 +734,8 @@ export default function NewCalculatorPage() {
 
               <div className="space-y-6">
                 {/* Dépendance structurelle */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-3">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-3">
                     Quel % de votre chiffre d'affaires dépend d'agents IA de plateformes tierces ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -762,8 +762,8 @@ export default function NewCalculatorPage() {
                 </div>
 
                 {/* Dépendance données */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-3">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-3">
                     Quel % de vos décisions sont basées sur des données externes non contrôlées ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -790,8 +790,8 @@ export default function NewCalculatorPage() {
                 </div>
 
                 {/* Dépendance trafic */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-3">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-3">
                     Quel % de votre trafic provient d'agents publicitaires ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">
@@ -818,8 +818,8 @@ export default function NewCalculatorPage() {
                 </div>
 
                 {/* Jours bloqués */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-3">
+                <div className="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+                  <label className="block text-base font-bold text-gray-900 mb-3">
                     Combien de jours de chiffre d'affaires sont bloqués hors de votre contrôle ?
                   </label>
                   <p className="text-sm text-gray-500 mb-3">

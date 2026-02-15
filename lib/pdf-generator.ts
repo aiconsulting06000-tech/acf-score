@@ -146,7 +146,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.text(matExpl, 20, yPos)
   yPos += matExpl.length * 4 + 8
 
-  // Comparaison marché
+  // POSITIONNEMENT MARCHÉ AVEC GRAPHIQUE
   const stats = getMarketStats()
   doc.setDrawColor(200, 200, 200)
   doc.line(20, yPos, 190, yPos)
@@ -158,65 +158,89 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.text('Positionnement marché', 20, yPos)
   yPos += 8
 
+  // Graphique avec barres visuelles
+  doc.setFillColor(245, 245, 245)
+  doc.roundedRect(20, yPos, 170, 35, 3, 3, 'F')
+
+  // Barre fourchette basse
+  doc.setFillColor(200, 200, 220)
+  doc.roundedRect(25, yPos + 8, 40, 10, 2, 2, 'F')
   doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
-  doc.setTextColor(80, 80, 80)
-  const compLines = doc.splitTextToSize(`Fourchette basse: ${stats.lower} | Moyenne marché: ${stats.average} | Fourchette haute: ${stats.upper}`, 170)
-  doc.text(compLines, 20, yPos)
-  yPos += compLines.length * 4 + 2
-  doc.setTextColor(100, 100, 100)
-  doc.setFontSize(8)
-  doc.text(stats.source, 20, yPos)
-  yPos += 6
-  
-  const ecart = results.scoreGlobal - stats.average
+  doc.setTextColor(60, 60, 60)
+  doc.text(`Basse: ${stats.lower}`, 27, yPos + 14.5)
+
+  // Barre moyenne (plus large et visible)
+  doc.setFillColor(139, 92, 246)
+  doc.roundedRect(70, yPos + 8, 50, 10, 2, 2, 'F')
   doc.setFontSize(10)
   doc.setFont('helvetica', 'bold')
+  doc.setTextColor(255, 255, 255)
+  doc.text(`Moyenne: ${stats.average}`, 72, yPos + 14.5)
+
+  // Barre fourchette haute
+  doc.setFillColor(200, 200, 220)
+  doc.roundedRect(125, yPos + 8, 40, 10, 2, 2, 'F')
+  doc.setFontSize(9)
+  doc.setFont('helvetica', 'normal')
+  doc.setTextColor(60, 60, 60)
+  doc.text(`Haute: ${stats.upper}`, 127, yPos + 14.5)
+
+  // INTERPRÉTATION sous le graphique
+  yPos += 23
+  doc.setFontSize(10)
+  doc.setFont('helvetica', 'bold')
+  const ecart = results.scoreGlobal - stats.average
   if (ecart > 0) {
     doc.setTextColor(34, 197, 94)
-    const ecartLines = doc.splitTextToSize(`✓ Vous êtes à +${ecart} pts au-dessus de la moyenne`, 170)
-    doc.text(ecartLines, 20, yPos)
-    yPos += ecartLines.length * 5
+    doc.text(`✓ Vous êtes à +${ecart} pts au-dessus de la moyenne`, 25, yPos)
   } else {
     doc.setTextColor(239, 68, 68)
-    const ecartLines = doc.splitTextToSize(`⚠ Vous êtes à ${ecart} pts en-dessous de la moyenne`, 170)
-    doc.text(ecartLines, 20, yPos)
-    yPos += ecartLines.length * 5
+    doc.text(`⚠ Vous êtes à ${ecart} pts en-dessous de la moyenne`, 25, yPos)
   }
-  yPos += 10
 
-  doc.addPage()
-  yPos = 20
+  yPos += 6
+  doc.setFontSize(8)
+  doc.setFont('helvetica', 'normal')
+  doc.setTextColor(100, 100, 100)
+  doc.text(stats.source, 25, yPos)
 
-  // CHIFFRES QUI FONT PEUR
+  yPos += 15
+
+  // CHIFFRES COMPACTS (sur une seule ligne)
+  doc.setDrawColor(200, 200, 200)
+  doc.setLineWidth(0.5)
+  doc.line(20, yPos, 190, yPos)
+  yPos += 8
+
   doc.setTextColor(0, 0, 0)
-  doc.setFontSize(14)
+  doc.setFontSize(12)
   doc.setFont('helvetica', 'bold')
   doc.text('Les chiffres qui font peur', 20, yPos)
-  yPos += 10
+  yPos += 8
 
-  const chiffres = [
-    { stat: '73%', desc: 'des entreprises utilisent des agents IA sans gouvernance formalisée' },
-    { stat: '€2,4M', desc: 'de pertes moyennes dues à des décisions IA non contrôlées' },
-    { stat: '89%', desc: 'des dirigeants craignent une perte de contrôle stratégique' }
-  ]
+  // Une seule boîte compacte
+  doc.setFillColor(254, 226, 226)
+  doc.roundedRect(20, yPos, 170, 18, 2, 2, 'F')
 
-  chiffres.forEach(chiffre => {
-    doc.setFillColor(254, 226, 226)
-    doc.roundedRect(20, yPos, 170, 20, 2, 2, 'F')
-    doc.setFontSize(18)
-    doc.setFont('helvetica', 'bold')
-    doc.setTextColor(220, 38, 38)
-    doc.text(chiffre.stat, 25, yPos + 8)
-    doc.setFontSize(9)
-    doc.setFont('helvetica', 'normal')
-    doc.setTextColor(60, 60, 60)
-    const descLines = doc.splitTextToSize(chiffre.desc, 120)
-    doc.text(descLines, 60, yPos + 7)
-    yPos += 25
-  })
+  doc.setFontSize(14)
+  doc.setFont('helvetica', 'bold')
+  doc.setTextColor(220, 38, 38)
+  doc.text('73%', 25, yPos + 8)
+  doc.text('€2,4M', 68, yPos + 8)
+  doc.text('89%', 125, yPos + 8)
 
-  yPos += 5
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'normal')
+  doc.setTextColor(60, 60, 60)
+  const ch1 = doc.splitTextToSize('sans gouvernance', 35)
+  const ch2 = doc.splitTextToSize('pertes moyennes', 35)
+  const ch3 = doc.splitTextToSize('craignent perte', 35)
+  doc.text(ch1, 25, yPos + 12)
+  doc.text(ch2, 68, yPos + 12)
+  doc.text(ch3, 125, yPos + 12)
+
+  yPos += 25
 
   // Couches AVEC EXPLICATIONS PERSONNALISÉES
   doc.setDrawColor(200, 200, 200)
@@ -343,7 +367,46 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.addPage()
   yPos = 20
 
-  // CONTEXTE QUESTION PAR QUESTION
+  // 7 RISQUES EN DÉBUT DE PAGE 2
+  doc.setTextColor(0, 0, 0)
+  doc.setFontSize(14)
+  doc.setFont('helvetica', 'bold')
+  doc.text('Les 7 Risques Majeurs Sans Gouvernance Agentique', 20, yPos)
+  yPos += 10
+
+  const risques = [
+    { titre: '1. Décisions IA contraires aux intérêts business', desc: 'Agents qui optimisent métriques secondaires au détriment de rentabilité réelle' },
+    { titre: '2. Perte de contrôle stratégique', desc: 'Impossibilité de piloter ou corriger décisions automatisées en temps réel' },
+    { titre: '3. Dépendance critique aux plateformes', desc: 'Blocage Amazon/Google/Meta = arrêt activité pendant des semaines' },
+    { titre: '4. Responsabilité juridique engagée', desc: 'Vous êtes légalement responsable même sans contrôle des agents' },
+    { titre: '5. Érosion de marge incontrôlée', desc: 'Prix et promos automatiques détruisant rentabilité sans supervision' },
+    { titre: '6. Atteinte à l\'image de marque', desc: 'Actions non conformes à positionnement/valeurs diffusées par agents' },
+    { titre: '7. Incapacité d\'audit et correction', desc: 'Sans logs ni traçabilité, impossible comprendre ou corriger erreurs' }
+  ]
+
+  risques.forEach(risque => {
+    doc.setFillColor(254, 226, 226)
+    doc.roundedRect(20, yPos, 170, 15, 2, 2, 'F')
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(220, 38, 38)
+    doc.text(risque.titre, 25, yPos + 5)
+    doc.setFontSize(8)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(60, 60, 60)
+    const rLines = doc.splitTextToSize(risque.desc, 160)
+    doc.text(rLines, 25, yPos + 10)
+    yPos += 18
+  })
+
+  yPos += 10
+
+  // CONTEXTE QUESTION PAR QUESTION (APRÈS LES RISQUES)
+  doc.setDrawColor(200, 200, 200)
+  doc.setLineWidth(0.5)
+  doc.line(20, yPos, 190, yPos)
+  yPos += 8
+
   doc.setTextColor(0, 0, 0)
   doc.setFontSize(14)
   doc.setFont('helvetica', 'bold')
@@ -413,45 +476,20 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.text(`Dépendance trafic (sources non-owned) : ${formData.dependanceTrafic}%`, 20, yPos)
   yPos += 6
   doc.text(`Jours pour retrouver CA si blocage : ${formData.joursBloquesCA} jours`, 20, yPos)
-  yPos += 10
+  yPos += 15
 
-  // 7 RISQUES EN FIN DE RAPPORT
+  // LIEN ACTIF vers /contact
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
-  yPos += 8
-
-  doc.setTextColor(0, 0, 0)
-  doc.setFontSize(14)
-  doc.setFont('helvetica', 'bold')
-  doc.text('Les 7 Risques Majeurs Sans Gouvernance Agentique', 20, yPos)
   yPos += 10
 
-  const risques = [
-    { titre: '1. Décisions IA contraires aux intérêts business', desc: 'Agents qui optimisent métriques secondaires au détriment de rentabilité réelle' },
-    { titre: '2. Perte de contrôle stratégique', desc: 'Impossibilité de piloter ou corriger décisions automatisées en temps réel' },
-    { titre: '3. Dépendance critique aux plateformes', desc: 'Blocage Amazon/Google/Meta = arrêt activité pendant des semaines' },
-    { titre: '4. Responsabilité juridique engagée', desc: 'Vous êtes légalement responsable même sans contrôle des agents' },
-    { titre: '5. Érosion de marge incontrôlée', desc: 'Prix et promos automatiques détruisant rentabilité sans supervision' },
-    { titre: '6. Atteinte à l\'image de marque', desc: 'Actions non conformes à positionnement/valeurs diffusées par agents' },
-    { titre: '7. Incapacité d\'audit et correction', desc: 'Sans logs ni traçabilité, impossible comprendre ou corriger erreurs' }
-  ]
-
-  risques.forEach(risque => {
-    doc.setFillColor(254, 226, 226)
-    doc.roundedRect(20, yPos, 170, 15, 2, 2, 'F')
-    doc.setFontSize(10)
-    doc.setFont('helvetica', 'bold')
-    doc.setTextColor(220, 38, 38)
-    doc.text(risque.titre, 25, yPos + 5)
-    doc.setFontSize(8)
-    doc.setFont('helvetica', 'normal')
-    doc.setTextColor(60, 60, 60)
-    const rLines = doc.splitTextToSize(risque.desc, 160)
-    doc.text(rLines, 25, yPos + 10)
-    yPos += 18
+  doc.setTextColor(59, 130, 246)
+  doc.setFont('helvetica', 'underline')
+  doc.textWithLink('📞 Planifier un audit complet ACF®', 105, yPos, {
+    url: 'https://acf-score.vercel.app/contact',
+    align: 'center'
   })
-
   yPos += 10
 
   // Footer

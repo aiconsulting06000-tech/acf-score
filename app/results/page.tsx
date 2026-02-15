@@ -177,6 +177,48 @@ export default function ResultsPage() {
           </div>
         </div>
 
+        {/* INTERPRÉTATION GLOBALE + CTA */}
+        <div className={`rounded-xl p-8 mb-12 border-2 ${
+          results.scoreGlobal >= 70 ? 'bg-green-50 border-green-300' :
+          results.scoreGlobal >= 50 ? 'bg-blue-50 border-blue-300' :
+          results.scoreGlobal >= 30 ? 'bg-orange-50 border-orange-300' :
+          'bg-red-50 border-red-300'
+        }`}>
+          <h2 className={`text-2xl font-bold mb-4 ${
+            results.scoreGlobal >= 70 ? 'text-green-800' :
+            results.scoreGlobal >= 50 ? 'text-blue-800' :
+            results.scoreGlobal >= 30 ? 'text-orange-800' :
+            'text-red-800'
+          }`}>
+            {results.scoreGlobal >= 70 ? '✅ Excellente gouvernance agentique' :
+             results.scoreGlobal >= 50 ? '👍 Gouvernance solide, à renforcer' :
+             results.scoreGlobal >= 30 ? '⚠️ Gouvernance fragile, action requise' :
+             '🚨 Situation critique, agir d\'urgence'}
+          </h2>
+          <p className="text-gray-700 leading-relaxed mb-6 text-lg">
+            {results.scoreGlobal >= 70 ? 'Votre gouvernance agentique est robuste. Vous avez posé les fondations nécessaires pour contrôler vos agents IA. Continuez à affiner votre supervision et restez vigilant face à l\'évolution de l\'autonomie de vos agents.' :
+             results.scoreGlobal >= 50 ? 'Vous avez une base correcte mais des zones de fragilité persistent. Sans renforcement rapide, vous risquez une perte de contrôle à mesure que vos agents gagnent en autonomie. Les 3 actions prioritaires ci-dessous sont essentielles.' :
+             results.scoreGlobal >= 30 ? 'Votre gouvernance présente des failles critiques. Vous êtes exposé à des décisions IA contraires à vos intérêts business. Une action immédiate est nécessaire pour sécuriser votre organisation avant qu\'un incident majeur ne survienne.' :
+             'ALERTE MAXIMALE : Votre organisation est en danger immédiat. Sans gouvernance, vos agents IA peuvent prendre des décisions catastrophiques (érosion de marge, non-conformité, atteinte image). Un audit d\'urgence est impératif.'}
+          </p>
+          {results.scoreGlobal < 50 && (
+            <Link
+              href="/contact"
+              className="inline-block bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-bold text-lg shadow-xl transition"
+            >
+              🚨 Planifier un audit d'urgence
+            </Link>
+          )}
+          {results.scoreGlobal >= 50 && results.scoreGlobal < 70 && (
+            <Link
+              href="/contact"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition"
+            >
+              📞 Planifier un audit complet
+            </Link>
+          )}
+        </div>
+
         {/* BANNIÈRE MARCHÉ - VIOLET/ROSE */}
         <div className="bg-gradient-to-r from-purple-100 via-pink-100 to-purple-100 rounded-2xl shadow-xl p-8 mb-12 border-2 border-purple-300">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">📊 Positionnement marché</h2>
