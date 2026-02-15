@@ -16,53 +16,47 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     format: 'a4'
   })
 
-  let yPos = 20
+  let yPos = 15
 
+  // HEADER REDUIT (25mm au lieu de 40mm) + DATE SUR MEME LIGNE
   doc.setFillColor(139, 92, 246)
-  doc.rect(0, 0, 210, 40, 'F')
+  doc.rect(0, 0, 210, 25, 'F')
   
   doc.setTextColor(255, 255, 255)
-  doc.setFontSize(28)
+  doc.setFontSize(24)
   doc.setFont('helvetica', 'bold')
-  doc.text('Diagnostic ACF', 105, 20, { align: 'center' })
-  
-  doc.setFontSize(12)
-  doc.setFont('helvetica', 'normal')
-  doc.text('Evaluation de votre gouvernance agentique', 105, 30, { align: 'center' })
+  doc.text('Diagnostic ACF - ' + new Date().toLocaleDateString('fr-FR'), 105, 15, { align: 'center' })
 
-  yPos = 50
-  doc.setTextColor(100, 100, 100)
-  doc.setFontSize(10)
-  doc.text('Date : ' + new Date().toLocaleDateString('fr-FR'), 20, yPos)
-  yPos += 15
+  yPos = 32
 
   const colWidth = 58
   const startX = 17
 
+  // SCORES (3 COLONNES)
   const souvColor = getScoreColor(results.scoreSouverainete)
   doc.setFillColor(souvColor[0], souvColor[1], souvColor[2])
-  doc.roundedRect(startX, yPos, colWidth, 38, 3, 3, 'F')
+  doc.roundedRect(startX, yPos, colWidth, 35, 3, 3, 'F')
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(8)
   doc.setFont('helvetica', 'normal')
-  doc.text('SCORE DE SOUVERAINETE', startX + colWidth/2, yPos + 6, { align: 'center' })
-  doc.setFontSize(28)
+  doc.text('SCORE DE SOUVERAINETE', startX + colWidth/2, yPos + 5, { align: 'center' })
+  doc.setFontSize(26)
   doc.setFont('helvetica', 'bold')
-  doc.text(results.scoreSouverainete.toFixed(1).toString(), startX + colWidth/2, yPos + 18, { align: 'center' })
+  doc.text(results.scoreSouverainete.toFixed(1).toString(), startX + colWidth/2, yPos + 16, { align: 'center' })
   doc.setFontSize(9)
-  doc.text('/100', startX + colWidth/2 + 13, yPos + 18)
+  doc.text('/100', startX + colWidth/2 + 12, yPos + 16)
 
   const globalColor = getScoreColor(results.scoreGlobal)
   doc.setFillColor(globalColor[0], globalColor[1], globalColor[2])
-  doc.roundedRect(startX + colWidth + 3, yPos, colWidth, 38, 3, 3, 'F')
+  doc.roundedRect(startX + colWidth + 3, yPos, colWidth, 35, 3, 3, 'F')
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(8)
   doc.setFont('helvetica', 'bold')
-  doc.text('SCORE GLOBAL ACF', startX + colWidth + 3 + colWidth/2, yPos + 6, { align: 'center' })
-  doc.setFontSize(32)
-  doc.text(results.scoreGlobal.toString(), startX + colWidth + 3 + colWidth/2, yPos + 19, { align: 'center' })
-  doc.setFontSize(10)
-  doc.text('/100', startX + colWidth + 3 + colWidth/2 + 11, yPos + 19)
+  doc.text('SCORE GLOBAL ACF', startX + colWidth + 3 + colWidth/2, yPos + 5, { align: 'center' })
+  doc.setFontSize(28)
+  doc.text(results.scoreGlobal.toString(), startX + colWidth + 3 + colWidth/2, yPos + 17, { align: 'center' })
+  doc.setFontSize(9)
+  doc.text('/100', startX + colWidth + 3 + colWidth/2 + 10, yPos + 17)
 
   const getMaturiteColor = (niveau: number): [number, number, number] => {
     if (niveau === 0) return [100, 100, 100]
@@ -73,25 +67,26 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   
   const matColor = getMaturiteColor(results.niveauMaturite)
   doc.setFillColor(matColor[0], matColor[1], matColor[2])
-  doc.roundedRect(startX + (colWidth + 3) * 2, yPos, colWidth, 38, 3, 3, 'F')
+  doc.roundedRect(startX + (colWidth + 3) * 2, yPos, colWidth, 35, 3, 3, 'F')
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(8)
   doc.setFont('helvetica', 'normal')
-  doc.text('NIVEAU DE MATURITE', startX + (colWidth + 3) * 2 + colWidth/2, yPos + 6, { align: 'center' })
-  doc.setFontSize(28)
+  doc.text('NIVEAU DE MATURITE', startX + (colWidth + 3) * 2 + colWidth/2, yPos + 5, { align: 'center' })
+  doc.setFontSize(26)
   doc.setFont('helvetica', 'bold')
-  doc.text(results.niveauMaturite.toString(), startX + (colWidth + 3) * 2 + colWidth/2, yPos + 18, { align: 'center' })
+  doc.text(results.niveauMaturite.toString(), startX + (colWidth + 3) * 2 + colWidth/2, yPos + 16, { align: 'center' })
   doc.setFontSize(9)
-  doc.text('/3', startX + (colWidth + 3) * 2 + colWidth/2 + 7, yPos + 18)
+  doc.text('/3', startX + (colWidth + 3) * 2 + colWidth/2 + 6, yPos + 16)
 
-  yPos += 45
+  yPos += 40
 
+  // INTERPRETATION GLOBALE (COMPACTE)
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
-  yPos += 8
+  yPos += 6
 
-  doc.setFontSize(12)
+  doc.setFontSize(11)
   doc.setFont('helvetica', 'bold')
   const interpColor = results.scoreGlobal >= 70 ? [34, 197, 94] : results.scoreGlobal >= 50 ? [59, 130, 246] : results.scoreGlobal >= 30 ? [249, 115, 22] : [239, 68, 68]
   doc.setTextColor(interpColor[0], interpColor[1], interpColor[2])
@@ -100,81 +95,77 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
                       results.scoreGlobal >= 30 ? 'Gouvernance fragile, action requise' :
                       'Situation critique, agir d\'urgence'
   doc.text(interpTitle, 105, yPos, { align: 'center' })
-  yPos += 8
+  yPos += 6
 
-  doc.setFontSize(9)
+  doc.setFontSize(8)
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(60, 60, 60)
   const interpMsg = results.scoreGlobal >= 70 ? 'Votre gouvernance agentique est robuste. Vous avez pose les fondations necessaires pour controler vos agents IA.' :
-                    results.scoreGlobal >= 50 ? 'Vous avez une base correcte mais des zones de fragilite persistent. Sans renforcement rapide, vous risquez une perte de controle a mesure que vos agents gagnent en autonomie. Les 3 actions prioritaires ci-dessous sont essentielles.' :
+                    results.scoreGlobal >= 50 ? 'Vous avez une base correcte mais des zones de fragilite persistent. Sans renforcement rapide, vous risquez une perte de controle a mesure que vos agents gagnent en autonomie.' :
                     results.scoreGlobal >= 30 ? 'Votre gouvernance presente des failles critiques. Vous etes expose a des decisions IA contraires a vos interets business. Action immediate necessaire.' :
                     'ALERTE : Votre organisation est en danger. Sans gouvernance, vos agents IA peuvent prendre des decisions catastrophiques. Audit d\'urgence requis.'
   const interpLines = doc.splitTextToSize(interpMsg, 170)
   doc.text(interpLines, 20, yPos)
-  yPos += interpLines.length * 4 + 8
+  yPos += interpLines.length * 3.5 + 6
 
-  if (yPos > 240) {
-    doc.addPage()
-    yPos = 20
-  }
-
+  // POSITIONNEMENT MARCHE (COMPACT)
   const stats = getMarketStats()
   doc.setDrawColor(200, 200, 200)
   doc.line(20, yPos, 190, yPos)
-  yPos += 8
+  yPos += 6
 
   doc.setTextColor(0, 0, 0)
-  doc.setFontSize(12)
+  doc.setFontSize(11)
   doc.setFont('helvetica', 'bold')
   doc.text('Positionnement marche', 105, yPos, { align: 'center' })
-  yPos += 10
+  yPos += 8
 
   const boxWidth = 50
   const boxStartX = 30
 
   doc.setFillColor(245, 243, 255)
-  doc.roundedRect(boxStartX, yPos, boxWidth, 20, 2, 2, 'F')
+  doc.roundedRect(boxStartX, yPos, boxWidth, 18, 2, 2, 'F')
   doc.setDrawColor(200, 200, 220)
-  doc.roundedRect(boxStartX, yPos, boxWidth, 20, 2, 2, 'S')
-  doc.setFontSize(8)
+  doc.roundedRect(boxStartX, yPos, boxWidth, 18, 2, 2, 'S')
+  doc.setFontSize(7)
   doc.setTextColor(100, 100, 100)
-  doc.text('Fourchette basse', boxStartX + boxWidth/2, yPos + 6, { align: 'center' })
-  doc.setFontSize(16)
+  doc.text('Fourchette basse', boxStartX + boxWidth/2, yPos + 5, { align: 'center' })
+  doc.setFontSize(14)
   doc.setFont('helvetica', 'bold')
   doc.setTextColor(139, 92, 246)
-  doc.text(stats.lower.toString(), boxStartX + boxWidth/2, yPos + 15, { align: 'center' })
+  doc.text(stats.lower.toString(), boxStartX + boxWidth/2, yPos + 13, { align: 'center' })
 
   doc.setFillColor(255, 255, 255)
-  doc.roundedRect(boxStartX + boxWidth + 5, yPos, boxWidth, 20, 2, 2, 'F')
+  doc.roundedRect(boxStartX + boxWidth + 5, yPos, boxWidth, 18, 2, 2, 'F')
   doc.setDrawColor(139, 92, 246)
   doc.setLineWidth(1.5)
-  doc.roundedRect(boxStartX + boxWidth + 5, yPos, boxWidth, 20, 2, 2, 'S')
-  doc.setFontSize(8)
+  doc.roundedRect(boxStartX + boxWidth + 5, yPos, boxWidth, 18, 2, 2, 'S')
+  doc.setFontSize(7)
   doc.setTextColor(100, 100, 100)
   doc.setFont('helvetica', 'normal')
-  doc.text('Moyenne marche', boxStartX + boxWidth + 5 + boxWidth/2, yPos + 6, { align: 'center' })
-  doc.setFontSize(18)
-  doc.setFont('helvetica', 'bold')
-  doc.setTextColor(236, 72, 153)
-  doc.text(stats.average.toString(), boxStartX + boxWidth + 5 + boxWidth/2, yPos + 15, { align: 'center' })
-
-  doc.setFillColor(245, 243, 255)
-  doc.roundedRect(boxStartX + (boxWidth + 5) * 2, yPos, boxWidth, 20, 2, 2, 'F')
-  doc.setDrawColor(200, 200, 220)
-  doc.setLineWidth(0.5)
-  doc.roundedRect(boxStartX + (boxWidth + 5) * 2, yPos, boxWidth, 20, 2, 2, 'S')
-  doc.setFontSize(8)
-  doc.setTextColor(100, 100, 100)
-  doc.setFont('helvetica', 'normal')
-  doc.text('Fourchette haute', boxStartX + (boxWidth + 5) * 2 + boxWidth/2, yPos + 6, { align: 'center' })
+  doc.text('Moyenne marche', boxStartX + boxWidth + 5 + boxWidth/2, yPos + 5, { align: 'center' })
   doc.setFontSize(16)
   doc.setFont('helvetica', 'bold')
+  doc.setTextColor(236, 72, 153)
+  doc.text(stats.average.toString(), boxStartX + boxWidth + 5 + boxWidth/2, yPos + 13, { align: 'center' })
+
+  doc.setFillColor(245, 243, 255)
+  doc.roundedRect(boxStartX + (boxWidth + 5) * 2, yPos, boxWidth, 18, 2, 2, 'F')
+  doc.setDrawColor(200, 200, 220)
+  doc.setLineWidth(0.5)
+  doc.roundedRect(boxStartX + (boxWidth + 5) * 2, yPos, boxWidth, 18, 2, 2, 'S')
+  doc.setFontSize(7)
+  doc.setTextColor(100, 100, 100)
+  doc.setFont('helvetica', 'normal')
+  doc.text('Fourchette haute', boxStartX + (boxWidth + 5) * 2 + boxWidth/2, yPos + 5, { align: 'center' })
+  doc.setFontSize(14)
+  doc.setFont('helvetica', 'bold')
   doc.setTextColor(139, 92, 246)
-  doc.text(stats.upper.toString(), boxStartX + (boxWidth + 5) * 2 + boxWidth/2, yPos + 15, { align: 'center' })
+  doc.text(stats.upper.toString(), boxStartX + (boxWidth + 5) * 2 + boxWidth/2, yPos + 13, { align: 'center' })
 
-  yPos += 26
+  yPos += 22
 
-  doc.setFontSize(10)
+  doc.setFontSize(9)
   doc.setFont('helvetica', 'bold')
   const ecart = results.scoreGlobal - stats.average
   if (ecart > 0) {
@@ -184,72 +175,64 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     doc.setTextColor(239, 68, 68)
     doc.text('Vous etes a ' + ecart + ' points en-dessous de la moyenne', 105, yPos, { align: 'center' })
   }
-  yPos += 6
-  doc.setFontSize(8)
+  yPos += 3
+  doc.setFontSize(7)
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(100, 100, 100)
   doc.text(stats.source, 105, yPos, { align: 'center' })
-  yPos += 12
+  yPos += 8
 
-  if (yPos > 200) {
-    doc.addPage()
-    yPos = 20
-  }
-
+  // LES 3 ACTIONS PRIORITAIRES (COMPACT POUR TENIR SUR PAGE 1)
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
-  yPos += 8
+  yPos += 6
 
   doc.setTextColor(0, 0, 0)
-  doc.setFontSize(12)
+  doc.setFontSize(11)
   doc.setFont('helvetica', 'bold')
   doc.text('Vos 3 Priorites d\'Action', 105, yPos, { align: 'center' })
-  yPos += 10
+  yPos += 8
 
   results.priorites.slice(0, 3).forEach((priorite, index) => {
-    if (yPos > 255) {
-      doc.addPage()
-      yPos = 20
-    }
-
     doc.setFillColor(139, 92, 246)
-    doc.circle(25, yPos + 2, 4, 'F')
+    doc.circle(23, yPos + 2, 3.5, 'F')
     doc.setTextColor(255, 255, 255)
-    doc.setFontSize(10)
+    doc.setFontSize(9)
     doc.setFont('helvetica', 'bold')
-    doc.text((index + 1).toString(), 25, yPos + 3.5, { align: 'center' })
+    doc.text((index + 1).toString(), 23, yPos + 3, { align: 'center' })
     
     doc.setTextColor(0, 0, 0)
-    doc.setFontSize(10)
+    doc.setFontSize(9)
     doc.setFont('helvetica', 'bold')
-    doc.text(priorite.titre, 32, yPos + 3)
-    yPos += 6
+    doc.text(priorite.titre, 30, yPos + 3)
+    yPos += 5
     
     doc.setFont('helvetica', 'normal')
-    doc.setFontSize(9)
+    doc.setFontSize(8)
     doc.setTextColor(60, 60, 60)
     const prioLines = doc.splitTextToSize(priorite.description, 155)
-    doc.text(prioLines, 32, yPos)
-    yPos += prioLines.length * 4 + 2
+    doc.text(prioLines, 30, yPos)
+    yPos += prioLines.length * 3.5 + 2
     
-    doc.setFontSize(7)
+    doc.setFontSize(6)
     doc.setFillColor(236, 72, 153)
-    doc.roundedRect(32, yPos, 20, 5, 1, 1, 'F')
+    doc.roundedRect(30, yPos, 18, 4, 1, 1, 'F')
     doc.setTextColor(255, 255, 255)
-    doc.text('Couche ' + priorite.couche, 42, yPos + 3.5, { align: 'center' })
+    doc.text('Couche ' + priorite.couche, 39, yPos + 2.5, { align: 'center' })
     
-    yPos += 10
+    yPos += 7
   })
 
+  // NOUVELLE PAGE POUR LES 4 COUCHES
   doc.addPage()
   yPos = 20
 
   doc.setTextColor(0, 0, 0)
-  doc.setFontSize(14)
+  doc.setFontSize(13)
   doc.setFont('helvetica', 'bold')
   doc.text('Analyse des 4 Couches Operationnelles', 20, yPos)
-  yPos += 10
+  yPos += 8
 
   const couches = [
     { 
@@ -287,35 +270,35 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   ]
 
   couches.forEach((couche) => {
-    if (yPos > 245) {
+    if (yPos > 250) {
       doc.addPage()
       yPos = 20
     }
 
-    doc.setFontSize(11)
+    doc.setFontSize(10)
     doc.setFont('helvetica', 'bold')
     doc.setTextColor(0, 0, 0)
     doc.text(couche.nom, 20, yPos)
     
-    doc.setFontSize(16)
+    doc.setFontSize(15)
     const scoreColor = couche.score >= 20 ? [34, 197, 94] : couche.score >= 12 ? [249, 115, 22] : [239, 68, 68]
     doc.setTextColor(scoreColor[0], scoreColor[1], scoreColor[2])
     doc.text(couche.score + '/25', 180, yPos)
     
-    yPos += 6
-    doc.setFontSize(8)
+    yPos += 5
+    doc.setFontSize(7)
     doc.setFont('helvetica', 'normal')
     doc.setTextColor(100, 100, 100)
     const descLines = doc.splitTextToSize(couche.desc, 160)
     doc.text(descLines, 20, yPos)
     yPos += descLines.length * 3 + 2
     
-    doc.setFontSize(9)
+    doc.setFontSize(8)
     doc.setTextColor(60, 60, 60)
     const expl = couche.score >= 20 ? couche.explGood : couche.score >= 12 ? couche.explMed : couche.explBad
     const explLines = doc.splitTextToSize(expl, 160)
     doc.text(explLines, 20, yPos)
-    yPos += explLines.length * 4 + 3
+    yPos += explLines.length * 3.5 + 2
     
     doc.setDrawColor(220, 220, 220)
     doc.setLineWidth(2)
@@ -326,10 +309,11 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     doc.setLineWidth(2)
     doc.line(20, yPos, 20 + progressWidth, yPos)
     
-    yPos += 10
+    yPos += 8
   })
 
-  if (yPos > 220) {
+  // CHIFFRES QUI FONT PEUR
+  if (yPos > 225) {
     doc.addPage()
     yPos = 20
   }
@@ -337,56 +321,57 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
-  yPos += 8
+  yPos += 6
 
   doc.setTextColor(0, 0, 0)
-  doc.setFontSize(12)
+  doc.setFontSize(11)
   doc.setFont('helvetica', 'bold')
   doc.text('Les chiffres qui font peur', 105, yPos, { align: 'center' })
-  yPos += 10
+  yPos += 8
 
   const chiffreWidth = 50
   const chiffreStartX = 30
 
   doc.setFillColor(254, 226, 226)
-  doc.roundedRect(chiffreStartX, yPos, chiffreWidth, 16, 2, 2, 'F')
-  doc.setFontSize(14)
+  doc.roundedRect(chiffreStartX, yPos, chiffreWidth, 14, 2, 2, 'F')
+  doc.setFontSize(12)
   doc.setFont('helvetica', 'bold')
   doc.setTextColor(220, 38, 38)
-  doc.text('73%', chiffreStartX + chiffreWidth/2, yPos + 6, { align: 'center' })
-  doc.setFontSize(7)
+  doc.text('73%', chiffreStartX + chiffreWidth/2, yPos + 5, { align: 'center' })
+  doc.setFontSize(6)
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(60, 60, 60)
   const ch1 = doc.splitTextToSize('sans gouvernance', chiffreWidth - 4)
-  doc.text(ch1, chiffreStartX + chiffreWidth/2, yPos + 10, { align: 'center' })
+  doc.text(ch1, chiffreStartX + chiffreWidth/2, yPos + 9, { align: 'center' })
 
   doc.setFillColor(254, 226, 226)
-  doc.roundedRect(chiffreStartX + chiffreWidth + 5, yPos, chiffreWidth, 16, 2, 2, 'F')
-  doc.setFontSize(14)
+  doc.roundedRect(chiffreStartX + chiffreWidth + 5, yPos, chiffreWidth, 14, 2, 2, 'F')
+  doc.setFontSize(12)
   doc.setFont('helvetica', 'bold')
   doc.setTextColor(220, 38, 38)
-  doc.text('2,4M', chiffreStartX + chiffreWidth + 5 + chiffreWidth/2, yPos + 6, { align: 'center' })
-  doc.setFontSize(7)
+  doc.text('2,4M', chiffreStartX + chiffreWidth + 5 + chiffreWidth/2, yPos + 5, { align: 'center' })
+  doc.setFontSize(6)
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(60, 60, 60)
   const ch2 = doc.splitTextToSize('pertes moyennes', chiffreWidth - 4)
-  doc.text(ch2, chiffreStartX + chiffreWidth + 5 + chiffreWidth/2, yPos + 10, { align: 'center' })
+  doc.text(ch2, chiffreStartX + chiffreWidth + 5 + chiffreWidth/2, yPos + 9, { align: 'center' })
 
   doc.setFillColor(254, 226, 226)
-  doc.roundedRect(chiffreStartX + (chiffreWidth + 5) * 2, yPos, chiffreWidth, 16, 2, 2, 'F')
-  doc.setFontSize(14)
+  doc.roundedRect(chiffreStartX + (chiffreWidth + 5) * 2, yPos, chiffreWidth, 14, 2, 2, 'F')
+  doc.setFontSize(12)
   doc.setFont('helvetica', 'bold')
   doc.setTextColor(220, 38, 38)
-  doc.text('89%', chiffreStartX + (chiffreWidth + 5) * 2 + chiffreWidth/2, yPos + 6, { align: 'center' })
-  doc.setFontSize(7)
+  doc.text('89%', chiffreStartX + (chiffreWidth + 5) * 2 + chiffreWidth/2, yPos + 5, { align: 'center' })
+  doc.setFontSize(6)
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(60, 60, 60)
   const ch3 = doc.splitTextToSize('craignent perte', chiffreWidth - 4)
-  doc.text(ch3, chiffreStartX + (chiffreWidth + 5) * 2 + chiffreWidth/2, yPos + 10, { align: 'center' })
+  doc.text(ch3, chiffreStartX + (chiffreWidth + 5) * 2 + chiffreWidth/2, yPos + 9, { align: 'center' })
 
-  yPos += 22
+  yPos += 18
 
-  if (yPos > 220) {
+  // 7 RISQUES MAJEURS
+  if (yPos > 225) {
     doc.addPage()
     yPos = 20
   }
@@ -394,13 +379,13 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
-  yPos += 8
+  yPos += 6
 
   doc.setTextColor(0, 0, 0)
-  doc.setFontSize(14)
+  doc.setFontSize(12)
   doc.setFont('helvetica', 'bold')
   doc.text('Les 7 Risques Majeurs Sans Gouvernance Agentique', 20, yPos)
-  yPos += 10
+  yPos += 8
 
   const risques = [
     { titre: '1. Decisions IA contraires aux interets business', desc: 'Agents qui optimisent metriques secondaires au detriment de rentabilite reelle' },
@@ -413,28 +398,29 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   ]
 
   risques.forEach(risque => {
-    if (yPos > 265) {
+    if (yPos > 268) {
       doc.addPage()
       yPos = 20
     }
 
     doc.setFillColor(254, 226, 226)
-    doc.roundedRect(20, yPos, 170, 15, 2, 2, 'F')
-    doc.setFontSize(10)
+    doc.roundedRect(20, yPos, 170, 13, 2, 2, 'F')
+    doc.setFontSize(9)
     doc.setFont('helvetica', 'bold')
     doc.setTextColor(220, 38, 38)
-    doc.text(risque.titre, 25, yPos + 5)
-    doc.setFontSize(8)
+    doc.text(risque.titre, 25, yPos + 4)
+    doc.setFontSize(7)
     doc.setFont('helvetica', 'normal')
     doc.setTextColor(60, 60, 60)
     const rLines = doc.splitTextToSize(risque.desc, 160)
-    doc.text(rLines, 25, yPos + 10)
-    yPos += 18
+    doc.text(rLines, 25, yPos + 9)
+    yPos += 15
   })
 
-  yPos += 10
+  yPos += 8
 
-  if (yPos > 220) {
+  // CONTEXTE DETAILLE
+  if (yPos > 225) {
     doc.addPage()
     yPos = 20
   }
@@ -442,15 +428,15 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
-  yPos += 8
+  yPos += 6
 
   doc.setTextColor(0, 0, 0)
-  doc.setFontSize(14)
+  doc.setFontSize(12)
   doc.setFont('helvetica', 'bold')
   doc.text('Contexte detaille du diagnostic', 20, yPos)
-  yPos += 10
+  yPos += 8
 
-  doc.setFontSize(10)
+  doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(60, 60, 60)
   
@@ -463,7 +449,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     'autre': 'Autre secteur'
   }
   doc.text('Secteur : ' + (secteurLabels[formData.secteur] || formData.secteur), 20, yPos)
-  yPos += 6
+  yPos += 5
 
   const tailleLabels: Record<string, string> = {
     'tpe': 'TPE (< 10 salaries)',
@@ -472,7 +458,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     'ge': 'Grande Entreprise (> 5000 salaries)'
   }
   doc.text('Taille : ' + (tailleLabels[formData.tailleEntreprise] || formData.tailleEntreprise), 20, yPos)
-  yPos += 6
+  yPos += 5
 
   const presenceLabels: Record<string, string> = {
     'non': 'Aucun agent IA',
@@ -480,7 +466,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     'nombreux': 'Nombreux agents deployes'
   }
   doc.text('Presence agents IA : ' + (presenceLabels[formData.presenceAgentsIA] || formData.presenceAgentsIA), 20, yPos)
-  yPos += 6
+  yPos += 5
 
   const maturiteLabels: Record<string, string> = {
     'regles-fixes': 'Regles fixes (Niveau 0)',
@@ -490,7 +476,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   }
   const fonctLines = doc.splitTextToSize('Fonctionnement : ' + (maturiteLabels[formData.fonctionnementAgents] || formData.fonctionnementAgents), 170)
   doc.text(fonctLines, 20, yPos)
-  yPos += fonctLines.length * 6 + 2
+  yPos += fonctLines.length * 5 + 2
 
   if (formData.typesAgents && formData.typesAgents.length > 0) {
     const typesLabels: Record<string, string> = {
@@ -503,19 +489,19 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     const typesTexte = formData.typesAgents.map(t => typesLabels[t] || t).join(', ')
     const typesLines = doc.splitTextToSize('Types d\'agents : ' + typesTexte, 170)
     doc.text(typesLines, 20, yPos)
-    yPos += typesLines.length * 6 + 4
+    yPos += typesLines.length * 5 + 3
   }
 
   doc.text('Dependance structurelle (CA plateformes) : ' + formData.dependanceStructurelle + '%', 20, yPos)
-  yPos += 6
+  yPos += 5
   doc.text('Dependance donnees (detenues par tiers) : ' + formData.dependanceDonnees + '%', 20, yPos)
-  yPos += 6
+  yPos += 5
   doc.text('Dependance trafic (sources non-owned) : ' + formData.dependanceTrafic + '%', 20, yPos)
-  yPos += 6
+  yPos += 5
   doc.text('Jours pour retrouver CA si blocage : ' + formData.joursBloquesCA + ' jours', 20, yPos)
-  yPos += 15
+  yPos += 12
 
-  if (yPos > 260) {
+  if (yPos > 265) {
     doc.addPage()
     yPos = 20
   }
@@ -523,7 +509,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
-  yPos += 10
+  yPos += 8
 
   doc.setTextColor(59, 130, 246)
   doc.setFont('helvetica', 'underline')
@@ -531,14 +517,14 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     url: 'https://acf-score.vercel.app/contact',
     align: 'center'
   })
-  yPos += 10
+  yPos += 8
 
-  doc.setFontSize(9)
+  doc.setFontSize(8)
   doc.setTextColor(100, 100, 100)
   doc.setFont('helvetica', 'italic')
   doc.text('Ce diagnostic est une evaluation indicative basee sur vos reponses.', 105, yPos, { align: 'center' })
-  doc.text('Pour un audit complet et certifie ACF, contactez un expert certifie.', 105, yPos + 5, { align: 'center' })
-  yPos += 12
+  doc.text('Pour un audit complet et certifie ACF, contactez un expert certifie.', 105, yPos + 4, { align: 'center' })
+  yPos += 10
   doc.setFont('helvetica', 'normal')
   doc.text('Agentic Commerce Framework - Methodologie propriete developpee par Vincent DORANGE', 105, yPos, { align: 'center' })
 

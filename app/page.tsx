@@ -154,7 +154,7 @@ export default function LandingPage() {
         </div>
 
         {/* 4) Chiffres qui font peur */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-12">
+        <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-xl p-8 md:p-12 mb-12 border-2 border-purple-200">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             Les chiffres qui font peur
           </h2>
@@ -178,7 +178,7 @@ export default function LandingPage() {
         </div>
 
         {/* 5) Risques */}
-        <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl shadow-xl p-8 md:p-12 border-2 border-red-300 mb-12">
+        <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl shadow-xl p-8 md:p-12 border-2 border-pink-200 mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
             Sans gouvernance agentique robuste, vous risquez :
           </h2>

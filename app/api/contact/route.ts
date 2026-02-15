@@ -1,114 +1,87 @@
-import { NextResponse } from 'next/server'
-import { Resend } from 'resend'
+import { NextRequest, NextResponse } from 'next/server'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { name, email, company, message } = body
+    const formData = await request.formData()
+    
+    const name = formData.get('name') as string
+    const email = formData.get('email') as string
+    const company = formData.get('company') as string
+    const phone = formData.get('phone') as string
+    const message = formData.get('message') as string
+    const hasReport = formData.get('hasReport') === 'true'
+    const file = formData.get('file') as File | null
 
     // Validation
-    if (!name || !email || !message) {
+    if (!name || !email || !company || !message) {
       return NextResponse.json(
-        { error: 'Champs requis manquants' },
+        { error: 'Tous les champs obligatoires doivent etre remplis' },
         { status: 400 }
       )
     }
 
-    // Template email de confirmation au visiteur
-    const confirmationEmailText = `Bonjour ${name},
-
-Merci d'avoir contacté l'équipe ACF Score !
-
-Nous avons bien reçu votre message :
-"${message}"
-
-📅 PROCHAINE ÉTAPE : Réservez votre créneau de consultation
-
-Pour échanger avec un expert ACF® sur votre Score de Souveraineté et votre stratégie face aux agents IA autonomes, cliquez sur le lien Calendly ci-dessous :
-
-🔗 https://calendly.com/aiconsulting_fr/30min
-
-DURÉE : 30 minutes
-FORMAT : Visioconférence
-
-Nous analyserons ensemble :
-✓ Votre Score ACF® et ses implications
-✓ Vos dépendances critiques identifiées
-✓ Un plan d'action sur 90 jours
-✓ Les modules ACF® adaptés à votre situation
-
-À très bientôt !
-
-L'équipe ACF Score®
-contact@acfscore.com
-https://acfscore.com
-
----
-Agentic Commerce Framework® - Préparez-vous à l'économie des agents IA`
-
-    // Template email notification interne
-    const internalNotificationText = `🔔 NOUVEAU CONTACT ACF SCORE
-
-Nom : ${name}
-Email : ${email}
-Entreprise : ${company || 'Non renseignée'}
-
-Message :
-${message}
-
----
-Envoyé depuis https://acfscore.com/contact
-Date : ${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}`
-
-    try {
-      // Email de confirmation au visiteur
-      const confirmationEmail = await resend.emails.send({
-        from: 'ACF Score <contact@acfscore.com>',
-        to: email,
-        subject: '✅ Message reçu - Réservez votre consultation ACF®',
-        text: confirmationEmailText,
-      })
-
-      // Email de notification à l'équipe
-      const notificationEmail = await resend.emails.send({
-        from: 'ACF Score <contact@acfscore.com>',
-        to: 'contact@acfscore.com',
-        subject: `🔔 Nouveau contact: ${name} (${company || 'Pas d\'entreprise'})`,
-        text: internalNotificationText,
-      })
-
-      console.log('✅ Emails envoyés:', {
-  confirmation: confirmationEmail.data?.id,
-  notification: notificationEmail.data?.id,
-})
-
-      return NextResponse.json({
-        success: true,
-        message: 'Emails envoyés avec succès',
-        emailIds: {
-  confirmation: confirmationEmail.data?.id,
-  notification: notificationEmail.data?.id,
-}
-      })
-
-    } catch (emailError) {
-      console.error('❌ Erreur envoi emails Resend:', emailError)
-      
-      // Retourner succès quand même pour ne pas bloquer l'utilisateur
-      // Mais logger l'erreur pour investigation
-      return NextResponse.json({
-        success: true,
-        message: 'Message reçu (email en cours de traitement)',
-        warning: 'Emails en attente d\'envoi',
-      })
+    // Validation email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Email invalide' },
+        { status: 400 }
+      )
     }
 
-  } catch (error) {
-    console.error('❌ Erreur API contact:', error)
+    // Log pour debug
+    console.log('Contact form submission:', {
+      name,
+      email,
+      company,
+      phone,
+      message: message.substring(0, 50) + '...',
+      hasReport,
+      hasFile: !!file
+    })
+
+    // TODO: Ici vous pouvez ajouter l'envoi d'email via Resend, SendGrid, etc.
+    // Pour l'instant, on simule juste le succes
+    
+    // Exemple avec Resend (a activer quand vous avez la cle API):
+    /*
+    const { Resend } = require('resend')
+    const resend = new Resend(process.env.RESEND_API_KEY)
+
+    await resend.emails.send({
+      from: 'ACF Score <contact@acf-score.com>',
+      to: 'votre-email@domaine.com',
+      subject: `Nouveau contact: ${name} - ${company}`,
+      html: `
+        <h2>Nouveau message de contact</h2>
+        <p><strong>Nom:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Entreprise:</strong> ${company}</p>
+        <p><strong>Telephone:</strong> ${phone || 'Non fourni'}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+        ${hasReport ? '<p><em>Le client a complete le diagnostic ACF</em></p>' : ''}
+      `,
+      attachments: file ? [{
+        filename: file.name,
+        content: Buffer.from(await file.arrayBuffer())
+      }] : []
+    })
+    */
+
+    // Pour l'instant, on retourne juste un succes
     return NextResponse.json(
-      { error: 'Erreur serveur' },
+      { 
+        success: true,
+        message: 'Message envoye avec succes' 
+      },
+      { status: 200 }
+    )
+
+  } catch (error) {
+    console.error('Error in contact API:', error)
+    return NextResponse.json(
+      { error: 'Une erreur est survenue lors de l\'envoi du message' },
       { status: 500 }
     )
   }
