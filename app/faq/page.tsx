@@ -2,189 +2,147 @@
 
 import { useState } from 'react'
 import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import Link from 'next/link'
 
 export default function FAQPage() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   const faqs = [
     {
-      category: "Définitions",
-      questions: [
-        {
-          q: "Qu'est-ce que l'Agentic Commerce ?",
-          a: "L'Agentic Commerce est l'évolution du e-commerce où des agents IA autonomes prennent des décisions opérationnelles (pricing, promotions, stocks, recommandations) en temps réel, sans intervention humaine systématique. Ces agents analysent les données, apprennent des comportements, et optimisent les performances business de manière continue."
-        },
-        {
-          q: "Qu'est-ce que la souveraineté opérationnelle (ou agentique) ?",
-          a: "La souveraineté opérationnelle désigne la capacité d'une organisation à garder le contrôle stratégique sur ses opérations même quand des agents IA autonomes prennent des décisions. Cela implique : définir les limites des agents, pouvoir les arrêter, comprendre leurs décisions, et ne pas dépendre entièrement de fournisseurs externes. Un score de souveraineté élevé signifie que vous maîtrisez votre destin opérationnel."
-        },
-        {
-          q: "Qu'est-ce qu'un agent IA autonome ?",
-          a: "Un agent IA autonome est un système logiciel capable de percevoir son environnement, prendre des décisions et agir pour atteindre des objectifs définis, sans supervision humaine constante. Exemples : agent de pricing qui ajuste les prix selon la demande, agent de supply qui passe des commandes fournisseurs, agent de recommandation qui personnalise l'expérience client. Contrairement à une simple règle automatisée, un agent apprend et s'adapte."
-        }
-      ]
+      question: "Qu'est-ce que la gouvernance agentique ?",
+      answer: "La gouvernance agentique est un cadre méthodologique qui permet aux organisations de contrôler, superviser et optimiser les décisions prises par des agents IA autonomes. Elle garantit que ces agents opèrent dans l'intérêt stratégique de l'entreprise, tout en respectant les contraintes réglementaires et éthiques."
     },
     {
-      category: "Calculateur",
-      questions: [
-        {
-          q: "Combien de temps dure le diagnostic ?",
-          a: "Le diagnostic complet dure entre 10 et 15 minutes. Il se compose de 7 étapes progressives couvrant votre contexte, votre maturité agentique, les 4 couches du framework ACF®, et vos dépendances critiques."
-        },
-        {
-          q: "Comment est calculé mon Score Global ACF® ?",
-          a: "Le Score Global ACF® (/100) se base sur 4 couches opérationnelles notées chacune sur 25 points : (1) Gouvernance & Souveraineté, (2) Politique de Décision, (3) Système d'Agents, (4) Exécution & Supervision. Chaque couche évalue la présence et la maturité de mécanismes de contrôle essentiels."
-        },
-        {
-          q: "Qu'est-ce que le Niveau de Maturité (/3) ?",
-          a: "Le Niveau de Maturité évalue l'autonomie actuelle de vos agents IA : Niveau 0 (règles fixes), Niveau 1 (agents assistés, proposent mais humains valident), Niveau 2 (agents décident dans un cadre strict), Niveau 3 (agents autonomes qui apprennent). Plus le niveau est élevé, plus la gouvernance est critique."
-        },
-        {
-          q: "Qu'est-ce que le Score de Souveraineté (/100) ?",
-          a: "Le Score de Souveraineté mesure votre capacité à garder le contrôle stratégique sur vos opérations. Il évalue : l'existence d'une gouvernance, la capacité à arrêter les agents (kill switch), la traçabilité des décisions, l'indépendance vis-à-vis des fournisseurs externes, et la définition de zones non-délégables aux agents."
-        }
-      ]
+      question: "Pourquoi ai-je besoin du score ACF® ?",
+      answer: "Le score ACF® vous permet d'évaluer objectivement la robustesse de votre gouvernance agentique sur 4 dimensions critiques : Gouvernance & Souveraineté, Politique de Décision, Système d'Agents, et Exécution & Supervision. Il identifie vos zones de vulnérabilité et vos priorités d'action avant qu'un problème ne survienne."
     },
     {
-      category: "Scores & Résultats",
-      questions: [
-        {
-          q: "Que signifie un score ACF® de 0/100 ?",
-          a: "Un score de 0/100 signifie une absence totale de gouvernance agentique. Vous n'avez probablement pas de comité de gouvernance, pas de documentation des règles de décision, pas de mécanisme d'arrêt d'urgence, et pas de traçabilité des actions des agents. C'est une situation critique qui expose votre organisation à des risques majeurs."
-        },
-        {
-          q: "Que signifie un score ACF® de 100/100 ?",
-          a: "Un score de 100/100 représente l'excellence en gouvernance agentique. Vous avez un comité dédié, une charte de souveraineté, des objectifs hiérarchisés, des seuils de sécurité, un mandat explicite pour chaque agent, un responsable humain identifié, une traçabilité complète, un kill switch fonctionnel, et une indépendance vis-à-vis des fournisseurs."
-        },
-        {
-          q: "Quelles sont les zones non-délégables aux agents ?",
-          a: "Les zones non-délégables sont les décisions critiques qui doivent rester sous contrôle humain : validation finale des décisions à fort impact financier, modifications de la stratégie globale, accès aux données sensibles, changements dans les règles de gouvernance elles-mêmes. Ces zones doivent être documentées dans votre charte de souveraineté."
-        },
-        {
-          q: "Qu'est-ce qu'un kill switch et pourquoi est-il essentiel ?",
-          a: "Un kill switch est un mécanisme d'arrêt d'urgence qui permet de désactiver immédiatement un ou plusieurs agents en cas de comportement anormal. Exemples : agent qui fixe des prix aberrants, agent qui vide les stocks, agent qui envoie des emails inappropriés. Sans kill switch, vous ne pouvez pas arrêter un agent défaillant, ce qui peut causer des dégâts irréversibles."
-        }
-      ]
+      question: "Qu'est-ce qu'un agent IA autonome ?",
+      answer: "Un agent IA autonome est un système capable de prendre des décisions et d'exécuter des actions sans intervention humaine constante. Exemples : agents de pricing dynamique, chatbots transactionnels, systèmes de recommandation produits, agents d'optimisation logistique. Plus l'agent est autonome, plus la gouvernance doit être robuste."
     },
     {
-      category: "Réglementation",
-      questions: [
-        {
-          q: "Quelles sont les sanctions en cas de non-conformité AI Act ?",
-          a: "L'AI Act prévoit des amendes jusqu'à 35 millions d'euros OU 7% du chiffre d'affaires mondial annuel (le montant le plus élevé) pour les infractions les plus graves. Les systèmes d'IA à haut risque (comme les agents autonomes dans le commerce) doivent respecter des obligations strictes de transparence, traçabilité, et supervision humaine."
-        },
-        {
-          q: "Mon Score ACF® garantit-il la conformité RGPD et AI Act ?",
-          a: "Non. Le Score ACF® évalue votre gouvernance agentique mais ne remplace pas un audit juridique de conformité RGPD/AI Act. Cependant, un score élevé indique que vous avez mis en place des mécanismes (traçabilité, supervision humaine, documentation) qui facilitent grandement la conformité réglementaire."
-        }
-      ]
+      question: "Combien de temps prend le diagnostic ?",
+      answer: "Le diagnostic complet prend environ 10 minutes. Il est structuré en 7 étapes guidées qui couvrent votre contexte entreprise, votre maturité agentique, vos 4 couches de gouvernance et vos dépendances critiques. Vous obtenez immédiatement vos résultats et un rapport PDF détaillé."
     },
     {
-      category: "Audit & Accompagnement",
-      questions: [
-        {
-          q: "Quelle est la différence entre ce diagnostic gratuit et un audit ACF® complet ?",
-          a: "Le diagnostic gratuit est une évaluation indicative basée sur vos réponses (10-15 min). Un audit ACF® complet inclut : des entretiens avec vos équipes, l'analyse de votre documentation existante, l'observation de vos agents en production, un rapport détaillé de 50+ pages, et une roadmap personnalisée sur 12 mois. L'audit complet dure 2-3 semaines."
-        },
-        {
-          q: "Que faire après avoir obtenu mon Score ACF® ?",
-          a: "Si votre score est inférieur à 60/100, contactez un expert ACF® pour un plan d'action prioritaire (gratuit, 30 min). Si votre score est supérieur à 60/100, vous pouvez demander un audit complet pour identifier les optimisations avancées. Dans tous les cas, téléchargez votre PDF de résultats et partagez-le avec vos équipes."
-        },
-        {
-          q: "Combien coûte un accompagnement ACF® ?",
-          a: "Les tarifs dépendent de la taille de votre organisation et du niveau d'accompagnement : Diagnostic approfondi (5-10k€), Audit complet + Roadmap (15-30k€), Accompagnement à la mise en œuvre (forfait mensuel ou pourcentage des gains). La consultation initiale de 30 minutes est gratuite et sans engagement."
-        }
-      ]
+      question: "Le diagnostic est-il vraiment gratuit ?",
+      answer: "Oui, 100% gratuit et sans inscription. Vous obtenez votre score ACF®, votre niveau de maturité agentique, votre positionnement marché et vos 3 actions prioritaires immédiatement. Le rapport PDF complet est également gratuit et téléchargeable."
     },
     {
-      category: "Technique",
-      questions: [
-        {
-          q: "Le calculateur fonctionne-t-il pour tout type d'agents IA ?",
-          a: "Oui. Le framework ACF® s'applique à tous les agents IA autonomes en contexte business : agents de pricing, de recommandation, de supply chain, de customer service, de fraud detection, etc. Les 4 couches (Gouvernance, Politique, Système, Supervision) sont universelles et s'adaptent à tout cas d'usage."
-        },
-        {
-          q: "Mes données sont-elles confidentielles ?",
-          a: "Oui. Le calculateur fonctionne entièrement côté client (dans votre navigateur). Aucune donnée n'est envoyée à un serveur pendant le diagnostic. Seul le formulaire de contact (si vous le remplissez) transmet vos informations pour vous recontacter. Vos réponses au diagnostic restent privées."
-        },
-        {
-          q: "Puis-je refaire le diagnostic plusieurs fois ?",
-          a: "Oui, sans limite. Nous recommandons de refaire le diagnostic tous les 6 mois pour mesurer vos progrès. Vous pouvez également le faire pour différentes business units ou différents types d'agents au sein de votre organisation pour identifier les disparités de maturité."
-        }
-      ]
+      question: "Qui a développé la méthodologie ACF® ?",
+      answer: "L'Agentic Commerce Framework® a été développé par Vincent DORANGE, expert en gouvernance agentique, diplômé du MIT Sloan et de Columbia University. La méthodologie est basée sur 25 ans d'expérience en e-commerce et IA, et intègre les meilleures pratiques de gouvernance des systèmes autonomes."
+    },
+    {
+      question: "Quels sont les 4 niveaux de maturité agentique ?",
+      answer: "Niveau 0 : Règles fixes programmées (pas d'apprentissage). Niveau 1 : Les agents proposent, les humains valident (toute décision finale humaine). Niveau 2 : Les agents décident dans un cadre strict (seuils définis, supervision permanente) - c'est le niveau recommandé. Niveau 3 : Les agents décident et apprennent de manière autonome (nécessite une gouvernance très robuste)."
+    },
+    {
+      question: "Que faire si mon score est faible ?",
+      answer: "Un score faible signale des vulnérabilités dans votre gouvernance agentique. Le diagnostic vous fournit 3 actions prioritaires personnalisées pour renforcer les couches les plus critiques. Vous pouvez également planifier un audit complet avec un expert certifié ACF® pour un accompagnement sur mesure."
+    },
+    {
+      question: "Qu'est-ce que le score de souveraineté ?",
+      answer: "Le score de souveraineté mesure votre degré d'indépendance vis-à-vis des plateformes tierces (Amazon, Google, Meta, etc.). Il évalue 4 dimensions : dépendance structurelle (% CA), dépendance données, dépendance trafic, et résilience opérationnelle. Un score élevé signifie que vous contrôlez votre destin commercial."
+    },
+    {
+      question: "Mes données sont-elles confidentielles ?",
+      answer: "Oui, absolument. Vos réponses sont stockées de manière sécurisée et ne sont jamais partagées avec des tiers. Vous pouvez également compléter le diagnostic de manière anonyme. Le rapport PDF reste votre propriété exclusive."
+    },
+    {
+      question: "Que contient le rapport PDF ?",
+      answer: "Le rapport PDF complet contient : vos 3 scores (Souveraineté, ACF Global, Maturité), votre interprétation personnalisée, votre positionnement marché, vos 3 priorités d'action, l'analyse détaillée des 4 couches opérationnelles, les 7 risques majeurs sans gouvernance, et le contexte complet de votre diagnostic."
+    },
+    {
+      question: "Comment interpréter mon score ACF® ?",
+      answer: "Score 70-100 : Excellente gouvernance, fondations solides. Score 50-69 : Gouvernance solide mais zones de fragilité, renforcement recommandé. Score 30-49 : Gouvernance fragile, action requise rapidement. Score 0-29 : Situation critique, audit d'urgence nécessaire. Le diagnostic vous explique précisément les zones à améliorer."
+    },
+    {
+      question: "Puis-je refaire le diagnostic plus tard ?",
+      answer: "Oui, vous pouvez refaire le diagnostic autant de fois que vous le souhaitez pour suivre l'évolution de votre gouvernance agentique au fil du temps. C'est même recommandé après avoir mis en place vos actions prioritaires pour mesurer vos progrès."
+    },
+    {
+      question: "Qu'est-ce qu'un audit complet ACF® ?",
+      answer: "Un audit complet ACF® est réalisé par un expert certifié qui analyse en profondeur vos systèmes agentiques, votre documentation de gouvernance, vos processus de décision et votre infrastructure de supervision. Il inclut des recommandations détaillées, un plan d'action priorisé et un accompagnement personnalisé."
+    },
+    {
+      question: "Le framework ACF® est-il compatible avec le RGPD et l'AI Act ?",
+      answer: "Oui, le framework ACF® intègre par design les exigences du RGPD et de l'AI Act européen. La couche Gouvernance & Souveraineté inclut spécifiquement la conformité réglementaire, la traçabilité des décisions, et les mécanismes de contrôle humain requis par ces réglementations."
     }
   ]
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Header />
-
+      
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Questions fréquentes
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Questions Fréquentes
           </h1>
           <p className="text-xl text-gray-600">
-            Tout ce que vous devez savoir sur le Score ACF® et la gouvernance agentique
+            Tout ce que vous devez savoir sur la gouvernance agentique et le score ACF®
           </p>
         </div>
 
-        <div className="space-y-8">
-          {faqs.map((category, catIndex) => (
-            <div key={catIndex}>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                <span className="w-1 h-8 bg-gradient-to-b from-primary to-accent rounded-full mr-3"></span>
-                {category.category}
-              </h2>
-              <div className="space-y-3">
-                {category.questions.map((faq, qIndex) => {
-                  const globalIndex = faqs.slice(0, catIndex).reduce((acc, cat) => acc + cat.questions.length, 0) + qIndex
-                  const isOpen = openIndex === globalIndex
-                  
-                  return (
-                    <div key={qIndex} className="bg-white rounded-xl shadow-md overflow-hidden">
-                      <button
-                        onClick={() => setOpenIndex(isOpen ? null : globalIndex)}
-                        className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition"
-                      >
-                        <span className="font-semibold text-gray-900 pr-8">{faq.q}</span>
-                        <svg
-                          className={`w-6 h-6 text-primary flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                      {isOpen && (
-                        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-                          <p className="text-gray-700 leading-relaxed">{faq.a}</p>
-                        </div>
-                      )}
-                    </div>
-                  )
-                })}
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-12">
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div key={index} className="border-b border-gray-200 last:border-0 pb-4 last:pb-0">
+                <button
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  className="w-full flex items-center justify-between text-left py-4 hover:text-primary transition"
+                >
+                  <h3 className="text-lg font-bold text-gray-900 pr-8">
+                    {faq.question}
+                  </h3>
+                  <svg
+                    className={`w-6 h-6 text-primary flex-shrink-0 transition-transform ${
+                      openIndex === index ? 'rotate-180' : ''
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {openIndex === index && (
+                  <div className="pb-4 pr-12">
+                    <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        <div className="mt-12 bg-gradient-to-r from-primary to-accent rounded-2xl shadow-xl p-8 text-center text-white">
+        <div className="bg-gradient-to-r from-purple-600 via-pink-500 to-pink-600 rounded-2xl shadow-xl p-8 text-center text-white">
           <h2 className="text-2xl font-bold mb-4">
-            Vous ne trouvez pas votre réponse ?
+            Vous n'avez pas trouvé la réponse à votre question ?
           </h2>
           <p className="text-lg mb-6 opacity-90">
-            Contactez un expert ACF® pour une consultation gratuite
+            Notre équipe est là pour vous aider
           </p>
-          <a
+          <Link
             href="/contact"
-            className="inline-block bg-white text-primary px-6 py-3 rounded-lg font-bold hover:shadow-2xl transition"
+            className="inline-block bg-white text-primary px-8 py-4 rounded-lg text-lg font-bold hover:shadow-2xl transition"
           >
-            Poser ma question
-          </a>
+            Contactez-nous
+          </Link>
+        </div>
+
+        <div className="mt-12 text-center">
+          <Link
+            href="/calculator"
+            className="inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-pink-600 text-white px-8 py-4 rounded-lg text-lg font-bold hover:shadow-xl transition"
+          >
+            Calculer mon score ACF® gratuitement →
+          </Link>
         </div>
       </div>
+
+      <Footer />
     </main>
   )
 }

@@ -7,8 +7,8 @@ export default function LandingPage() {
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Header />
       
-      {/* Hero avec gradient violet majoritaire → rose bas droite */}
-      <div className="bg-gradient-to-br from-purple-600 via-purple-500 to-pink-600">
+      {/* Hero avec gradient violet/rose comme logo ACF */}
+      <div className="bg-gradient-to-br from-purple-900 via-purple-600 to-pink-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
             <div className="inline-block bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
@@ -160,18 +160,18 @@ export default function LandingPage() {
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-6 bg-gradient-to-br from-red-50 to-orange-50 rounded-xl">
-              <div className="text-5xl font-bold text-red-600 mb-2">73%</div>
+            <div className="text-center p-6 bg-white rounded-xl shadow-lg">
+              <div className="text-5xl font-bold text-purple-600 mb-2">73%</div>
               <p className="text-gray-700">des entreprises utilisent des agents IA sans gouvernance formalisée</p>
             </div>
             
-            <div className="text-center p-6 bg-gradient-to-br from-red-50 to-orange-50 rounded-xl">
-              <div className="text-5xl font-bold text-red-600 mb-2">€2,4M</div>
+            <div className="text-center p-6 bg-white rounded-xl shadow-lg">
+              <div className="text-5xl font-bold text-purple-600 mb-2">€2,4M</div>
               <p className="text-gray-700">de pertes moyennes dues à des décisions IA non contrôlées</p>
             </div>
             
-            <div className="text-center p-6 bg-gradient-to-br from-red-50 to-orange-50 rounded-xl">
-              <div className="text-5xl font-bold text-red-600 mb-2">89%</div>
+            <div className="text-center p-6 bg-white rounded-xl shadow-lg">
+              <div className="text-5xl font-bold text-purple-600 mb-2">89%</div>
               <p className="text-gray-700">des dirigeants craignent une perte de contrôle stratégique</p>
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function LandingPage() {
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold">!</div>
+              <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">!</div>
               <div>
                 <h3 className="font-bold text-gray-900 mb-1">Décisions IA contraires à vos intérêts business</h3>
                 <p className="text-sm text-gray-600">Agents qui optimisent sans vision globale</p>
@@ -193,7 +193,7 @@ export default function LandingPage() {
             </div>
             
             <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold">!</div>
+              <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">!</div>
               <div>
                 <h3 className="font-bold text-gray-900 mb-1">Perte de contrôle sur votre stratégie commerciale</h3>
                 <p className="text-sm text-gray-600">Impossibilité de piloter ou corriger en temps réel</p>
@@ -201,7 +201,7 @@ export default function LandingPage() {
             </div>
             
             <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold">!</div>
+              <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">!</div>
               <div>
                 <h3 className="font-bold text-gray-900 mb-1">Dépendance critique aux plateformes tierces</h3>
                 <p className="text-sm text-gray-600">Blocage Amazon/Google = arrêt de votre activité</p>
@@ -209,7 +209,7 @@ export default function LandingPage() {
             </div>
             
             <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold">!</div>
+              <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-700 rounded-full flex items-center justify-center text-white font-bold">!</div>
               <div>
                 <h3 className="font-bold text-gray-900 mb-1">Responsabilité juridique sur décisions automatisées</h3>
                 <p className="text-sm text-gray-600">Vous êtes responsable même sans contrôle</p>
@@ -217,7 +217,7 @@ export default function LandingPage() {
             </div>
             
             <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold">!</div>
+              <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-pink-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">!</div>
               <div>
                 <h3 className="font-bold text-gray-900 mb-1">Érosion de marge via prix/promos non maîtrisés</h3>
                 <p className="text-sm text-gray-600">Destruction de rentabilité sans supervision</p>
@@ -225,7 +225,7 @@ export default function LandingPage() {
             </div>
             
             <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold">!</div>
+              <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold">!</div>
               <div>
                 <h3 className="font-bold text-gray-900 mb-1">Atteinte à l'image de marque</h3>
                 <p className="text-sm text-gray-600">Actions non conformes à vos valeurs</p>
@@ -233,7 +233,7 @@ export default function LandingPage() {
             </div>
             
             <div className="flex items-start space-x-3 md:col-span-2">
-              <div className="flex-shrink-0 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold">!</div>
+              <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">!</div>
               <div>
                 <h3 className="font-bold text-gray-900 mb-1">Incapacité à auditer ou corriger les agents IA</h3>
                 <p className="text-sm text-gray-600">Sans logs ni traçabilité, impossible de comprendre les erreurs</p>
@@ -244,7 +244,7 @@ export default function LandingPage() {
           <div className="text-center mt-8">
             <Link
               href="/pourquoi"
-              className="inline-block bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold transition"
+              className="inline-block bg-gradient-to-r from-pink-500 to-pink-600 hover:shadow-xl text-white px-6 py-3 rounded-lg font-semibold transition"
             >
               Découvrir les 7 risques critiques →
             </Link>

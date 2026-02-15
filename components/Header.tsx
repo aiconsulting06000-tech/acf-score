@@ -43,7 +43,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                className={`px-4 py-2 rounded-lg text-base font-medium transition ${
                   pathname === item.href
                     ? 'bg-primary text-white'
                     : 'text-gray-700 hover:bg-gray-100'
@@ -56,7 +56,7 @@ export default function Header() {
             {hasResults && (
               <Link
                 href="/results"
-                className="ml-2 px-4 py-2 rounded-lg text-sm font-medium bg-accent text-white hover:bg-accent/90 transition"
+                className="ml-2 px-4 py-2 rounded-lg text-base font-medium bg-accent text-white hover:bg-accent/90 transition"
               >
                 📊 Mes résultats
               </Link>

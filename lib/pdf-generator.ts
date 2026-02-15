@@ -18,7 +18,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
 
   let yPos = 15
 
-  // HEADER REDUIT (25mm au lieu de 40mm) + DATE SUR MEME LIGNE
+  // HEADER COMPACT
   doc.setFillColor(139, 92, 246)
   doc.rect(0, 0, 210, 25, 'F')
   
@@ -27,7 +27,7 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.setFont('helvetica', 'bold')
   doc.text('Diagnostic ACF - ' + new Date().toLocaleDateString('fr-FR'), 105, 15, { align: 'center' })
 
-  yPos = 32
+  yPos = 35
 
   const colWidth = 58
   const startX = 17
@@ -78,13 +78,13 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.setFontSize(9)
   doc.text('/3', startX + (colWidth + 3) * 2 + colWidth/2 + 6, yPos + 16)
 
-  yPos += 40
+  yPos += 42
 
-  // INTERPRETATION GLOBALE (COMPACTE)
+  // INTERPRETATION GLOBALE
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
-  yPos += 6
+  yPos += 7
 
   doc.setFontSize(11)
   doc.setFont('helvetica', 'bold')
@@ -95,9 +95,9 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
                       results.scoreGlobal >= 30 ? 'Gouvernance fragile, action requise' :
                       'Situation critique, agir d\'urgence'
   doc.text(interpTitle, 105, yPos, { align: 'center' })
-  yPos += 6
+  yPos += 7
 
-  doc.setFontSize(8)
+  doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(60, 60, 60)
   const interpMsg = results.scoreGlobal >= 70 ? 'Votre gouvernance agentique est robuste. Vous avez pose les fondations necessaires pour controler vos agents IA.' :
@@ -106,19 +106,19 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
                     'ALERTE : Votre organisation est en danger. Sans gouvernance, vos agents IA peuvent prendre des decisions catastrophiques. Audit d\'urgence requis.'
   const interpLines = doc.splitTextToSize(interpMsg, 170)
   doc.text(interpLines, 20, yPos)
-  yPos += interpLines.length * 3.5 + 6
+  yPos += interpLines.length * 4 + 8
 
-  // POSITIONNEMENT MARCHE (COMPACT)
+  // POSITIONNEMENT MARCHE
   const stats = getMarketStats()
   doc.setDrawColor(200, 200, 200)
   doc.line(20, yPos, 190, yPos)
-  yPos += 6
+  yPos += 7
 
   doc.setTextColor(0, 0, 0)
   doc.setFontSize(11)
   doc.setFont('helvetica', 'bold')
   doc.text('Positionnement marche', 105, yPos, { align: 'center' })
-  yPos += 8
+  yPos += 9
 
   const boxWidth = 50
   const boxStartX = 30
@@ -175,54 +175,65 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
     doc.setTextColor(239, 68, 68)
     doc.text('Vous etes a ' + ecart + ' points en-dessous de la moyenne', 105, yPos, { align: 'center' })
   }
-  yPos += 3
+  yPos += 4
   doc.setFontSize(7)
   doc.setFont('helvetica', 'normal')
   doc.setTextColor(100, 100, 100)
   doc.text(stats.source, 105, yPos, { align: 'center' })
-  yPos += 8
+  yPos += 10
 
-  // LES 3 ACTIONS PRIORITAIRES (COMPACT POUR TENIR SUR PAGE 1)
+  // LES 3 ACTIONS PRIORITAIRES - ESPACEMENT AMELIORE
   doc.setDrawColor(200, 200, 200)
   doc.setLineWidth(0.5)
   doc.line(20, yPos, 190, yPos)
-  yPos += 6
+  yPos += 7
 
   doc.setTextColor(0, 0, 0)
   doc.setFontSize(11)
   doc.setFont('helvetica', 'bold')
   doc.text('Vos 3 Priorites d\'Action', 105, yPos, { align: 'center' })
-  yPos += 8
+  yPos += 10
 
   results.priorites.slice(0, 3).forEach((priorite, index) => {
     doc.setFillColor(139, 92, 246)
-    doc.circle(23, yPos + 2, 3.5, 'F')
+    doc.circle(24, yPos + 2, 3.5, 'F')
     doc.setTextColor(255, 255, 255)
     doc.setFontSize(9)
     doc.setFont('helvetica', 'bold')
-    doc.text((index + 1).toString(), 23, yPos + 3, { align: 'center' })
+    doc.text((index + 1).toString(), 24, yPos + 3, { align: 'center' })
     
     doc.setTextColor(0, 0, 0)
-    doc.setFontSize(9)
+    doc.setFontSize(10)
     doc.setFont('helvetica', 'bold')
-    doc.text(priorite.titre, 30, yPos + 3)
-    yPos += 5
+    doc.text(priorite.titre, 32, yPos + 3)
+    yPos += 7
     
     doc.setFont('helvetica', 'normal')
     doc.setFontSize(8)
     doc.setTextColor(60, 60, 60)
     const prioLines = doc.splitTextToSize(priorite.description, 155)
-    doc.text(prioLines, 30, yPos)
-    yPos += prioLines.length * 3.5 + 2
+    doc.text(prioLines, 32, yPos)
+    yPos += prioLines.length * 4 + 3
     
     doc.setFontSize(6)
     doc.setFillColor(236, 72, 153)
-    doc.roundedRect(30, yPos, 18, 4, 1, 1, 'F')
+    doc.roundedRect(32, yPos, 18, 4, 1, 1, 'F')
     doc.setTextColor(255, 255, 255)
-    doc.text('Couche ' + priorite.couche, 39, yPos + 2.5, { align: 'center' })
+    doc.text('Couche ' + priorite.couche, 41, yPos + 2.5, { align: 'center' })
     
-    yPos += 7
+    yPos += 9
   })
+
+  // BOUTON AUDIT SOUS LES ACTIONS
+  yPos += 3
+  doc.setTextColor(59, 130, 246)
+  doc.setFont('helvetica', 'underline')
+  doc.setFontSize(10)
+  doc.textWithLink('Planifier un audit complet ACF', 105, yPos, {
+    url: 'https://acf-score.vercel.app/contact',
+    align: 'center'
+  })
+  yPos += 10
 
   // NOUVELLE PAGE POUR LES 4 COUCHES
   doc.addPage()
@@ -501,23 +512,10 @@ export function generatePDF(results: ACFResults, formData: ACFFormData): Blob {
   doc.text('Jours pour retrouver CA si blocage : ' + formData.joursBloquesCA + ' jours', 20, yPos)
   yPos += 12
 
-  if (yPos > 265) {
+  if (yPos > 270) {
     doc.addPage()
     yPos = 20
   }
-
-  doc.setDrawColor(200, 200, 200)
-  doc.setLineWidth(0.5)
-  doc.line(20, yPos, 190, yPos)
-  yPos += 8
-
-  doc.setTextColor(59, 130, 246)
-  doc.setFont('helvetica', 'underline')
-  doc.textWithLink('Planifier un audit complet ACF', 105, yPos, {
-    url: 'https://acf-score.vercel.app/contact',
-    align: 'center'
-  })
-  yPos += 8
 
   doc.setFontSize(8)
   doc.setTextColor(100, 100, 100)

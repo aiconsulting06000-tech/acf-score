@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -11,14 +11,43 @@ export default function ContactPage() {
     company: '',
     phone: '',
     message: '',
-    hasReport: false
+    hasReport: false,
+    // Anti-spam honeypot (invisible)
+    website: ''
   })
   const [file, setFile] = useState<File | null>(null)
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const [formTimestamp, setFormTimestamp] = useState<number>(0)
+
+  // Enregistrer le timestamp quand le formulaire est chargé
+  useEffect(() => {
+    setFormTimestamp(Date.now())
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('=== FORM SUBMIT ===')
+    
+    // Anti-spam : vérifier honeypot
+    if (formData.website) {
+      console.log('SPAM DETECTED: Honeypot filled')
+      setStatus('error')
+      setErrorMessage('Erreur de validation du formulaire.')
+      return
+    }
+
+    // Anti-spam : vérifier que le formulaire n'a pas été soumis trop vite (< 3 secondes)
+    const timeSinceLoad = Date.now() - formTimestamp
+    if (timeSinceLoad < 3000) {
+      console.log('SPAM DETECTED: Form submitted too quickly')
+      setStatus('error')
+      setErrorMessage('Veuillez prendre le temps de remplir le formulaire.')
+      return
+    }
+
+    console.log('Form data:', formData)
+    
     setStatus('loading')
     setErrorMessage('')
 
@@ -30,22 +59,28 @@ export default function ContactPage() {
       formDataToSend.append('phone', formData.phone)
       formDataToSend.append('message', formData.message)
       formDataToSend.append('hasReport', formData.hasReport ? 'true' : 'false')
+      formDataToSend.append('timestamp', formTimestamp.toString())
       
       if (file) {
         formDataToSend.append('file', file)
+        console.log('File attached:', file.name)
       }
 
+      console.log('Sending to /api/contact...')
       const response = await fetch('/api/contact', {
         method: 'POST',
         body: formDataToSend,
       })
 
+      console.log('Response status:', response.status)
       const data = await response.json()
+      console.log('Response data:', data)
 
       if (!response.ok) {
-        throw new Error(data.error || 'Une erreur est survenue')
+        throw new Error(data.error || 'Erreur lors de l\'envoi')
       }
 
+      console.log('=== SUCCESS ===')
       setStatus('success')
       setFormData({
         name: '',
@@ -53,13 +88,15 @@ export default function ContactPage() {
         company: '',
         phone: '',
         message: '',
-        hasReport: false
+        hasReport: false,
+        website: ''
       })
       setFile(null)
-    } catch (error) {
-      console.error('Error sending message:', error)
+    } catch (error: any) {
+      console.error('=== ERROR ===')
+      console.error('Error:', error)
       setStatus('error')
-      setErrorMessage(error instanceof Error ? error.message : 'Une erreur est survenue. Veuillez reessayer.')
+      setErrorMessage(error?.message || 'Une erreur est survenue. Veuillez reessayer.')
     }
   }
 
@@ -96,6 +133,20 @@ export default function ContactPage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Honeypot field - invisible pour les humains */}
+              <div className="hidden">
+                <label htmlFor="website">Website</label>
+                <input
+                  type="text"
+                  id="website"
+                  name="website"
+                  value={formData.website}
+                  onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-semibold text-gray-900 mb-2">
@@ -204,17 +255,25 @@ export default function ContactPage() {
 
               {status === 'error' && (
                 <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4">
-                  <p className="text-red-800 text-sm">{errorMessage}</p>
+                  <p className="text-red-800 text-sm font-semibold">Erreur</p>
+                  <p className="text-red-700 text-sm">{errorMessage}</p>
+                  <p className="text-red-600 text-xs mt-2">
+                    Si le probleme persiste, contactez-nous directement a contact@acf-score.com
+                  </p>
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="w-full bg-gradient-to-r from-purple-600 via-pink-500 to-pink-600 text-white px-8 py-4 rounded-lg text-lg font-bold hover:shadow-xl transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 text-white px-8 py-4 rounded-lg text-lg font-bold hover:shadow-xl transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {status === 'loading' ? 'Envoi en cours...' : 'Envoyer le message'}
               </button>
+
+              <p className="text-xs text-gray-500 text-center">
+                Ce formulaire est protege contre le spam
+              </p>
             </form>
           )}
         </div>
