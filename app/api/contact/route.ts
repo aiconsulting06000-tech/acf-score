@@ -229,7 +229,7 @@ export async function POST(request: NextRequest) {
               .content { background: #f9fafb; padding: 30px; }
               .button { display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; margin: 20px 0; }
               .step { display: flex; align-items: start; margin: 20px 0; }
-              .step-number { width: 40px; height: 40px; background: #9333ea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; margin-right: 15px; }
+              .step-number { width: 40px; height: 40px; background: #9333ea; color: white; border-radius: 50%; font-weight: bold; margin-right: 15px; text-align: center; line-height: 40px; font-size: 18px; }
               .footer { text-align: center; margin-top: 20px; color: #6b7280; font-size: 12px; border-top: 1px solid #e5e7eb; padding-top: 20px; }
               .highlight-box { background: white; padding: 20px; border-left: 4px solid #9333ea; border-radius: 4px; margin: 20px 0; }
             </style>
