@@ -64,12 +64,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Gérer le fichier PDF si présent
-    let reportUrl = null
+    // Convertir le fichier PDF en base64 si présent
+    let pdfBase64 = null
+    let pdfFilename = null
     if (file && hasReport) {
-      // TODO: Upload vers Supabase Storage
-      // Pour l'instant on stocke juste le nom
-      reportUrl = file.name
+      const arrayBuffer = await file.arrayBuffer()
+      const buffer = Buffer.from(arrayBuffer)
+      pdfBase64 = buffer.toString('base64')
+      pdfFilename = file.name
+      console.log('PDF converted to base64:', pdfFilename)
     }
 
     // 1. ENREGISTRER DANS SUPABASE
@@ -83,7 +86,7 @@ export async function POST(request: NextRequest) {
         subject,
         message,
         has_report: hasReport,
-        report_url: reportUrl,
+        report_url: pdfFilename,
         status: 'new',
         user_agent: request.headers.get('user-agent'),
         ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip')
@@ -98,7 +101,7 @@ export async function POST(request: NextRequest) {
 
     console.log('Contact saved in DB:', contact.id)
 
-    // 2. ENVOYER EMAIL DE NOTIFICATION À L'ADMIN
+    // 2. ENVOYER EMAIL DE NOTIFICATION À L'ADMIN (AVEC PDF ATTACHÉ)
     const subjectLabels: Record<string, string> = {
       'general': 'Question générale',
       'audit': 'Demande d\'audit ACF®',
@@ -109,8 +112,8 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL || 'ACF Score <noreply@acf-score.com>',
+      const adminEmailOptions: any = {
+        from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
         to: process.env.RESEND_ADMIN_EMAIL || 'contact@acf-score.com',
         subject: `🔔 Nouveau contact ACF : ${subjectLabels[subject] || subject}`,
         html: `
@@ -161,12 +164,12 @@ export async function POST(request: NextRequest) {
                   <div class="message-box">${message}</div>
                 </div>
 
-                ${hasReport ? `
+                ${hasReport && pdfFilename ? `
                   <div class="field">
                     <div class="label">Rapport ACF joint</div>
                     <div class="value">
-                      ✅ Oui - Le client a complété le diagnostic<br>
-                      ${reportUrl ? `📎 Fichier: ${reportUrl}` : ''}
+                      ✅ Rapport joint en pièce jointe<br>
+                      📎 Fichier: ${pdfFilename}
                     </div>
                   </div>
                 ` : ''}
@@ -185,18 +188,33 @@ export async function POST(request: NextRequest) {
           </body>
           </html>
         `
-      })
-      
-      console.log('Admin notification sent')
-    } catch (emailError) {
-      console.error('Error sending admin email:', emailError)
-      // On continue même si l'email admin échoue
+      }
+
+      // Attacher le PDF si présent
+      if (pdfBase64 && pdfFilename) {
+        adminEmailOptions.attachments = [
+          {
+            filename: pdfFilename,
+            content: pdfBase64
+          }
+        ]
+        console.log('PDF attached to admin email')
+      }
+
+      const adminResult = await resend.emails.send(adminEmailOptions)
+      console.log('Admin notification sent:', adminResult)
+    } catch (emailError: any) {
+      console.error('ERROR sending admin email:', emailError)
+      console.error('Error details:', emailError.message)
+      // On continue quand même
     }
 
     // 3. ENVOYER EMAIL DE CONFIRMATION AU CLIENT
     try {
-      await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL || 'ACF Score <noreply@acf-score.com>',
+      console.log('Sending client confirmation to:', email)
+      
+      const clientResult = await resend.emails.send({
+        from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
         to: email,
         subject: '✅ Votre demande ACF a bien été reçue',
         html: `
@@ -286,10 +304,12 @@ export async function POST(request: NextRequest) {
         `
       })
       
-      console.log('Client confirmation sent')
-    } catch (emailError) {
-      console.error('Error sending client email:', emailError)
-      // On continue même si l'email client échoue
+      console.log('Client confirmation sent:', clientResult)
+    } catch (emailError: any) {
+      console.error('ERROR sending client email:', emailError)
+      console.error('Error details:', emailError.message)
+      console.error('Full error:', JSON.stringify(emailError))
+      // On continue quand même
     }
 
     // 4. RETOURNER SUCCÈS
@@ -320,6 +340,6 @@ export async function GET() {
   return NextResponse.json({ 
     status: 'Contact API is working',
     methods: ['POST'],
-    features: ['Supabase storage', 'Resend emails', 'Anti-spam']
+    features: ['Supabase storage', 'Resend emails', 'PDF attachments', 'Anti-spam']
   })
 }
