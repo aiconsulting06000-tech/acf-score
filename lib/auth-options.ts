@@ -1,4 +1,4 @@
-import NextAuth from "next-auth"
+import NextAuth, { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { compare } from "bcryptjs"
 
@@ -7,7 +7,7 @@ const ADMIN_CREDENTIALS = {
   passwordHash: "$2b$10$A2gdFQZWJc/AD1V69LftFu65hkZO9Jt5mjsQhz8LDZ0c0iwZAC89u"
 }
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -37,7 +37,6 @@ export const authOptions = {
           id: "1",
           email: ADMIN_CREDENTIALS.email,
           name: "Admin ACF",
-          role: "admin"
         }
       }
     })
@@ -47,21 +46,21 @@ export const authOptions = {
     error: "/admin/login",
   },
   callbacks: {
-    async jwt({ token, user }: any) {
+    async jwt({ token, user }) {
       if (user) {
-        token.role = user.role
+        token.id = user.id
       }
       return token
     },
-    async session({ session, token }: any) {
-      if (session?.user) {
-        session.user.role = token.role
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string
       }
       return session
     }
   },
   session: {
-    strategy: "jwt" as const,
+    strategy: "jwt",
     maxAge: 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
