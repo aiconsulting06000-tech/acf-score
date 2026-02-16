@@ -4,7 +4,7 @@ import { compare } from "bcryptjs"
 
 // IMPORTANT : Changez ces credentials en production !
 const ADMIN_CREDENTIALS = {
-  email: "aiconsulting06000@gmail.com", // ← Mettez votre email
+  email: "aiconsulting06000@gmail.com",
   passwordHash: "$2b$10$A2gdFQZWJc/AD1V69LftFu65hkZO9Jt5mjsQhz8LDZ0c0iwZAC89u"
 }
 }
