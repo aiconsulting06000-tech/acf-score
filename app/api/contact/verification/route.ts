@@ -174,7 +174,7 @@ export async function POST(request: Request) {
       const { error: finalEmailError } = await resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL!,
         to: process.env.RESEND_ADMIN_EMAIL!,
-        replyTo: email,
+        reply_to: email,
         subject: `[ACF®] Contact - ${clientName}`,
         html: finalEmailHTML,
       })
