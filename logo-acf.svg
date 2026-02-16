@@ -1,0 +1,21 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="acfGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Circle background -->
+  <circle cx="100" cy="100" r="95" fill="url(#acfGradient)" opacity="0.1"/>
+  
+  <!-- ACF Letters -->
+  <text x="100" y="120" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="url(#acfGradient)" text-anchor="middle">ACF</text>
+  
+  <!-- Registered trademark -->
+  <text x="170" y="75" font-family="Arial, sans-serif" font-size="20" font-weight="normal" fill="url(#acfGradient)">®</text>
+  
+  <!-- Subtitle -->
+  <text x="100" y="155" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#6b7280" text-anchor="middle">Agentic Commerce Framework</text>
+</svg>

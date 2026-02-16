@@ -103,7 +103,7 @@ export default function PourquoiPage() {
                 </p>
                 <div className="bg-white rounded-lg p-4 border-l-4 border-purple-600">
                   <p className="text-sm text-gray-600">
-                    <strong className="text-purple-700">Chiffre clé :</strong> Les entreprises avec >70% de dépendance à une plateforme mettent en moyenne 23 jours à retrouver leur CA normal après un blocage.
+                    <strong className="text-purple-700">Chiffre clé :</strong> Les entreprises avec {'>'} 70% de dépendance à une plateforme mettent en moyenne 23 jours à retrouver leur CA normal après un blocage.
                   </p>
                 </div>
               </div>
