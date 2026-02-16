@@ -94,7 +94,6 @@ const nextConfig = {
 
   // Optimiser les bundles
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['@supabase/supabase-js', 'resend'],
   },
 
