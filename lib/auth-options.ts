@@ -2,11 +2,9 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { compare } from "bcryptjs"
 
-// IMPORTANT : Changez ces credentials en production !
 const ADMIN_CREDENTIALS = {
   email: "aiconsulting06000@gmail.com",
   passwordHash: "$2b$10$A2gdFQZWJc/AD1V69LftFu65hkZO9Jt5mjsQhz8LDZ0c0iwZAC89u"
-}
 }
 
 export const authOptions = {
@@ -22,12 +20,10 @@ export const authOptions = {
           return null
         }
 
-        // Vérifier l'email
         if (credentials.email !== ADMIN_CREDENTIALS.email) {
           return null
         }
 
-        // Vérifier le mot de passe
         const isPasswordValid = await compare(
           credentials.password,
           ADMIN_CREDENTIALS.passwordHash
@@ -37,7 +33,6 @@ export const authOptions = {
           return null
         }
 
-        // Authentification réussie
         return {
           id: "1",
           email: ADMIN_CREDENTIALS.email,
@@ -67,7 +62,7 @@ export const authOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60, // 24 heures
+    maxAge: 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
 }
