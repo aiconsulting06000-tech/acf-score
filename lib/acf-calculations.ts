@@ -278,17 +278,27 @@ function genererPriorites(results: ACFResults): Priorite[] {
     couche: couches[1].numero
   })
   
+  // Toujours ajouter la 3ème priorité - couche la plus faible restante
+  // Si maturité = 0, on encourage le démarrage avec un pilote
+  // Sinon, on pointe vers la 3ème couche la plus faible
   if (results.niveauMaturite === 0) {
     priorites.push({
       titre: "Initier un projet pilote",
-      description: "Démarrez avec un premier agent assisté (Niveau 1)",
+      description: "Démarrez avec un premier agent assisté (Niveau 1) avant de passer à l'automatisation",
       couche: 0
     })
   } else if (results.niveauMaturite >= 2 && results.scoreGlobal < 60) {
     priorites.push({
       titre: "Alerte : Gouvernance insuffisante",
-      description: "Votre niveau d'autonomie nécessite une gouvernance plus forte",
-      couche: 1
+      description: `Votre niveau d'autonomie requiert une gouvernance renforcée. Priorité : ${couches[2].nom} (${couches[2].score}/25)`,
+      couche: couches[2].numero
+    })
+  } else {
+    // Cas général : pointer vers la 3ème couche la plus faible
+    priorites.push({
+      titre: `Consolider ${couches[2].nom}`,
+      description: `Score actuel : ${couches[2].score}/25. ${couches[2].description}`,
+      couche: couches[2].numero
     })
   }
   
