@@ -99,7 +99,7 @@ export default function ContactPage() {
       const res = await fetch('/api/contact/verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'verify_code', email: formData.email, code, ...formData }),
+        body: JSON.stringify({ action: 'verify_code', code, ...formData }),
       })
       const data = await res.json()
 
