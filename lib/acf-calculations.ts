@@ -252,11 +252,11 @@ function genererRecommandations(data: ACFFormData, results: Partial<ACFResults>)
   return recommandations.slice(0, 5) // Max 5 recommandations
 }
 
-// Génération des priorités d'action
+// Génération des priorités d'action - CORRIGÉ POUR TOUJOURS AVOIR 3 PRIORITÉS
 function genererPriorites(results: ACFResults): Priorite[] {
   const priorites: Priorite[] = []
   
-  // Identifier les couches par score
+  // Identifier les couches par score (triées par score croissant)
   const couches = [
     { nom: "Gouvernance & Souveraineté", score: results.scoreCouche1, numero: 1, description: "Comité de gouvernance et charte de souveraineté" },
     { nom: "Politique de Décision", score: results.scoreCouche2, numero: 2, description: "Objectifs hiérarchisés et seuils de sécurité" },
@@ -266,35 +266,35 @@ function genererPriorites(results: ACFResults): Priorite[] {
   
   couches.sort((a, b) => a.score - b.score)
   
+  // Priorité 1 : Couche la plus faible
   priorites.push({
     titre: `Renforcer ${couches[0].nom}`,
     description: `Score actuel : ${couches[0].score}/25. ${couches[0].description}`,
     couche: couches[0].numero
   })
   
+  // Priorité 2 : Deuxième couche la plus faible
   priorites.push({
     titre: `Améliorer ${couches[1].nom}`,
     description: `Score actuel : ${couches[1].score}/25. ${couches[1].description}`,
     couche: couches[1].numero
   })
   
-  // Toujours ajouter la 3ème priorité - couche la plus faible restante
-  // Si maturité = 0, on encourage le démarrage avec un pilote
-  // Sinon, on pointe vers la 3ème couche la plus faible
+  // Priorité 3 : TOUJOURS ajoutée
   if (results.niveauMaturite === 0) {
     priorites.push({
       titre: "Initier un projet pilote",
-      description: "Démarrez avec un premier agent assisté (Niveau 1) avant de passer à l'automatisation",
+      description: "Démarrez avec un premier agent assisté (Niveau 1) pour tester la gouvernance",
       couche: 0
     })
   } else if (results.niveauMaturite >= 2 && results.scoreGlobal < 60) {
     priorites.push({
       titre: "Alerte : Gouvernance insuffisante",
-      description: `Votre niveau d'autonomie requiert une gouvernance renforcée. Priorité : ${couches[2].nom} (${couches[2].score}/25)`,
-      couche: couches[2].numero
+      description: "Votre niveau d'autonomie nécessite une gouvernance plus forte pour éviter les risques",
+      couche: 1
     })
   } else {
-    // Cas général : pointer vers la 3ème couche la plus faible
+    // FALLBACK : Troisième couche la plus faible
     priorites.push({
       titre: `Consolider ${couches[2].nom}`,
       description: `Score actuel : ${couches[2].score}/25. ${couches[2].description}`,
