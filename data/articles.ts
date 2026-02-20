@@ -36,8 +36,8 @@ export const articles: Article[] = [
     date: "15 février 2026",
     dateISO: "2026-02-15",
     categorie: "Tendances",
-    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Intelligence artificielle et agents autonomes",
+    image: "/ECO2026.png",
+    imageAlt: "Économie des agents IA en 2026",
     tempsLecture: "8 min",
     contenu: [
       {
@@ -350,7 +350,7 @@ export const articles: Article[] = [
     date: "5 février 2026",
     dateISO: "2026-02-05",
     categorie: "Méthodologie",
-    image: "/FRAMEWORK.jpg",
+    image: "/FRAMEWORK.png",
     imageAlt: "Calculateur Score ACF®",
     tempsLecture: "12 min",
     contenu: [
@@ -694,8 +694,8 @@ export const articles: Article[] = [
     date: "28 janvier 2026",
     dateISO: "2026-01-28",
     categorie: "Cas client",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Graphique de progression et résultats",
+    image: "/ACF.png",
+    imageAlt: "Score ACF de 32 à 78 points en 6 mois",
     tempsLecture: "11 min",
     contenu: [
       {
