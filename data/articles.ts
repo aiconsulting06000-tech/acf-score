@@ -1004,11 +1004,7 @@ export const articles: Article[] = [
       {
         type: 'cta',
         texte: "Évaluer ma capacité de supervision"
-      }
-    ]
-  }
-]
-
+      },
       {
         type: 'definition',
         titre: "Définition : Kill switch agentique",
