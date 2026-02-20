@@ -319,7 +319,7 @@ export default function ContactPage() {
                     <div className="flex justify-center">
                       <div 
                         className="cf-turnstile" 
-                        data-sitekey="0x4AAAAAAAzMGPvPPPaV0Nw5"
+                        data-sitekey="0x4AAAAAACftS7qz-cWEvlwT"
                         data-callback="onTurnstileSuccess"
                       ></div>
                     </div>
