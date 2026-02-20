@@ -147,8 +147,8 @@ export const articles: Article[] = [
     date: "10 février 2026",
     dateISO: "2026-02-10",
     categorie: "Réglementation",
-    image: "https://images.unsplash.com/photo-1575503802870-45de6a6217c8?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Réglementation européenne IA",
+    image: "/AI_ACT.jpg",
+    imageAlt: "Drapeaux européens - AI Act",
     tempsLecture: "10 min",
     contenu: [
       {
@@ -288,7 +288,7 @@ export const articles: Article[] = [
     date: "5 février 2026",
     dateISO: "2026-02-05",
     categorie: "Méthodologie",
-    image: "/calculateur-preview.png",
+    image: "/FRAMEWORK.jpg",
     imageAlt: "Calculateur Score ACF®",
     tempsLecture: "12 min",
     contenu: [
@@ -434,7 +434,7 @@ export const articles: Article[] = [
     date: "1er février 2026",
     dateISO: "2026-02-01",
     categorie: "Framework",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&auto=format&fit=crop&q=80",
+    image: "/DATA.png",
     imageAlt: "Architecture en couches et gouvernance",
     tempsLecture: "9 min",
     contenu: [
@@ -713,8 +713,8 @@ export const articles: Article[] = [
     date: "20 janvier 2026",
     dateISO: "2026-01-20",
     categorie: "Technique",
-    image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Système de contrôle et sécurité IA",
+    image: "/KILL.jpg",
+    imageAlt: "Bouton d'arrêt d'urgence - Kill switch",
     tempsLecture: "13 min",
     contenu: [
       {
