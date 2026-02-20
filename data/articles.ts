@@ -288,8 +288,8 @@ export const articles: Article[] = [
     date: "5 février 2026",
     dateISO: "2026-02-05",
     categorie: "Méthodologie",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Tableau de bord et métriques",
+    image: "/calculateur-preview.png",
+    imageAlt: "Calculateur Score ACF®",
     tempsLecture: "12 min",
     contenu: [
       {
