@@ -15,7 +15,6 @@ export default function ContactPage() {
     message: '',
     subject: 'general',
     hasReport: false,
-    // Anti-spam honeypot
     website: ''
   })
   const [file, setFile] = useState<File | null>(null)
@@ -26,6 +25,20 @@ export default function ContactPage() {
 
   useEffect(() => {
     setFormTimestamp(Date.now())
+    
+    // Écouter l'événement Turnstile
+    const handleTurnstile = (event: any) => {
+      if (event.detail) {
+        setTurnstileToken(event.detail)
+        console.log('✅ Token Turnstile capturé:', event.detail.substring(0, 20) + '...')
+      }
+    }
+    
+    window.addEventListener('turnstile-callback', handleTurnstile as EventListener)
+    
+    return () => {
+      window.removeEventListener('turnstile-callback', handleTurnstile as EventListener)
+    }
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -104,6 +117,7 @@ export default function ContactPage() {
 
   return (
     <>
+      {/* Script Turnstile */}
       <Script 
         src="https://challenges.cloudflare.com/turnstile/v0/api.js" 
         strategy="lazyOnload"
@@ -320,7 +334,7 @@ export default function ContactPage() {
                       <div 
                         className="cf-turnstile" 
                         data-sitekey="0x4AAAAAACftS7qz-cWEvlwT"
-                        data-callback="onTurnstileSuccess"
+                        data-callback="onTurnstileCallback"
                       ></div>
                     </div>
 
@@ -360,8 +374,6 @@ export default function ContactPage() {
                         </>
                       )}
                     </button>
-
-                    {/* MESSAGE SPAM SUPPRIMÉ ICI - PLUS DE LIGNE "🔒 Formulaire protégé..." */}
                   </form>
                 )}
               </div>
@@ -481,24 +493,13 @@ export default function ContactPage() {
         <Footer />
       </main>
 
-      {/* Script callback Turnstile */}
+      {/* Script callback Turnstile - CORRIGÉ */}
       <Script id="turnstile-callback" strategy="afterInteractive">
         {`
-          window.onTurnstileSuccess = function(token) {
-            window.dispatchEvent(new CustomEvent('turnstile-success', { detail: token }));
+          window.onTurnstileCallback = function(token) {
+            console.log('✅ Callback Turnstile appelé');
+            window.dispatchEvent(new CustomEvent('turnstile-callback', { detail: token }));
           }
-          window.addEventListener('turnstile-success', function(e) {
-            document.dispatchEvent(new CustomEvent('set-turnstile-token', { detail: e.detail }));
-          });
-        `}
-      </Script>
-
-      <Script id="turnstile-listener" strategy="afterInteractive">
-        {`
-          document.addEventListener('set-turnstile-token', function(e) {
-            // Le token sera capturé dans le state React via useEffect
-            window.__turnstileToken = e.detail;
-          });
         `}
       </Script>
     </>
