@@ -1183,7 +1183,7 @@ export const articles: Article[] = [
       {
         type: 'cta',
         texte: "Évaluer ma maturité agentique"
-      }
+      },
       {
         type: 'definition',
         titre: "Définition : Agent-to-Agent (A2A)",
