@@ -30,7 +30,7 @@ export const articles: Article[] = [
     date: "15 février 2026",
     dateISO: "2026-02-15",
     categorie: "Tendances",
-    image: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1200&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&auto=format&fit=crop&q=80",
     imageAlt: "Intelligence artificielle et agents autonomes",
     tempsLecture: "8 min",
     contenu: [
@@ -147,7 +147,7 @@ export const articles: Article[] = [
     date: "10 février 2026",
     dateISO: "2026-02-10",
     categorie: "Réglementation",
-    image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=1200&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1575503802870-45de6a6217c8?w=1200&auto=format&fit=crop&q=80",
     imageAlt: "Réglementation européenne IA",
     tempsLecture: "10 min",
     contenu: [
@@ -434,8 +434,8 @@ export const articles: Article[] = [
     date: "1er février 2026",
     dateISO: "2026-02-01",
     categorie: "Framework",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Architecture en couches et infrastructure",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&auto=format&fit=crop&q=80",
+    imageAlt: "Architecture en couches et gouvernance",
     tempsLecture: "9 min",
     contenu: [
       {
@@ -567,18 +567,18 @@ export const articles: Article[] = [
   // ─────────────────────────────────────────────
   {
     slug: 'cas-pratique-32-78-points-acf',
-    titre: "Cas pratique : De 32 à 78 points ACF® en 6 mois",
-    description: "Retour d'expérience d'un e-commerçant qui a restructuré sa gouvernance agentique et réduit ses dépendances critiques.",
+    titre: "Cas illustratif : De 32 à 78 points ACF® en 6 mois",
+    description: "Scénario fictif d'un e-commerçant type qui restructure sa gouvernance agentique et réduit ses dépendances critiques. Les étapes, obstacles et résultats typiques d'une transformation réussie.",
     date: "28 janvier 2026",
     dateISO: "2026-01-28",
     categorie: "Cas client",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80",
     imageAlt: "Graphique de progression et résultats",
     tempsLecture: "11 min",
     contenu: [
       {
         type: 'intro',
-        texte: "En juillet 2025, LuxeHome — un e-commerçant spécialisé dans la décoration haut de gamme avec 4,2 M€ de CA annuel — réalisait son premier Score ACF®. Résultat : 32/100. Six mois plus tard, après une restructuration méthodique de sa gouvernance agentique, l'entreprise affichait 78 points. Voici le récit de cette transformation, avec les actions concrètes qui ont fait la différence."
+        texte: "Pour illustrer concrètement ce que représente une montée en maturité ACF®, voici le parcours fictif d'un e-commerçant type — appelons-le 'MaisonPlus' — spécialisé dans la décoration haut de gamme avec 4 M€ de CA annuel. Ce scénario synthétise les patterns observés sur plusieurs accompagnements réels et illustre les étapes, les difficultés et les gains typiques d'une transformation sur 6 mois."
       },
       {
         type: 'h2',
@@ -586,7 +586,7 @@ export const articles: Article[] = [
       },
       {
         type: 'p',
-        texte: "LuxeHome était un exemple typique d'entreprise ayant adopté massivement les outils IA sans cadre de gouvernance. En 18 mois, la société avait déployé une dizaine d'agents ou outils automatisés : repricing dynamique, génération de fiches produits, SAV automatisé, campagnes publicitaires pilotées par algorithme et recommandations personnalisées."
+        texte: "MaisonPlus était un exemple typique d'entreprise ayant adopté massivement les outils IA sans cadre de gouvernance. En 18 mois, la société avait déployé une dizaine d'agents ou outils automatisés : repricing dynamique, génération de fiches produits, SAV automatisé, campagnes publicitaires pilotées par algorithme et recommandations personnalisées."
       },
       {
         type: 'p',
@@ -615,7 +615,7 @@ export const articles: Article[] = [
       },
       {
         type: 'p',
-        texte: "La priorité absolue était d'adresser les risques immédiats avant de penser à l'optimisation. LuxeHome a d'abord documenté tous ses agents et outils automatisés dans un registre centralisé — une simple spreadsheet au départ. Pour chaque agent : qui l'a déployé, quel est son périmètre d'action, quelles décisions peut-il prendre, qui est responsable."
+        texte: "La priorité absolue était d'adresser les risques immédiats avant de penser à l'optimisation. MaisonPlus a d'abord documenté tous ses agents et outils automatisés dans un registre centralisé — une simple spreadsheet au départ. Pour chaque agent : qui l'a déployé, quel est son périmètre d'action, quelles décisions peut-il prendre, qui est responsable."
       },
       {
         type: 'p',
@@ -631,7 +631,7 @@ export const articles: Article[] = [
       },
       {
         type: 'p',
-        texte: "LuxeHome a rédigé sa première Charte de Gouvernance Agentique — un document de 8 pages qui définit les types de décisions délégables aux agents, les règles éthiques non négociables (pas de discrimination par origine, pas de pricing différencié selon le profil socio-économique détecté), et les processus d'escalade."
+        texte: "MaisonPlus a rédigé sa première Charte de Gouvernance Agentique — un document de 8 pages qui définit les types de décisions délégables aux agents, les règles éthiques non négociables (pas de discrimination par origine, pas de pricing différencié selon le profil socio-économique détecté), et les processus d'escalade."
       },
       {
         type: 'p',
@@ -643,7 +643,7 @@ export const articles: Article[] = [
       },
       {
         type: 'p',
-        texte: "La dernière phase a été consacrée à réduire les dépendances critiques. LuxeHome a identifié 3 fournisseurs pour lesquels aucune alternative n'était prête. Pour chacun, un plan de migration a été préparé (pas forcément exécuté, mais prêt à être déclenché). La portabilité des données a été négociée contractuellement avec le principal fournisseur IA."
+        texte: "La dernière phase a été consacrée à réduire les dépendances critiques. MaisonPlus a identifié 3 fournisseurs pour lesquels aucune alternative n'était prête. Pour chacun, un plan de migration a été préparé (pas forcément exécuté, mais prêt à être déclenché). La portabilité des données a été négociée contractuellement avec le principal fournisseur IA."
       },
       {
         type: 'p',
@@ -676,13 +676,13 @@ export const articles: Article[] = [
           "Un incident de repricing aberrant détecté et corrigé en 8 minutes grâce au nouveau système d'alerte (avant : l'incident aurait duré des heures sans être détecté)",
           "Migration d'un fournisseur IA réalisée en 4 jours grâce aux plans de migration préparés (coût évité estimé : 35 000 €)",
           "Réduction de 28 % des dépenses publicitaires automatiques sans perte de performance grâce aux plafonds rationalisés",
-          "Conformité AI Act avancée : LuxeHome est en bonne voie pour l'échéance d'août 2026"
+          "Conformité AI Act avancée : MaisonPlus est en bonne voie pour l'échéance d'août 2026"
         ]
       },
       {
         type: 'quote',
         texte: "On pensait que mettre en place une gouvernance allait ralentir nos agents. En réalité, ça les a rendus plus efficaces parce qu'on a éliminé des règles contradictoires et on a gagné en confiance pour aller plus loin dans l'automatisation.",
-        auteur: "Directeur e-commerce, LuxeHome"
+        auteur: "Directeur e-commerce, MaisonPlus"
       },
       {
         type: 'h2',
@@ -713,8 +713,8 @@ export const articles: Article[] = [
     date: "20 janvier 2026",
     dateISO: "2026-01-20",
     categorie: "Technique",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
-    imageAlt: "Système de contrôle et interrupteur d'urgence",
+    image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&auto=format&fit=crop&q=80",
+    imageAlt: "Système de contrôle et sécurité IA",
     tempsLecture: "13 min",
     contenu: [
       {
