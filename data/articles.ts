@@ -178,7 +178,7 @@ export const articles: Article[] = [
     date: "10 février 2026",
     dateISO: "2026-02-10",
     categorie: "Réglementation",
-    image: "/AI_ACT.jpg",
+    image: "/AI_ACT.png",
     imageAlt: "Drapeaux européens - AI Act",
     tempsLecture: "10 min",
     contenu: [
@@ -482,10 +482,7 @@ export const articles: Article[] = [
       {
         type: 'cta',
         texte: "Calculer mon Score ACF® maintenant"
-      }
-    ]
-  },
-
+      },
       {
         type: 'definition',
         titre: "Définition : Score ACF® (Agentic Commerce Framework)",
@@ -653,10 +650,7 @@ export const articles: Article[] = [
       {
         type: 'cta',
         texte: "Évaluer la solidité de mes 4 couches"
-      }
-    ]
-  },
-
+      },
       {
         type: 'definition',
         titre: "Définition : Gouvernance agentique",
@@ -827,10 +821,7 @@ export const articles: Article[] = [
       {
         type: 'cta',
         texte: "Calculer mon score de départ"
-      }
-    ]
-  },
-
+      },
       {
         type: 'faq',
         faqs: [
@@ -865,7 +856,7 @@ export const articles: Article[] = [
     date: "20 janvier 2026",
     dateISO: "2026-01-20",
     categorie: "Technique",
-    image: "/KILL.jpg",
+    image: "/KILL.png",
     imageAlt: "Bouton d'arrêt d'urgence - Kill switch",
     tempsLecture: "13 min",
     contenu: [
