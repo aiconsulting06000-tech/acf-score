@@ -26,8 +26,48 @@ export async function POST(request: NextRequest) {
     const hasReport = formData.get('hasReport') === 'true'
     const file = formData.get('file') as File | null
     const timestamp = formData.get('timestamp') as string
+    const turnstileToken = formData.get('turnstileToken') as string
 
-    console.log('Contact form:', { name, email, company, subject, hasReport })
+    console.log('Contact form:', { name, email, company, subject, hasReport, hasTurnstileToken: !!turnstileToken })
+
+    // Anti-spam : Vérification Turnstile
+    if (!turnstileToken) {
+      console.log('SPAM DETECTED: No Turnstile token')
+      return NextResponse.json(
+        { error: 'Vérification de sécurité manquante' },
+        { status: 400 }
+      )
+    }
+
+    // Vérifier le token Turnstile avec Cloudflare
+    try {
+      const turnstileResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          secret: process.env.TURNSTILE_SECRET_KEY,
+          response: turnstileToken
+        })
+      })
+
+      const turnstileResult = await turnstileResponse.json()
+      
+      if (!turnstileResult.success) {
+        console.log('SPAM DETECTED: Turnstile verification failed', turnstileResult)
+        return NextResponse.json(
+          { error: 'Échec de la vérification de sécurité' },
+          { status: 400 }
+        )
+      }
+      
+      console.log('✅ Turnstile verification passed')
+    } catch (turnstileError) {
+      console.error('Turnstile verification error:', turnstileError)
+      return NextResponse.json(
+        { error: 'Erreur lors de la vérification de sécurité' },
+        { status: 400 }
+      )
+    }
 
     // Anti-spam : timestamp
     if (timestamp) {
