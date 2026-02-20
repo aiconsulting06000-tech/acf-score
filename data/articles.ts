@@ -11,12 +11,18 @@ export interface Article {
   contenu: Section[]
 }
 
+export interface FaqItem {
+  question: string
+  reponse: string
+}
+
 export interface Section {
-  type: 'intro' | 'h2' | 'h3' | 'p' | 'ul' | 'ol' | 'quote' | 'cta' | 'encadre'
+  type: 'intro' | 'h2' | 'h3' | 'p' | 'ul' | 'ol' | 'quote' | 'cta' | 'encadre' | 'definition' | 'faq'
   texte?: string
   items?: string[]
   auteur?: string
   titre?: string
+  faqs?: FaqItem[]
 }
 
 export const articles: Article[] = [
@@ -133,6 +139,31 @@ export const articles: Article[] = [
         type: 'encadre',
         titre: "À retenir",
         texte: "L'économie des agents IA crée de formidables opportunités d'efficacité et de compétitivité. Mais elle crée aussi de nouveaux risques que peu d'entreprises ont anticipés. La gouvernance agentique n'est plus optionnelle : c'est le prérequis pour tirer parti de l'IA sans en subir les dérives."
+      },
+      {
+        type: 'faq',
+        faqs: [
+          {
+            question: "Qu'est-ce que l'économie des agents IA ?",
+            reponse: "L'économie des agents IA désigne un système économique où des agents logiciels autonomes prennent en charge des décisions commerciales jusqu'ici réservées aux humains : gestion des stocks, négociation de prix, relation client, achat média. Elle transforme la compétition entre entreprises car ce sont désormais des agents qui s'affrontent en temps réel."
+          },
+          {
+            question: "En quoi les agents IA diffèrent-ils des chatbots classiques ?",
+            reponse: "Contrairement aux chatbots qui répondent à des questions prédéfinies, les agents IA autonomes peuvent enchaîner plusieurs actions sans intervention humaine : rechercher des informations, appeler des API externes, modifier des paramètres système, déclencher des commandes ou envoyer des communications. Ils agissent, pas seulement ils répondent."
+          },
+          {
+            question: "Quels sont les risques principaux des agents IA pour une entreprise ?",
+            reponse: "Les trois risques principaux sont : la dépendance critique à des fournisseurs tiers dont les conditions peuvent changer, la perte de contrôle sur des décisions à fort impact financier ou réputationnel, et l'absence de traçabilité rendant difficile l'identification des responsabilités en cas d'erreur."
+          },
+          {
+            question: "Comment évaluer la maturité agentique de son entreprise ?",
+            reponse: "Le Score ACF® (Agentic Commerce Framework) permet d'évaluer la maturité agentique d'une entreprise en 10 minutes via 20 questions couvrant 4 dimensions : Gouvernance & Souveraineté, Politique de Décision, Système d'Agents et Supervision Humaine. Il fournit un score sur 100 et identifie les priorités d'amélioration."
+          },
+          {
+            question: "L'économie des agents IA concerne-t-elle les PME ?",
+            reponse: "Oui. Les PME e-commerce, B2B et de services sont directement concernées : leurs concurrents déploient déjà des agents de repricing, de SAV automatisé et de gestion publicitaire. Ne pas adopter ces technologies crée un désavantage compétitif, mais les adopter sans gouvernance crée des risques souvent sous-estimés."
+          }
+        ]
       }
     ]
   },
@@ -274,6 +305,37 @@ export const articles: Article[] = [
         type: 'encadre',
         titre: "Sanctions prévues",
         texte: "Les violations des obligations pour les systèmes à haut risque exposent à des amendes allant jusqu'à 15 millions d'euros ou 3 % du chiffre d'affaires mondial (le plus élevé des deux). Pour les violations les plus graves (utilisation d'IA interdites), les amendes montent à 35 millions d'euros ou 7 % du CA."
+      }
+,
+      {
+        type: 'definition',
+        titre: "Définition : AI Act européen",
+        texte: "L'AI Act (Règlement européen sur l'intelligence artificielle) est le premier cadre réglementaire mondial sur l'IA, entré en vigueur en août 2024. Il classe les systèmes IA en 4 niveaux de risque (inacceptable, élevé, limité, minimal) et impose des obligations proportionnelles. Les entreprises utilisant des systèmes à haut risque doivent se conformer pleinement d'ici août 2026."
+      },
+      {
+        type: 'faq',
+        faqs: [
+          {
+            question: "Qu'est-ce que l'AI Act européen et à qui s'applique-t-il ?",
+            reponse: "L'AI Act est le premier règlement mondial sur l'intelligence artificielle, adopté par l'Union Européenne. Il s'applique à toute entreprise qui développe, déploie ou utilise des systèmes IA sur le territoire européen, quelle que soit sa nationalité. Les multinationales hors UE proposant des services à des utilisateurs européens sont également concernées."
+          },
+          {
+            question: "Quelles sont les sanctions prévues par l'AI Act ?",
+            reponse: "L'AI Act prévoit des amendes graduées selon la gravité de l'infraction : jusqu'à 35 millions d'euros ou 7% du chiffre d'affaires mondial pour l'utilisation d'IA interdites, jusqu'à 15 millions d'euros ou 3% du CA pour les manquements aux obligations des systèmes à haut risque, et jusqu'à 7,5 millions d'euros ou 1,5% du CA pour les fausses déclarations."
+          },
+          {
+            question: "Un agent IA de SAV est-il concerné par l'AI Act ?",
+            reponse: "Un agent SAV standard relève généralement du risque limité (obligation de transparence : l'utilisateur doit savoir qu'il parle à une IA). S'il influence des décisions significatives comme l'acceptation ou le refus de remboursements, la modération de comptes ou l'accès à des services, il peut basculer en risque élevé avec des obligations bien plus contraignantes."
+          },
+          {
+            question: "Qu'est-ce qu'un système IA à haut risque selon l'AI Act ?",
+            reponse: "Un système IA à haut risque est un système dont les décisions ont un impact significatif sur des droits fondamentaux ou la sécurité des personnes. Cela inclut les systèmes de recrutement automatisé, d'évaluation de crédit, de tarification différenciée par profil, de modération de comptes, ou utilisés dans des infrastructures critiques. Ces systèmes doivent être enregistrés dans la base de données EU et respecter des obligations strictes de documentation, traçabilité et supervision humaine."
+          },
+          {
+            question: "Quelle est la date limite pour se conformer à l'AI Act ?",
+            reponse: "L'application de l'AI Act est progressive : les IA à risque inacceptable sont interdites depuis août 2024, les obligations sur les modèles d'IA à usage général (comme les LLMs) s'appliquent depuis août 2025, et les obligations complètes pour les systèmes à haut risque entrent en vigueur en août 2026. Les entreprises doivent donc finaliser leur mise en conformité avant cette date."
+          }
+        ]
       }
     ]
   },
@@ -424,6 +486,39 @@ export const articles: Article[] = [
     ]
   },
 
+      {
+        type: 'definition',
+        titre: "Définition : Score ACF® (Agentic Commerce Framework)",
+        texte: "Le Score ACF® est un indicateur de souveraineté opérationnelle qui mesure la capacité d'une entreprise à gouverner ses agents IA de manière maîtrisée et indépendante. Il s'exprime sur 100 points répartis en 4 dimensions : Gouvernance & Souveraineté (25 pts), Politique de Décision (25 pts), Système d'Agents (25 pts) et Supervision Humaine (25 pts)."
+      },
+      {
+        type: 'faq',
+        faqs: [
+          {
+            question: "Qu'est-ce que le Score ACF® et comment est-il calculé ?",
+            reponse: "Le Score ACF® (Agentic Commerce Framework) est un score sur 100 points qui mesure la souveraineté opérationnelle d'une entreprise vis-à-vis de ses agents IA. Il est calculé via 20 questions réparties sur 4 dimensions : Gouvernance & Souveraineté, Politique de Décision, Système d'Agents et Supervision Humaine. Chaque dimension vaut 25 points. Le calcul prend environ 10 minutes."
+          },
+          {
+            question: "Qu'est-ce qu'un bon Score ACF® ?",
+            reponse: "Un Score ACF® entre 0 et 30 signale une zone critique avec des dépendances excessives et un risque opérationnel élevé. Entre 31 et 50, c'est une zone de vigilance avec des lacunes importantes. Entre 51 et 70, la gouvernance est intermédiaire avec des axes d'amélioration identifiés. Entre 71 et 85, la gouvernance est avancée. Au-delà de 85, l'entreprise atteint un niveau d'excellence en souveraineté agentique."
+          },
+          {
+            question: "Quelle est la différence entre souveraineté agentique et performance agentique ?",
+            reponse: "La performance agentique mesure l'efficacité des agents (taux de conversion, coût par action, temps de traitement). La souveraineté agentique mesure la maîtrise et la résilience : pouvez-vous changer de fournisseur IA sans rupture ? Pouvez-vous arrêter vos agents en cas de dérive ? Vos règles de décision sont-elles documentées ? Une entreprise peut être très performante aujourd'hui et très vulnérable demain si sa souveraineté est faible."
+          },
+          {
+            question: "Combien de temps faut-il pour améliorer son Score ACF® ?",
+            reponse: "Des gains significatifs sont possibles en 3 à 6 mois. Les actions à impact rapide (plafonds d'urgence, kill switch, documentation des règles) peuvent faire gagner 15 à 20 points en quelques semaines. Les actions structurelles (portabilité des données, architecture multi-agents résiliente, formation des équipes) demandent 3 à 6 mois pour produire leurs effets."
+          },
+          {
+            question: "Le Score ACF® est-il lié à la conformité AI Act ?",
+            reponse: "Oui, indirectement. Un Score ACF® élevé implique des mécanismes de supervision humaine, de traçabilité et de documentation qui sont précisément ce qu'exige l'AI Act pour les systèmes à haut risque. Une entreprise avec un score supérieur à 70 est généralement bien avancée dans sa mise en conformité avec les exigences européennes."
+          }
+        ]
+      }
+    ]
+  },
+
   // ─────────────────────────────────────────────
   // ARTICLE 4
   // ─────────────────────────────────────────────
@@ -558,6 +653,39 @@ export const articles: Article[] = [
       {
         type: 'cta',
         texte: "Évaluer la solidité de mes 4 couches"
+      }
+    ]
+  },
+
+      {
+        type: 'definition',
+        titre: "Définition : Gouvernance agentique",
+        texte: "La gouvernance agentique désigne l'ensemble des règles, processus et mécanismes qui encadrent le comportement des agents IA au sein d'une organisation. Elle définit ce qu'un agent peut décider seul, ce qui nécessite une validation humaine, comment les agents sont supervisés et comment on peut les arrêter. Le framework ACF® structure cette gouvernance en 4 couches interdépendantes."
+      },
+      {
+        type: 'faq',
+        faqs: [
+          {
+            question: "Qu'est-ce que le framework ACF® en 4 couches ?",
+            reponse: "Le framework ACF® (Agentic Commerce Framework) structure la gouvernance des agents IA en 4 couches interdépendantes : (1) Gouvernance & Souveraineté — les règles fondamentales et l'indépendance vis-à-vis des tiers, (2) Politique de Décision — la traduction de la stratégie en instructions pour les agents, (3) Système d'Agents — l'architecture technique et la sécurité, (4) Supervision Humaine — le contrôle continu et la capacité d'intervention."
+          },
+          {
+            question: "Pourquoi ne peut-on pas sauter des couches dans le framework ACF® ?",
+            reponse: "Les 4 couches sont interdépendantes : un excellent système d'agents (couche 3) sans politique de décision claire (couche 2) crée des agents efficaces mais imprévisibles. Une supervision robuste (couche 4) sans gouvernance de base (couche 1) surveille des agents dont les règles fondamentales ne sont pas définies. La solidité du système repose sur la solidité de chaque couche."
+          },
+          {
+            question: "Qu'est-ce qu'une politique de décision pour un agent IA ?",
+            reponse: "Une politique de décision est l'ensemble des règles précises qui définissent le comportement d'un agent dans des situations spécifiques. Pour un agent de repricing, cela inclut : les bornes de prix min/max, les critères d'ajustement, la fréquence maximale de changement, les segments clients exclus et le comportement en cas de données aberrantes. Sans politique de décision formalisée, un agent agit selon des règles implicites non vérifiables."
+          },
+          {
+            question: "Comment mettre en place une supervision humaine efficace des agents IA ?",
+            reponse: "Une supervision humaine efficace repose sur 5 éléments : des tableaux de bord en temps réel montrant les KPIs clés des agents, des alertes automatiques sur les anomalies, des audits aléatoires périodiques des décisions automatisées, un kill switch opérationnel testé régulièrement, et des procédures documentées d'intervention. La supervision ne signifie pas tout valider — elle signifie être capable de détecter et corriger rapidement."
+          },
+          {
+            question: "Quelle est la première étape pour mettre en place un framework de gouvernance agentique ?",
+            reponse: "La première étape est l'inventaire : lister tous les agents et outils automatisés utilisés dans l'organisation, identifier leurs actions possibles (notamment les actions irréversibles), et cartographier les dépendances. Sans cet inventaire, toute tentative de gouvernance est incomplète. Cette étape prend généralement 1 à 2 semaines et révèle souvent des agents dont personne n'avait conscience."
+          }
+        ]
       }
     ]
   },
@@ -699,6 +827,30 @@ export const articles: Article[] = [
       {
         type: 'cta',
         texte: "Calculer mon score de départ"
+      }
+    ]
+  },
+
+      {
+        type: 'faq',
+        faqs: [
+          {
+            question: "Combien de temps faut-il pour passer de 32 à 78 points ACF® ?",
+            reponse: "Le scénario illustratif de MaisonPlus montre qu'une progression de 32 à 78 points est atteignable en 6 mois avec une approche structurée en 3 phases : 2 mois pour traiter les risques urgents (plafonds, kill switch, inventaire), 2 mois pour formaliser la gouvernance (charte, politiques de décision), 2 mois pour renforcer la résilience (réduction des dépendances, tableau de bord de supervision)."
+          },
+          {
+            question: "Par où commencer pour améliorer sa gouvernance agentique ?",
+            reponse: "La priorité absolue est de traiter les risques immédiats avant d'optimiser. Concrètement : (1) inventorier tous les agents et leurs actions irréversibles, (2) mettre des plafonds d'urgence sur les agents les plus exposés (dépenses, modifications de prix), (3) créer un kill switch pour chaque agent critique. Ces trois actions peuvent être réalisées en quelques jours et réduisent drastiquement l'exposition au risque."
+          },
+          {
+            question: "La gouvernance agentique ralentit-elle l'automatisation ?",
+            reponse: "Non, c'est l'inverse. Un cadre de gouvernance clair permet d'aller plus loin dans l'automatisation avec plus de confiance. Sans gouvernance, les équipes hésitent à déléguer des décisions importantes aux agents par crainte de perte de contrôle. Avec une gouvernance solide, les seuils de délégation peuvent être progressivement élargis car les mécanismes de détection et de correction sont en place."
+          },
+          {
+            question: "Quel est le ROI d'une démarche de gouvernance agentique ?",
+            reponse: "Le ROI se mesure sur plusieurs dimensions : réduction des incidents coûteux (un repricing aberrant non détecté peut coûter des dizaines de milliers d'euros), économies sur les dépenses automatiques mal calibrées, capacité à migrer rapidement vers un fournisseur alternatif moins coûteux, et conformité AI Act qui évite des amendes potentiellement très élevées. Dans le cas illustratif, une migration de fournisseur réalisée en 4 jours grâce aux plans préparés a évité un coût estimé à 35 000€."
+          }
+        ]
       }
     ]
   },
@@ -861,6 +1013,219 @@ export const articles: Article[] = [
       {
         type: 'cta',
         texte: "Évaluer ma capacité de supervision"
+      }
+    ]
+  }
+]
+
+      {
+        type: 'definition',
+        titre: "Définition : Kill switch agentique",
+        texte: "Un kill switch agentique est un mécanisme qui permet d'arrêter immédiatement un agent IA, partiellement ou totalement, en cas de comportement anormal ou de risque identifié. Il existe en 3 niveaux : l'arrêt global (coupe tous les agents), l'arrêt par agent (stoppe un agent spécifique), et la mise en pause avec fallback (suspend l'agent et bascule vers un comportement de secours défini)."
+      },
+      {
+        type: 'faq',
+        faqs: [
+          {
+            question: "Qu'est-ce qu'un kill switch pour un agent IA ?",
+            reponse: "Un kill switch est un mécanisme d'arrêt d'urgence qui permet de stopper immédiatement un agent IA en cas de comportement anormal, de dérive ou de risque identifié. Il peut être global (coupe tous les agents) ou granulaire (stoppe un agent spécifique). L'AI Act européen exige explicitement ce type de mécanisme pour les systèmes IA à haut risque (Article 9 sur la gestion des risques)."
+          },
+          {
+            question: "Comment implémenter un kill switch pour un agent IA ?",
+            reponse: "Les approches techniques les plus courantes sont : les feature flags (un booléen en base de données que l'agent vérifie avant chaque action), les circuit breakers (coupure automatique si un seuil d'erreur est dépassé), les webhooks de contrôle (API interne que l'agent consulte pour savoir s'il est autorisé à agir), ou la révocation de clés API. L'important est que l'action soit simple (un clic), rapide (effet en moins de 30 secondes) et connue de toute l'équipe concernée."
+          },
+          {
+            question: "À quelle fréquence doit-on tester son kill switch ?",
+            reponse: "La recommandation ACF® est : un test mensuel en environnement de staging (arrêt complet et vérification du fallback), un test trimestriel en production hors heures de pointe (arrêt d'un agent non critique), et un test annuel de scénario catastrophe avec toutes les équipes. Un kill switch non testé régulièrement n'est pas un mécanisme de sécurité fiable."
+          },
+          {
+            question: "L'AI Act oblige-t-il à avoir un kill switch ?",
+            reponse: "Oui, pour les systèmes IA à haut risque. L'Article 9 de l'AI Act sur la gestion des risques exige que les systèmes à haut risque permettent une supervision humaine effective, incluant la capacité d'intervention et d'arrêt. L'Article 14 précise les exigences de supervision humaine, notamment la possibilité d'annuler des décisions automatisées. Un kill switch opérationnel et documenté est l'implémentation concrète de ces exigences."
+          },
+          {
+            question: "Que se passe-t-il quand on active un kill switch sur un agent en production ?",
+            reponse: "Le comportement dépend du niveau de maturité du kill switch. Au niveau basique, l'agent s'arrête et les processus doivent être repris manuellement. Au niveau intermédiaire, un mode dégradé prend le relais (prix catalogue statiques, file d'attente SAV humaine). Au niveau avancé, un agent de fallback simplifié prend le relais automatiquement. La définition de ces modes dégradés avant un incident est une étape critique souvent négligée."
+          }
+        ]
+      }
+    ]
+  },
+
+  // ─────────────────────────────────────────────
+  // ARTICLE 7
+  // ─────────────────────────────────────────────
+  {
+    slug: 'agent-to-agent-broker-marques',
+    titre: "Agent-to-Agent, Broker Agent, Agent-to-Customer : ce que cela change pour les marques",
+    description: "Les agents IA ne parlent plus seulement aux humains — ils négocient entre eux. Découvrez les nouveaux modèles de relation agentique et leurs implications concrètes pour votre marque.",
+    date: "12 janvier 2026",
+    dateISO: "2026-01-12",
+    categorie: "Tendances",
+    image: "/AGENTS_AI.png",
+    imageAlt: "Agent-to-Agent et Broker Agent IA",
+    tempsLecture: "10 min",
+    contenu: [
+      {
+        type: 'intro',
+        texte: "Jusqu'ici, l'IA interagissait principalement avec des humains. Cette époque est révolue. En 2026, une part croissante des transactions commerciales se déroule entre agents : un agent acheteur qui négocie avec un agent vendeur, un broker agent qui arbitre entre plusieurs offres, un agent client qui filtre les sollicitations avant qu'elles n'atteignent un humain. Pour les marques, ce changement de paradigme est aussi profond que l'a été l'avènement du e-commerce."
+      },
+      {
+        type: 'h2',
+        texte: "Les 3 nouveaux types de relations agentiques"
+      },
+      {
+        type: 'h3',
+        texte: "1. Agent-to-Agent (A2A) : quand les machines négocient entre elles"
+      },
+      {
+        type: 'p',
+        texte: "La relation Agent-to-Agent désigne toute interaction où deux systèmes IA autonomes communiquent et prennent des décisions sans intervention humaine directe. Un agent de gestion des stocks d'un distributeur contacte automatiquement l'agent d'approvisionnement d'un fournisseur pour déclencher une commande. Un agent de pricing ajuste ses tarifs en réponse aux mouvements détectés de l'agent concurrent."
+      },
+      {
+        type: 'p',
+        texte: "Ces échanges se font via des protocoles standardisés émergents — MCP (Model Context Protocol), des API REST structurées ou des formats d'échange spécifiques aux agents. La vitesse est leur caractéristique principale : là où une négociation humaine prenait des jours, une négociation A2A prend des millisecondes."
+      },
+      {
+        type: 'ul',
+        items: [
+          "Négociation de prix et conditions commerciales en temps réel entre systèmes",
+          "Synchronisation automatique des stocks et prévisions entre partenaires",
+          "Échange de données produits, certifications et conformité sans saisie manuelle",
+          "Orchestration de chaînes logistiques multi-acteurs sans coordination humaine",
+          "Protocoles de vérification mutuelle de fiabilité et de réputation entre agents"
+        ]
+      },
+      {
+        type: 'h3',
+        texte: "2. Le Broker Agent : l'intermédiaire algorithmique"
+      },
+      {
+        type: 'p',
+        texte: "Le Broker Agent est un agent spécialisé dans la mise en relation et l'arbitrage entre plusieurs parties. Son rôle est analogue à celui d'un courtier humain, mais opérant à une échelle et une vitesse incomparables. Il agrège les offres, les évalue selon des critères définis et sélectionne la meilleure option pour le compte de son mandant."
+      },
+      {
+        type: 'p',
+        texte: "Concrètement, un Broker Agent d'achat peut simultanément interroger 50 fournisseurs, comparer leurs offres selon une vingtaine de critères pondérés (prix, délai, qualité certifiée, bilan carbone, conditions de retour) et déclencher la commande auprès du gagnant — le tout en quelques secondes. Pour les marques qui ne comprennent pas ce mécanisme, leurs offres ne seront tout simplement jamais sélectionnées."
+      },
+      {
+        type: 'encadre',
+        titre: "Exemple concret",
+        texte: "Amazon Rufus, Klarna AI et les agents d'achat de nouvelle génération fonctionnent déjà partiellement comme des Broker Agents côté consommateur : ils agrègent, comparent et recommandent sans que le client ne visite chaque site. La marque qui n'optimise pas ses données produits pour être lisible par ces agents est invisible."
+      },
+      {
+        type: 'h3',
+        texte: "3. Agent-to-Customer (A2C) : la relation client réinventée"
+      },
+      {
+        type: 'p',
+        texte: "La relation Agent-to-Customer désigne les interactions entre un agent de marque et un consommateur humain. C'est le modèle le plus connu — chatbots, assistants de vente, SAV automatisé. Mais en 2026, cette relation évolue radicalement : le consommateur humain est de moins en moins souvent l'interlocuteur direct. À sa place, son propre agent personnel filtre, évalue et répond à sa place."
+      },
+      {
+        type: 'p',
+        texte: "Un consommateur équipé d'un agent personnel (Apple Intelligence, Google Assistant avancé, ou des solutions comme Perplexity Shopping) ne voit plus votre publicité, ne reçoit plus votre newsletter, et ne parcourt plus votre site. Son agent le fait pour lui, selon ses préférences programmées. La relation n'est plus B2C — elle devient B2A2C : votre agent de marque doit convaincre l'agent du consommateur."
+      },
+      {
+        type: 'h2',
+        texte: "Les implications concrètes pour les marques"
+      },
+      {
+        type: 'h3',
+        texte: "Votre contenu doit être lisible par les machines"
+      },
+      {
+        type: 'p',
+        texte: "Un agent acheteur ne lit pas vos fiches produits comme un humain. Il interroge vos données via des API, parse vos structured data, lit vos métadonnées. Une fiche produit visuellement magnifique mais pauvre en données structurées est invisible pour un Broker Agent. L'optimisation pour les agents (AEO — Agent Experience Optimization) devient aussi critique que le SEO l'était pour Google."
+      },
+      {
+        type: 'ul',
+        items: [
+          "Implémenter des structured data complètes (Schema.org, JSON-LD) sur tous vos produits",
+          "Exposer une API produit publique ou semi-publique pour les agents partenaires",
+          "Documenter vos politiques commerciales dans des formats lisibles par les agents (JSON, XML structuré)",
+          "Maintenir vos données en temps réel : stock, prix, délais — les agents n'acceptent pas les données périmées",
+          "Certifier et signer vos données pour prouver leur authenticité aux agents vérificateurs"
+        ]
+      },
+      {
+        type: 'h3',
+        texte: "Votre réputation agentique devient un actif stratégique"
+      },
+      {
+        type: 'p',
+        texte: "Les Broker Agents évaluent les fournisseurs sur des critères de réputation agentique : fiabilité des données historiques, taux de respect des engagements, qualité des API, temps de réponse des systèmes. Un fournisseur avec une mauvaise réputation agentique sera systématiquement écarté, même si son offre est compétitive en termes de prix."
+      },
+      {
+        type: 'p',
+        texte: "Cette réputation se construit sur des registres distribués et des systèmes de scoring inter-agents. Elle est difficile à construire et facile à détruire. Une promesse de délai non tenue ou une donnée de stock erronée répercutée à un agent partenaire peut dégrader votre score agentique et vous exclure de circuits d'achat automatisés."
+      },
+      {
+        type: 'h3',
+        texte: "La personnalisation atteint ses limites éthiques et légales"
+      },
+      {
+        type: 'p',
+        texte: "Quand votre agent de marque collecte des données sur l'agent d'un consommateur pour personnaliser une offre, jusqu'où peut-il aller ? Le RGPD et l'AI Act encadrent déjà ces pratiques, mais la jurisprudence sur les interactions agent-to-agent est encore embryonnaire. Les marques qui définissent dès maintenant des règles éthiques claires sur ce que leurs agents peuvent collecter et utiliser auront un avantage décisif quand la réglementation se précisera."
+      },
+      {
+        type: 'h3',
+        texte: "Le rôle humain se déplace vers la stratégie et la gouvernance"
+      },
+      {
+        type: 'p',
+        texte: "Si les agents gèrent les transactions, les négociations et une partie des relations clients, que font les humains ? Ils définissent les règles du jeu : les valeurs de la marque que les agents doivent incarner, les limites éthiques qu'ils ne peuvent pas franchir, les critères de sélection des partenaires, les seuils de décision réservés aux humains. Le marketing de demain est moins une discipline d'exécution qu'une discipline de gouvernance."
+      },
+      {
+        type: 'quote',
+        texte: "Dans l'économie agentique, votre marque est ce que vos agents font quand personne ne regarde. La gouvernance n'est plus un sujet RH ou juridique — c'est le cœur de votre stratégie de marque.",
+        auteur: "Vincent DORANGE, créateur du framework ACF®"
+      },
+      {
+        type: 'h2',
+        texte: "Comment se préparer dès maintenant ?"
+      },
+      {
+        type: 'ol',
+        items: [
+          "Auditez votre lisibilité agentique : vos données produits sont-elles accessibles et structurées pour des agents ?",
+          "Définissez la 'personnalité agentique' de votre marque : quelles valeurs et quelles limites vos agents doivent-ils respecter dans leurs interactions ?",
+          "Identifiez les Broker Agents clés de votre secteur et comprenez leurs critères de sélection",
+          "Mesurez votre réputation agentique actuelle auprès de vos partenaires et clients",
+          "Évaluez votre Score ACF® pour identifier les lacunes de gouvernance à combler avant que vos agents ne négocient en votre nom"
+        ]
+      },
+      {
+        type: 'cta',
+        texte: "Évaluer ma maturité agentique"
+      }
+      {
+        type: 'definition',
+        titre: "Définition : Agent-to-Agent (A2A)",
+        texte: "La relation Agent-to-Agent (A2A) désigne toute interaction commerciale ou opérationnelle entre deux systèmes IA autonomes sans intervention humaine directe. Les agents négocient, échangent des données et prennent des décisions en millisecondes via des protocoles standardisés (MCP, API REST). Cette nouvelle forme d'échange transforme la compétition commerciale et impose aux marques d'optimiser leur lisibilité agentique."
+      },
+      {
+        type: 'faq',
+        faqs: [
+          {
+            question: "Qu'est-ce que la relation Agent-to-Agent (A2A) ?",
+            reponse: "La relation Agent-to-Agent (A2A) désigne les interactions commerciales entre deux systèmes IA autonomes sans intervention humaine. Un agent acheteur négocie avec un agent vendeur, un agent de stock contacte automatiquement un agent fournisseur, des agents de pricing s'affrontent en temps réel. Ces échanges se font via des protocoles standardisés comme MCP (Model Context Protocol) et peuvent traiter en millisecondes ce qui prenait des jours en négociation humaine."
+          },
+          {
+            question: "Qu'est-ce qu'un Broker Agent ?",
+            reponse: "Un Broker Agent est un agent IA spécialisé dans la mise en relation et l'arbitrage entre plusieurs offres ou parties. Il agrège simultanément des dizaines d'offres, les évalue selon des critères pondérés (prix, délai, qualité, bilan carbone) et sélectionne la meilleure option pour son mandant. Amazon Rufus et Klarna AI fonctionnent partiellement comme des Broker Agents côté consommateur. Une marque non optimisée pour ces agents est simplement invisible dans leur processus de sélection."
+          },
+          {
+            question: "Qu'est-ce que l'AEO (Agent Experience Optimization) ?",
+            reponse: "L'AEO (Agent Experience Optimization) est l'équivalent du SEO mais pour les agents IA. Il s'agit d'optimiser ses données et son contenu pour être lisible, compréhensible et sélectionnable par des agents acheteurs, des Broker Agents et des assistants IA. Concrètement : implémenter des structured data (Schema.org, JSON-LD), exposer des API produits, maintenir des données en temps réel et documenter ses politiques commerciales dans des formats lisibles par les machines."
+          },
+          {
+            question: "Comment les marques doivent-elles se préparer à l'économie agent-to-agent ?",
+            reponse: "Les marques doivent agir sur 4 fronts : (1) la lisibilité agentique — structurer leurs données pour être interrogeables par des agents, (2) la réputation agentique — construire un historique fiable de respect des engagements, (3) la personnalité agentique — définir quelles valeurs et limites leurs propres agents doivent incarner, (4) la gouvernance — s'assurer que leurs agents sont maîtrisés et conformes avant de les engager dans des relations automatisées avec des agents tiers."
+          },
+          {
+            question: "La relation B2C disparaît-elle avec les agents IA ?",
+            reponse: "Elle ne disparaît pas mais se transforme en B2A2C (Business-to-Agent-to-Customer). De plus en plus de consommateurs délèguent leurs recherches et comparaisons à des agents personnels (Apple Intelligence, Google Assistant, Perplexity Shopping). La marque doit donc d'abord convaincre l'agent du consommateur, qui filtre les offres selon les préférences programmées de son utilisateur. Le contenu visible par les humains reste important, mais la lisibilité par les agents devient un prérequis."
+          }
+        ]
       }
     ]
   }

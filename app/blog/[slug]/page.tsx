@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { getArticleBySlug, getAllSlugs, Article, Section } from '@/data/articles'
+import { getArticleBySlug, getAllSlugs, Article, Section, FaqItem } from '@/data/articles'
 
 // Génération statique des routes
 export async function generateStaticParams() {
@@ -121,6 +121,38 @@ function renderSection(section: Section, index: number) {
           >
             {section.texte} →
           </Link>
+        </div>
+      )
+    case 'definition':
+      return (
+        <div key={index} className="my-8 bg-blue-50 border-l-4 border-blue-500 rounded-r-xl p-6">
+          {section.titre && (
+            <h4 className="font-bold text-blue-800 mb-2">📖 {section.titre}</h4>
+          )}
+          <p className="text-blue-900 leading-relaxed">{section.texte}</p>
+        </div>
+      )
+    case 'faq':
+      return (
+        <div key={index} className="my-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Questions fréquentes</h2>
+          <div className="space-y-4">
+            {section.faqs?.map((faq, i) => (
+              <details key={i} className="group bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <summary className="flex items-center justify-between p-5 cursor-pointer hover:bg-gray-50 transition">
+                  <span className="font-semibold text-gray-900 pr-4">{faq.question}</span>
+                  <span className="flex-shrink-0 w-6 h-6 text-purple-600 group-open:rotate-180 transition-transform duration-200">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </summary>
+                <div className="px-5 pb-5 pt-2 text-gray-700 leading-relaxed border-t border-gray-100">
+                  {faq.reponse}
+                </div>
+              </details>
+            ))}
+          </div>
         </div>
       )
     default:
