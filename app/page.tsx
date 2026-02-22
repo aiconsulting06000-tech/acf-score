@@ -9,7 +9,7 @@ export default function LandingPage() {
       
       {/* Hero avec gradient violet/rose comme logo ACF */}
       <div className="bg-gradient-to-br from-purple-900 via-purple-600 to-pink-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-7xl mx-auto px-4 md:px-16 py-16">
           <div className="text-center">
             <div className="inline-block bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
               Gratuit • Sans inscription • Résultat immédiat
@@ -27,7 +27,7 @@ export default function LandingPage() {
             
             <Link
               href="/calculator"
-              className="inline-block bg-white text-primary px-8 py-4 rounded-lg text-lg font-bold hover:shadow-xl transition"
+              className="w-full md:inline-block bg-white text-primary px-8 py-4 rounded-lg text-lg font-bold hover:shadow-xl transition text-center"
             >
               Calculer mon score gratuitement →
             </Link>
@@ -50,7 +50,7 @@ export default function LandingPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-16 py-12">
         
         {/* 1) Qu'est-ce que l'ACF® */}
         <div className="text-center mb-12">
