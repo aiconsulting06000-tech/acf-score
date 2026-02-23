@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import ACFRadarChart from '@/components/ACFRadarChart'
+import ACFRadarChart from '@/components/charts/ACFRadarChart'
 import Link from 'next/link'
 
 interface DiagnosticResults {
