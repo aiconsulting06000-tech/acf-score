@@ -1,340 +1,299 @@
 'use client'
-
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { calculerResultatsACF, type ACFResults, type ACFFormData } from '@/lib/acf-calculations'
-import { downloadPDF } from '@/lib/pdf-generator'
-import { getMarketStats, getMarketPosition } from '@/lib/market-stats'
+import ACFRadarChart from '@/components/ACFRadarChart'
+import Link from 'next/link'
+
+interface DiagnosticResults {
+  globalScore: number
+  sovereigntyScore: number
+  ds: number
+  dd: number
+  dt: number
+  dtr: number
+  level: string
+  marketPercentile: number
+  priorities: Array<{ title: string; description: string; urgency: 'critical' | 'high' | 'medium' }>
+  completedAt: string
+  companyName?: string
+  sector?: string
+}
+
+function ScoreRing({ score, size = 140 }: { score: number; size?: number }) {
+  const r = (size - 20) / 2
+  const c = 2 * Math.PI * r
+  const fill = c - (c * score / 100)
+  const color = score >= 75 ? '#22c55e' : score >= 55 ? '#c9a84c' : score >= 30 ? '#f97316' : '#ef4444'
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{transform:'rotate(-90deg)'}}>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="12"/>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth="12"
+        strokeDasharray={c} strokeDashoffset={fill} strokeLinecap="round"
+        style={{filter:`drop-shadow(0 0 8px ${color}60)`,transition:'stroke-dashoffset 1s ease'}}/>
+    </svg>
+  )
+}
+
+const urgencyConfig = {
+  critical: { label: 'Critique', color: '#ef4444', bg: 'rgba(239,68,68,.1)', border: 'rgba(239,68,68,.25)' },
+  high: { label: 'Élevée', color: '#f97316', bg: 'rgba(249,115,22,.1)', border: 'rgba(249,115,22,.25)' },
+  medium: { label: 'Moyenne', color: '#c9a84c', bg: 'rgba(201,168,76,.1)', border: 'rgba(201,168,76,.25)' },
+}
 
 export default function ResultsPage() {
-  const router = useRouter()
-  const [results, setResults] = useState<ACFResults | null>(null)
-  const [formData, setFormData] = useState<ACFFormData | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [results, setResults] = useState<DiagnosticResults | null>(null)
+  const [showPDF, setShowPDF] = useState(false)
 
   useEffect(() => {
-    const encodedData = localStorage.getItem('acf_results')
-    
-    if (!encodedData) {
-      router.push('/calculator')
-      return
+    const saved = localStorage.getItem('acf_results')
+    if (saved) {
+      try { setResults(JSON.parse(saved)) } catch {}
     }
+  }, [])
 
-    try {
-      const savedFormData: ACFFormData = JSON.parse(decodeURIComponent(encodedData))
-      const calculatedResults = calculerResultatsACF(savedFormData)
-      
-      const fixedResults = {
-        ...calculatedResults,
-        scoreGlobal: isNaN(calculatedResults.scoreGlobal) ? 0 : calculatedResults.scoreGlobal,
-        scoreSouverainete: isNaN(calculatedResults.scoreSouverainete) ? 0 : calculatedResults.scoreSouverainete,
-        niveauMaturite: isNaN(calculatedResults.niveauMaturite) ? 0 : calculatedResults.niveauMaturite,
-        scoreCouche1: isNaN(calculatedResults.scoreCouche1) ? 0 : calculatedResults.scoreCouche1,
-        scoreCouche2: isNaN(calculatedResults.scoreCouche2) ? 0 : calculatedResults.scoreCouche2,
-        scoreCouche3: isNaN(calculatedResults.scoreCouche3) ? 0 : calculatedResults.scoreCouche3,
-        scoreCouche4: isNaN(calculatedResults.scoreCouche4) ? 0 : calculatedResults.scoreCouche4,
-      }
-      
-      setResults(fixedResults)
-      setFormData(savedFormData)
-      setLoading(false)
-      
-      fetch('/api/save-diagnostic', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...savedFormData, ...fixedResults })
-      }).catch(console.error)
-    } catch (error) {
-      console.error('Erreur calcul résultats:', error)
-      router.push('/calculator')
-    }
-  }, [router])
-
-  const handleDownloadPDF = () => {
-    if (results && formData) {
-      downloadPDF(results, formData)
-    }
-  }
-
-  if (loading || !results) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">Calcul de vos résultats...</p>
+  if (!results) return (
+    <>
+      <style>{`
+        .rp-empty{background:#050c1a;min-height:100vh;color:#fff;font-family:'Inter',sans-serif}
+        .rp-empty-inner{max-width:600px;margin:0 auto;padding:120px 40px;text-align:center}
+        .rp-empty-ico{width:64px;height:64px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;color:#c9a84c}
+        .rp-empty-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;color:#fff;margin-bottom:10px}
+        .rp-empty-sub{font-size:15px;color:#9db0c8;margin-bottom:32px;line-height:1.65}
+        .rp-btn-g{background:#c9a84c;color:#050c1a;padding:13px 28px;border-radius:7px;font-weight:700;font-size:14px;text-decoration:none;font-family:'Space Grotesk',sans-serif;display:inline-block;transition:.2s}
+        .rp-btn-g:hover{background:#e8c96a;color:#050c1a}
+      `}</style>
+      <div className="rp-empty">
+        <Header />
+        <div className="rp-empty-inner">
+          <div className="rp-empty-ico"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <div className="rp-empty-title">Aucun résultat disponible</div>
+          <p className="rp-empty-sub">Vous n'avez pas encore effectué de diagnostic ACF®. Calculez votre score maintenant pour voir vos résultats ici.</p>
+          <Link href="/calculator" className="rp-btn-g">Démarrer le diagnostic →</Link>
         </div>
       </div>
-    )
-  }
+    </>
+  )
 
-  const marketStats = getMarketStats()
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600'
-    if (score >= 60) return 'text-blue-600'
-    if (score >= 40) return 'text-orange-600'
-    return 'text-red-600'
+  const levelColors: Record<string, string> = {
+    'Souverain': '#22c55e', 'Avancé': '#22c55e', 'Structuré': '#c9a84c', 'Fragile': '#f97316', 'Critique': '#ef4444'
   }
-
-  const getScoreBg = (score: number) => {
-    if (score >= 80) return 'bg-green-50 border-green-200'
-    if (score >= 60) return 'bg-blue-50 border-blue-200'
-    if (score >= 40) return 'bg-orange-50 border-orange-200'
-    return 'bg-red-50 border-red-200'
-  }
-
-  const getCoucheExplanation = (coucheNum: number, score: number) => {
-    const explanations = {
-      1: {
-        good: "Excellente structure de gouvernance avec comité actif et charte validée. Vous avez posé les fondations solides pour contrôler vos agents IA.",
-        medium: "Gouvernance en construction. Formalisez rapidement votre comité et votre charte pour sécuriser vos décisions avant que les agents ne prennent trop d'autonomie.",
-        bad: "Gouvernance absente ou critique. Créez d'urgence un comité avec rôles définis et une charte de souveraineté. Sans cela, vous pilotez à l'aveugle."
-      },
-      2: {
-        good: "Politique de décision claire et documentée. Vos agents connaissent vos priorités business et vos limites de sécurité, ils peuvent optimiser dans le bon cadre.",
-        medium: "Politique partiellement définie. Complétez la hiérarchie de vos objectifs et vos seuils critiques pour éviter que les agents n'optimisent les mauvaises métriques.",
-        bad: "Pas de politique formalisée. Vos agents décident sans cadre, risque élevé de décisions contraires à vos intérêts stratégiques et financiers."
-      },
-      3: {
-        good: "Système d'agents bien structuré avec mandats clairs et responsables identifiés pour chaque agent. Vous savez qui fait quoi et qui répond de quoi.",
-        medium: "Structure partielle. Formalisez les mandats manquants et assignez des responsables à tous les agents pour éviter les zones grises dangereuses.",
-        bad: "Agents non documentés. Impossible de savoir qui fait quoi et qui est responsable en cas de problème. Risque juridique et opérationnel majeur."
-      },
-      4: {
-        good: "Supervision exemplaire avec traçabilité complète et mécanisme d'arrêt testé. Vous gardez le contrôle et pouvez auditer ou stopper à tout moment.",
-        medium: "Supervision partielle. Complétez vos logs (minimum 3 ans) et testez votre kill switch pour être prêt en cas de crise ou d'audit réglementaire.",
-        bad: "Pas de supervision. Vous ne pouvez ni auditer ni arrêter vos agents. Risque juridique majeur (RGPD, AI Act) et impossibilité de corriger les erreurs."
-      }
-    }
-
-    const level = score >= 20 ? 'good' : score >= 12 ? 'medium' : 'bad'
-    return explanations[coucheNum as keyof typeof explanations][level]
-  }
+  const lc = levelColors[results.level] || '#c9a84c'
+  const dims = [
+    { label: 'DS — Dépendance Structurelle', val: results.ds, max: 100 },
+    { label: 'DD — Dépendance Données', val: results.dd, max: 100 },
+    { label: 'DT — Dépendance Trafic', val: results.dt, max: 100 },
+    { label: 'DTr — Dépendance Trésorerie', val: Math.round(results.dtr * 100 / 60), max: 100 },
+  ]
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <Header />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
-        {results.scoreGlobal < 30 && (
-          <div className="bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 rounded-xl p-6 mb-8 flex items-start">
-            <svg className="w-16 h-16 text-red-600 mr-6 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-            <div>
-              <h2 className="text-2xl font-bold text-red-900 mb-2">Situation critique détectée</h2>
-              <p className="text-red-800 leading-relaxed">
-                Votre score indique une <strong>vulnérabilité majeure</strong>. Sans gouvernance agentique robuste, vous risquez une perte de contrôle opérationnel et des sanctions réglementaires. <strong>Un audit ACF® complet est fortement recommandé.</strong>
-              </p>
-            </div>
-          </div>
-        )}
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        .rp{background:#050c1a;color:#fff;font-family:'Inter',sans-serif;min-height:100vh}
+        .rp-hero{background:linear-gradient(160deg,#071122,#050c1a);border-bottom:1px solid rgba(201,168,76,.18);padding:60px 0}
+        .rp-w{max-width:1100px;margin:0 auto;padding:0 40px}
+        .rp-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);color:#c9a84c;padding:6px 14px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:24px}
+        .rp-hero-grid{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center}
+        .rp-score-wrap{position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .rp-score-inner{position:absolute;text-align:center}
+        .rp-score-num{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:36px;line-height:1}
+        .rp-score-lbl{font-size:11px;color:#9db0c8;margin-top:2px}
+        .rp-level{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:5px;font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;margin-bottom:12px}
+        .rp-h1{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:clamp(24px,3.5vw,36px);color:#fff;margin-bottom:8px;line-height:1.15}
+        .rp-meta{font-size:13px;color:#6b7fa0;margin-bottom:20px}
+        .rp-hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+        .rp-btn-g{background:#c9a84c;color:#050c1a;padding:11px 24px;border-radius:7px;font-weight:700;font-size:13px;text-decoration:none;transition:.2s;font-family:'Space Grotesk',sans-serif;display:inline-block;border:none;cursor:pointer}
+        .rp-btn-g:hover{background:#e8c96a;box-shadow:0 5px 24px rgba(201,168,76,.35);color:#050c1a}
+        .rp-btn-o{border:1px solid rgba(201,168,76,.3);color:#9db0c8;padding:11px 20px;border-radius:7px;font-weight:500;font-size:13px;text-decoration:none;transition:.2s;background:transparent;cursor:pointer}
+        .rp-btn-o:hover{border-color:#c9a84c;color:#c9a84c}
 
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Vos résultats ACF®</h1>
-          <p className="text-xl text-gray-600">Diagnostic complet de votre gouvernance agentique</p>
-        </div>
+        .rp-sec{padding:60px 0}
+        .rp-grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:28px}
+        .rp-card{background:#071122;border:1px solid rgba(201,168,76,.18);border-radius:14px;padding:32px}
+        .rp-card-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:#fff;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+        .rp-card-title span{font-size:10px;color:#c9a84c;background:rgba(201,168,76,.1);padding:3px 8px;border-radius:3px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
 
-        {/* SCORES RECENTRÉS : Souveraineté - ACF GLOBAL AU MILIEU - Maturité */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {/* Souveraineté */}
-          <div className={`rounded-xl shadow-lg p-8 border-2 ${getScoreBg(results.scoreSouverainete)}`}>
-            <div className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">Score de Souveraineté</div>
-            <div className={`text-6xl font-bold ${getScoreColor(results.scoreSouverainete)} mb-2`}>
-              {results.scoreSouverainete.toFixed(1)}<span className="text-3xl">/100</span>
-            </div>
-            <div className="text-sm font-medium text-gray-700 mb-3">{results.interpretationSouverainete}</div>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Mesure votre indépendance vis-à-vis des plateformes tierces. Un score élevé signifie que vous contrôlez votre destin commercial.
-            </p>
-          </div>
+        .rp-dim{margin-bottom:16px}
+        .rp-dim:last-child{margin-bottom:0}
+        .rp-dim-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+        .rp-dim-label{font-size:13px;color:#9db0c8}
+        .rp-dim-val{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px}
+        .rp-bar{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+        .rp-bar-fill{height:100%;border-radius:3px;transition:width .8s ease}
 
-          {/* ACF GLOBAL AU MILIEU */}
-          <div className={`rounded-xl shadow-xl p-8 border-4 border-primary bg-gradient-to-br from-purple-50 to-pink-50`}>
-            <div className="text-sm font-bold text-primary mb-2 uppercase tracking-wide">⭐ Score Global ACF®</div>
-            <div className="text-7xl font-bold text-primary mb-2">
-              {results.scoreGlobal}<span className="text-4xl">/100</span>
-            </div>
-            <div className="text-sm font-bold text-gray-800 mb-3">{results.interpretationGlobale}</div>
-            <p className="text-xs text-gray-700 leading-relaxed">
-              Évalue la robustesse de votre gouvernance sur 4 couches. Un score élevé garantit que vos agents IA travaillent dans vos intérêts.
-            </p>
-          </div>
+        .rp-sov{display:flex;align-items:center;gap:20px}
+        .rp-sov-ring{flex-shrink:0}
+        .rp-sov-body{flex:1}
+        .rp-sov-val{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:40px;color:#c9a84c;line-height:1;margin-bottom:4px}
+        .rp-sov-lbl{font-size:13px;color:#9db0c8;line-height:1.6}
 
-          {/* Maturité */}
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg p-8 border-2 border-purple-200">
-            <div className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">Niveau de Maturité</div>
-            <div className="text-6xl font-bold text-purple-600 mb-2">
-              {results.niveauMaturite}<span className="text-3xl">/3</span>
-            </div>
-            <div className="text-sm font-medium text-gray-700 mb-3">{results.interpretationMaturite}</div>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Degré d'autonomie de vos agents : 0 = règles fixes, 1 = proposition, 2 = décision cadrée (cible), 3 = autonomie apprenante.
-            </p>
-          </div>
-        </div>
+        .rp-market{display:flex;flex-direction:column;gap:16px}
+        .rp-pct{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:48px;color:#c9a84c;line-height:1}
+        .rp-pct-sub{font-size:14px;color:#9db0c8;line-height:1.6}
+        .rp-mbar{height:10px;background:rgba(255,255,255,.07);border-radius:5px;overflow:hidden;margin:4px 0}
+        .rp-mfill{height:100%;background:linear-gradient(90deg,#c9a84c,#e8c96a);border-radius:5px;transition:width 1s ease}
 
-        {/* INTERPRÉTATION GLOBALE + CTA */}
-        <div className={`rounded-xl p-8 mb-12 border-2 ${
-          results.scoreGlobal >= 70 ? 'bg-green-50 border-green-300' :
-          results.scoreGlobal >= 50 ? 'bg-blue-50 border-blue-300' :
-          results.scoreGlobal >= 30 ? 'bg-orange-50 border-orange-300' :
-          'bg-red-50 border-red-300'
-        }`}>
-          <h2 className={`text-2xl font-bold mb-4 ${
-            results.scoreGlobal >= 70 ? 'text-green-800' :
-            results.scoreGlobal >= 50 ? 'text-blue-800' :
-            results.scoreGlobal >= 30 ? 'text-orange-800' :
-            'text-red-800'
-          }`}>
-            {results.scoreGlobal >= 70 ? '✅ Excellente gouvernance agentique' :
-             results.scoreGlobal >= 50 ? '👍 Gouvernance solide, à renforcer' :
-             results.scoreGlobal >= 30 ? '⚠️ Gouvernance fragile, action requise' :
-             '🚨 Situation critique, agir d\'urgence'}
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-6 text-lg">
-            {results.scoreGlobal >= 70 ? 'Votre gouvernance agentique est robuste. Vous avez posé les fondations nécessaires pour contrôler vos agents IA. Continuez à affiner votre supervision et restez vigilant face à l\'évolution de l\'autonomie de vos agents.' :
-             results.scoreGlobal >= 50 ? 'Vous avez une base correcte mais des zones de fragilité persistent. Sans renforcement rapide, vous risquez une perte de contrôle à mesure que vos agents gagnent en autonomie. Les 3 actions prioritaires ci-dessous sont essentielles.' :
-             results.scoreGlobal >= 30 ? 'Votre gouvernance présente des failles critiques. Vous êtes exposé à des décisions IA contraires à vos intérêts business. Une action immédiate est nécessaire pour sécuriser votre organisation avant qu\'un incident majeur ne survienne.' :
-             'ALERTE MAXIMALE : Votre organisation est en danger immédiat. Sans gouvernance, vos agents IA peuvent prendre des décisions catastrophiques (érosion de marge, non-conformité, atteinte image). Un audit d\'urgence est impératif.'}
-          </p>
-          {results.scoreGlobal < 50 && (
-            <Link
-              href="/contact"
-              className="inline-block bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-bold text-lg shadow-xl transition"
-            >
-              🚨 Planifier un audit d'urgence
-            </Link>
-          )}
-          {results.scoreGlobal >= 50 && results.scoreGlobal < 70 && (
-            <Link
-              href="/contact"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition"
-            >
-              📞 Planifier un audit complet
-            </Link>
-          )}
-        </div>
+        .rp-priorities{display:flex;flex-direction:column;gap:16px;margin-top:20px}
+        .rp-prio{border-radius:10px;padding:20px 22px;display:flex;gap:16px;align-items:flex-start}
+        .rp-prio-badge{padding:3px 10px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;white-space:nowrap;margin-top:2px}
+        .rp-prio-title{font-weight:600;font-size:14.5px;color:#fff;margin-bottom:4px}
+        .rp-prio-desc{font-size:13px;color:#9db0c8;line-height:1.6}
 
-        {/* BANNIÈRE MARCHÉ - VIOLET/ROSE */}
-        <div className="bg-gradient-to-r from-purple-100 via-pink-100 to-purple-100 rounded-2xl shadow-xl p-8 mb-12 border-2 border-purple-300">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">📊 Positionnement marché</h2>
-          <div className="grid md:grid-cols-3 gap-6 mb-6">
-            <div className="text-center p-4 bg-white/70 rounded-lg">
-              <div className="text-sm text-gray-600 mb-1">Fourchette basse</div>
-              <div className="text-3xl font-bold text-purple-600">{marketStats.lower}</div>
-            </div>
-            <div className="text-center p-4 bg-white/90 rounded-lg shadow-md">
-              <div className="text-sm text-gray-600 mb-1">Moyenne marché</div>
-              <div className="text-4xl font-bold text-pink-600">{marketStats.average}</div>
-            </div>
-            <div className="text-center p-4 bg-white/70 rounded-lg">
-              <div className="text-sm text-gray-600 mb-1">Fourchette haute</div>
-              <div className="text-3xl font-bold text-purple-600">{marketStats.upper}</div>
-            </div>
-          </div>
-          
-          <div className="text-center">
-            {results.scoreGlobal >= marketStats.average ? (
-              <p className="text-lg font-semibold text-green-700">
-                ✓ Vous êtes à <strong>+{results.scoreGlobal - marketStats.average} points</strong> au-dessus de la moyenne
-              </p>
-            ) : (
-              <p className="text-lg font-semibold text-red-700">
-                ⚠ Vous êtes à <strong>{results.scoreGlobal - marketStats.average} points</strong> en-dessous de la moyenne
-              </p>
-            )}
-            <p className="text-sm text-gray-600 mt-2">{marketStats.source}</p>
-          </div>
-        </div>
+        .rp-cta{background:linear-gradient(135deg,#0d1f3c,#071122);border:1px solid rgba(201,168,76,.22);border-radius:14px;padding:48px;text-align:center;margin-top:16px}
+        .rp-cta-title{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:clamp(22px,3vw,30px);color:#fff;margin-bottom:12px}
+        .rp-cta-sub{font-size:15px;color:#9db0c8;margin-bottom:28px}
+        .rp-cta-row{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
 
-        {/* ANALYSE 4 COUCHES - AVEC EXPLICATIONS PERSONNALISÉES */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">Analyse des 4 Couches Opérationnelles</h2>
-          
-          <div className="space-y-8">
-            {[
-              { num: 1, nom: 'Couche 1 : Gouvernance & Souveraineté', score: results.scoreCouche1, desc: 'Comité, charte, matrice responsabilités' },
-              { num: 2, nom: 'Couche 2 : Politique de Décision', score: results.scoreCouche2, desc: 'Objectifs hiérarchisés, seuils sécurité' },
-              { num: 3, nom: 'Couche 3 : Système d\'Agents', score: results.scoreCouche3, desc: 'Mandats explicites, responsables identifiés' },
-              { num: 4, nom: 'Couche 4 : Exécution & Supervision', score: results.scoreCouche4, desc: 'Logs 3 ans, kill switch, monitoring' }
-            ].map((couche) => {
-              const scoreColor = couche.score >= 20 ? 'text-green-600' : couche.score >= 12 ? 'text-orange-600' : 'text-red-600'
-              const progressColor = couche.score >= 20 ? 'bg-green-500' : couche.score >= 12 ? 'bg-orange-500' : 'bg-red-500'
-              
-              return (
-                <div key={couche.num} className="border-b border-gray-200 pb-6 last:border-b-0">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">{couche.nom}</h3>
-                      <p className="text-sm text-gray-600">{couche.desc}</p>
-                    </div>
-                    <div className={`text-4xl font-bold ${scoreColor}`}>{couche.score}/25</div>
-                  </div>
-                  
-                  <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
-                    <div className={`${progressColor} h-3 rounded-full transition-all`} style={{ width: `${(couche.score / 25) * 100}%` }}></div>
-                  </div>
-                  
-                  <p className="text-gray-700 leading-relaxed">
-                    {getCoucheExplanation(couche.num, couche.score)}
-                  </p>
-                </div>
-              )
-            })}
-          </div>
-        </div>
+        @media(max-width:900px){.rp-grid2{grid-template-columns:1fr}.rp-hero-grid{grid-template-columns:1fr}}
+        @media(max-width:560px){.rp-w{padding:0 20px}.rp-sec{padding:40px 0}.rp-card{padding:22px}.rp-cta{padding:32px 20px}.rp-hero{padding:40px 0}}
+      `}</style>
 
-        {/* PRIORITÉS D'ACTION */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">Vos 3 Priorités d'Action</h2>
-          <div className="space-y-6">
-            {results.priorites.slice(0, 3).map((priorite, index) => (
-              <div key={index} className="flex items-start space-x-4 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border-2 border-purple-200">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg">
-                  {index + 1}
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-gray-900 mb-1">{priorite.titre}</h3>
-                  <p className="text-sm text-gray-600">{priorite.description}</p>
-                  <span className="inline-block mt-2 text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-semibold">
-                    Couche {priorite.couche}
-                  </span>
+      <div className="rp">
+        <Header />
+
+        {/* HERO SCORE */}
+        <section className="rp-hero">
+          <div className="rp-w">
+            <div className="rp-badge">Résultats · {new Date(results.completedAt).toLocaleDateString('fr-FR')}</div>
+            <div className="rp-hero-grid">
+              <div className="rp-score-wrap">
+                <ScoreRing score={results.globalScore} size={160}/>
+                <div className="rp-score-inner">
+                  <div className="rp-score-num" style={{color:lc}}>{results.globalScore}</div>
+                  <div className="rp-score-lbl">/100</div>
                 </div>
               </div>
-            ))}
+              <div>
+                <div className="rp-level" style={{color:lc, background:`${lc}18`, border:`1px solid ${lc}40`}}>
+                  Niveau {results.level}
+                </div>
+                <h1 className="rp-h1">Votre Score ACF® : {results.globalScore}/100</h1>
+                <p className="rp-meta">
+                  {results.companyName && <><strong style={{color:'#e2eaf5'}}>{results.companyName}</strong> · </>}
+                  {results.sector && <>{results.sector} · </>}
+                  Mieux que {results.marketPercentile}% du marché
+                </p>
+                <div className="rp-hero-btns">
+                  <button className="rp-btn-g" onClick={() => setShowPDF(true)}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{display:'inline',marginRight:'6px'}}><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Télécharger PDF
+                  </button>
+                  <Link href="/calculator" className="rp-btn-o">Refaire le diagnostic</Link>
+                  <Link href="/contact" className="rp-btn-o">Parler à un expert</Link>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* ACTIONS */}
-        <div className="grid md:grid-cols-3 gap-6">
-          <button
-            onClick={handleDownloadPDF}
-            className="bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-lg font-bold hover:shadow-xl transition text-center"
-          >
-            📄 Télécharger le rapport PDF
-          </button>
-          
-          <Link
-            href="/contact"
-            className="bg-white text-primary border-2 border-primary px-8 py-4 rounded-lg font-bold hover:bg-primary hover:text-white transition text-center"
-          >
-            📞 Planifier un audit complet
-          </Link>
-          
-          <Link
-            href="/calculator"
-            className="bg-gray-100 text-gray-700 px-8 py-4 rounded-lg font-semibold hover:bg-gray-200 transition text-center"
-          >
-            🔄 Refaire le diagnostic
-          </Link>
-        </div>
+        {/* DETAILS */}
+        <section className="rp-sec">
+          <div className="rp-w">
+            <div className="rp-grid2">
+              {/* 4 DIMENSIONS */}
+              <div className="rp-card">
+                <div className="rp-card-title">Analyse par dimension <span>4 couches ACF®</span></div>
+                {dims.map(d => {
+                  const pct = Math.round((1 - d.val/d.max) * 100)
+                  const barColor = pct >= 75 ? '#22c55e' : pct >= 55 ? '#c9a84c' : pct >= 30 ? '#f97316' : '#ef4444'
+                  return (
+                    <div key={d.label} className="rp-dim">
+                      <div className="rp-dim-top">
+                        <span className="rp-dim-label">{d.label}</span>
+                        <span className="rp-dim-val" style={{color:barColor}}>{pct}/100</span>
+                      </div>
+                      <div className="rp-bar"><div className="rp-bar-fill" style={{width:`${pct}%`,background:barColor}}/></div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* RADAR */}
+              <div className="rp-card">
+                <div className="rp-card-title">Profil de gouvernance <span>Radar ACF®</span></div>
+                <ACFRadarChart ds={results.ds} dd={results.dd} dt={results.dt} dtr={results.dtr}/>
+              </div>
+            </div>
+
+            <div className="rp-grid2">
+              {/* SOVEREIGNTY */}
+              <div className="rp-card">
+                <div className="rp-card-title">Score de Souveraineté <span>Indépendance</span></div>
+                <div className="rp-sov">
+                  <div className="rp-sov-ring">
+                    <ScoreRing score={results.sovereigntyScore} size={100}/>
+                  </div>
+                  <div className="rp-sov-body">
+                    <div className="rp-sov-val">{results.sovereigntyScore}<span style={{fontSize:'20px',color:'#6b7fa0'}}>/100</span></div>
+                    <p className="rp-sov-lbl">Mesure votre indépendance opérationnelle face aux plateformes, fournisseurs et dépendances critiques.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* MARKET */}
+              <div className="rp-card">
+                <div className="rp-card-title">Positionnement marché <span>Benchmark sectoriel</span></div>
+                <div className="rp-market">
+                  <div>
+                    <div className="rp-pct">{results.marketPercentile}<span style={{fontSize:'24px',color:'#6b7fa0'}}>%</span></div>
+                    <p className="rp-pct-sub">des entreprises ont un score ACF® <strong style={{color:'#e2eaf5'}}>inférieur</strong> au vôtre</p>
+                  </div>
+                  <div>
+                    <div className="rp-mbar"><div className="rp-mfill" style={{width:`${results.marketPercentile}%`}}/></div>
+                    <div style={{display:'flex',justifyContent:'space-between',fontSize:'11px',color:'#4a5a72',marginTop:'4px'}}>
+                      <span>Bas du marché</span><span>Haut du marché</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* PRIORITIES */}
+            <div className="rp-card" style={{marginBottom:'28px'}}>
+              <div className="rp-card-title">3 Actions prioritaires <span>Plan d'action</span></div>
+              <div className="rp-priorities">
+                {results.priorities.map((p, i) => {
+                  const cfg = urgencyConfig[p.urgency]
+                  return (
+                    <div key={i} className="rp-prio" style={{background:cfg.bg, border:`1px solid ${cfg.border}`}}>
+                      <span className="rp-prio-badge" style={{color:cfg.color, background:`${cfg.color}18`, border:`1px solid ${cfg.color}30`}}>{cfg.label}</span>
+                      <div>
+                        <div className="rp-prio-title">{p.title}</div>
+                        <p className="rp-prio-desc">{p.description}</p>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="rp-cta">
+              <div className="rp-cta-title">
+                {results.globalScore < 55
+                  ? 'Votre score nécessite un accompagnement structuré'
+                  : results.globalScore < 75
+                  ? 'Optimisez votre gouvernance avec nos experts'
+                  : 'Maintenez votre niveau d\'excellence'}
+              </div>
+              <p className="rp-cta-sub">
+                {results.globalScore < 55
+                  ? 'Un score sous 55 expose votre organisation à des risques existentiels. Parlons d\'un plan d\'action immédiat.'
+                  : results.globalScore < 75
+                  ? 'Des ateliers ciblés peuvent vous faire gagner 15-20 points en 3 mois. Contactez-nous.'
+                  : 'Un suivi trimestriel vous permet de rester au niveau de référence dans votre secteur.'}
+              </p>
+              <div className="rp-cta-row">
+                <Link href="/contact" className="rp-btn-g">Parler à un expert →</Link>
+                <Link href="/calculator" className="rp-btn-o">Refaire le diagnostic</Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
       </div>
-      
-      <Footer />
-    </main>
+    </>
   )
 }
