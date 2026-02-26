@@ -72,13 +72,13 @@ export default function QuiSommesNousPage() {
               <div className="qs-avatar">VD</div>
               <div>
                 <div className="qs-bio-name">Vincent DORANGE</div>
-                <div className="qs-bio-role">Fondateur · Expert Gouvernance Agentique · AI CONSULTING</div>
+                <div className="qs-bio-role">Fondateur · Gouvernance Agentique · AI CONSULTING</div>
                 <div className="qs-bio-tags">
-                  {['ACF® Creator','AI Governance','E-commerce Expert','Auteur','Conférencier'].map(t=><span key={t} className="qs-tag">{t}</span>)}
+                  {['ACF® Creator','AI Governance','E-commerce Expert','Auteur'].map(t=><span key={t} className="qs-tag">{t}</span>)}
                 </div>
                 <div className="qs-bio-text">
-                  <p>Vincent DORANGE est un expert reconnu en transformation digitale et gouvernance de l'intelligence artificielle. Fort de plus de 15 ans d'expérience dans le e-commerce et la stratégie digitale, il a observé de nombreuses entreprises perdre le contrôle de leur activité face à l'automatisation croissante.</p>
-                  <p>En 2023, face à l'émergence des agents IA autonomes, il crée l'<strong>Agentic Commerce Framework® (ACF®)</strong> : le premier cadre méthodologique structurant la gouvernance des organisations dans l'ère agentique. Ce framework est aujourd'hui la base du Score ACF® et de l'accompagnement proposé par AI CONSULTING.</p>
+                  <p>Vincent DORANGE est un expert en e-commerce, en transformation digitale et gouvernance de l'intelligence artificielle. Fort de plus de 25 ans d'expérience dans le e-commerce et la stratégie digitale, il a observé de nombreuses entreprises perdre le contrôle de leur activité face à l'automatisation croissante.</p>
+                  <p>En 2025, face à l'émergence des agents IA autonomes, il crée l'<strong>Agentic Commerce Framework® (ACF®)</strong> : le premier cadre méthodologique structurant la gouvernance des organisations dans l'ère agentique. Ce framework est aujourd'hui la base du Score ACF® et de l'accompagnement proposé par AI CONSULTING et ses partenaires.</p>
                   <p>Basé à Nice, il intervient auprès de PME, ETI et grands groupes pour structurer leur transition vers une économie agentique maîtrisée.</p>
                 </div>
               </div>
@@ -87,10 +87,10 @@ export default function QuiSommesNousPage() {
             <div className="qs-company">
               <div className="qs-sh">AI CONSULTING</div>
               <p className="qs-body">
-                AI CONSULTING est un cabinet de conseil spécialisé en gouvernance de l'intelligence artificielle agentique. Nous accompagnons les organisations dans leur transition vers une <strong>utilisation souveraine et maîtrisée des agents IA autonomes</strong>.
+                AI CONSULTING est un cabinet de conseil spécialisé dans l'intelligence artificielle, notamment dans les automatisations et agents IA avec un focus sur la gouvernance agentique. Nous accompagnons les organisations dans leur transition vers une <strong>utilisation souveraine et maîtrisée des agents IA autonomes</strong>.
               </p>
-              <p className="qs-body">
-                Notre approche est pragmatique et opérationnelle : nous ne théorisons pas l'IA, nous structurons votre capacité à la gouverner. Nos interventions s'appuient exclusivement sur la méthodologie ACF®, testée et éprouvée sur des dizaines d'organisations.
+              <p className="qs-body"> 
+                Notre approche est pragmatique et opérationnelle : nous ne théorisons pas l'IA, nous structurons votre capacité à la gouverner. Nos interventions s'appuient essentiellement sur la méthodologie ACF®.
               </p>
               <div className="qs-vals">
                 <div className="qs-val">
